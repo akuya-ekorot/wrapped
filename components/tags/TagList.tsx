@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { type Tag, CompleteTag } from '@/lib/db/schema/tags';
 import Modal from '@/components/shared/Modal';
 
-import { useOptimisticTags } from '@/app/(app)/tags/useOptimisticTags';
+import { useOptimisticTags } from '@/app/(app)/admin/tags/useOptimisticTags';
 import { Button } from '@/components/ui/button';
 import TagForm from './TagForm';
 import { PlusIcon } from 'lucide-react';
