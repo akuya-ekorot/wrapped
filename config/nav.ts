@@ -1,5 +1,5 @@
 import { SidebarLink } from '@/components/SidebarItems';
-import { Cog, Globe, HomeIcon, Library, Tags, Truck } from 'lucide-react';
+import { Banknote, Cog, Globe, HomeIcon, Library, ShoppingBasket, Tag, Tags, Truck } from 'lucide-react';
 
 type AdditionalLinks = {
   title: string;
@@ -17,9 +17,24 @@ export const additionalLinks: AdditionalLinks[] = [
     title: 'Entities',
     links: [
       {
+        href: '/admin/orders',
+        title: 'Orders',
+        icon: ShoppingBasket,
+      },
+      {
+        href: '/admin/payments',
+        title: 'Payments',
+        icon: Banknote,
+      },
+      {
         href: '/admin/collections',
         title: 'Collections',
         icon: Library,
+      },
+      {
+        href: '/admin/products',
+        title: 'Products',
+        icon: Tag,
       },
       {
         href: '/admin/delivery-zones',

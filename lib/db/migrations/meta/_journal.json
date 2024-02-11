@@ -43,6 +43,13 @@
       "when": 1707645860129,
       "tag": "0005_windy_sprite",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1707655371853,
+      "tag": "0006_clumsy_gunslinger",
+      "breakpoints": true
     }
   ]
 }
