@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { type Variant, CompleteVariant } from '@/lib/db/schema/variants';
 import Modal from '@/components/shared/Modal';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
-import { useOptimisticVariants } from '@/app/(app)/variants/useOptimisticVariants';
+import { useOptimisticVariants } from '@/app/(app)/admin/variants/useOptimisticVariants';
 import { Button } from '@/components/ui/button';
 import VariantForm from './VariantForm';
 import { PlusIcon } from 'lucide-react';

@@ -8,6 +8,8 @@ import VariantOptionList from '@/components/variantOptions/VariantOptionList';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
+import { getOptions } from '@/lib/api/options/queries';
+import { getOptionValues } from '@/lib/api/optionValues/queries';
 
 export const revalidate = 0;
 
@@ -27,6 +29,8 @@ const Variant = async ({ id }: { id: string }) => {
   const { variant, variantOptions } =
     await getVariantByIdWithVariantOptions(id);
   const { products } = await getProducts();
+  const { options } = await getOptions();
+  const {optionValues}   = await getOptionValues();
 
   if (!variant) notFound();
   return (
@@ -40,6 +44,8 @@ const Variant = async ({ id }: { id: string }) => {
           {variant.productId}&apos;s Variant Options
         </h3>
         <VariantOptionList
+          options={options}
+          optionValues={optionValues}
           variants={[]}
           variantId={variant.id}
           variantOptions={variantOptions}
