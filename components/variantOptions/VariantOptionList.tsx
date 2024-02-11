@@ -16,7 +16,7 @@ import {
   type OptionValueId,
 } from '@/lib/db/schema/optionValues';
 import { type Variant, type VariantId } from '@/lib/db/schema/variants';
-import { useOptimisticVariantOptions } from '@/app/(app)/variant-options/useOptimisticVariantOptions';
+import { useOptimisticVariantOptions } from '@/app/(app)/admin/variant-options/useOptimisticVariantOptions';
 import { Button } from '@/components/ui/button';
 import VariantOptionForm from './VariantOptionForm';
 import { PlusIcon } from 'lucide-react';

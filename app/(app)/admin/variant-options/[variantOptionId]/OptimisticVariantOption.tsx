@@ -1,7 +1,7 @@
 'use client';
 
 import { useOptimistic, useState } from 'react';
-import { TAddOptimistic } from '@/app/(app)/variant-options/useOptimisticVariantOptions';
+import { TAddOptimistic } from '@/app/(app)/admin/variant-options/useOptimisticVariantOptions';
 import { type VariantOption } from '@/lib/db/schema/variantOptions';
 import { cn } from '@/lib/utils';
 
