@@ -1,7 +1,7 @@
 'use client';
 
 import { useOptimistic, useState } from 'react';
-import { TAddOptimistic } from '@/app/(app)/product-images/useOptimisticProductImages';
+import { TAddOptimistic } from '@/app/(app)/admin/product-images/useOptimisticProductImages';
 import { type ProductImage } from '@/lib/db/schema/productImages';
 import { cn } from '@/lib/utils';
 

@@ -12,7 +12,7 @@ import {
 import Modal from '@/components/shared/Modal';
 import { type Image, type ImageId } from '@/lib/db/schema/images';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
-import { useOptimisticProductImages } from '@/app/(app)/product-images/useOptimisticProductImages';
+import { useOptimisticProductImages } from '@/app/(app)/admin/product-images/useOptimisticProductImages';
 import { Button } from '@/components/ui/button';
 import ProductImageForm from './ProductImageForm';
 import { PlusIcon } from 'lucide-react';

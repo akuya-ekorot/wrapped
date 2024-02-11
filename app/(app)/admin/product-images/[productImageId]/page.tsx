@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getProductImageById } from '@/lib/api/productImages/queries';
 import { getImages } from '@/lib/api/images/queries';
 import { getProducts } from '@/lib/api/products/queries';
-import OptimisticProductImage from '@/app/(app)/product-images/[productImageId]/OptimisticProductImage';
+import OptimisticProductImage from '@/app/(app)/admin/product-images/[productImageId]/OptimisticProductImage';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
