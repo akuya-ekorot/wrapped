@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getCollectionImageById } from '@/lib/api/collectionImages/queries';
 import { getImages } from '@/lib/api/images/queries';
 import { getCollections } from '@/lib/api/collections/queries';
-import OptimisticCollectionImage from '@/app/(app)/collection-images/[collectionImageId]/OptimisticCollectionImage';
+import OptimisticCollectionImage from '@/app/(app)/admin/collection-images/[collectionImageId]/OptimisticCollectionImage';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useOptimistic, useState } from 'react';
-import { TAddOptimistic } from '@/app/(app)/collection-images/useOptimisticCollectionImages';
+import { TAddOptimistic } from '@/app/(app)/admin/collection-images/useOptimisticCollectionImages';
 import { type CollectionImage } from '@/lib/db/schema/collectionImages';
 import { cn } from '@/lib/utils';
 

@@ -12,14 +12,16 @@ import {
   type DeliveryZone,
   type DeliveryZoneId,
 } from '@/lib/db/schema/deliveryZones';
+import { Payment } from '@/lib/db/schema/payments';
 
 export default function OptimisticOrder({
   order,
   deliveryZones,
   deliveryZoneId,
+  payments,
 }: {
   order: Order;
-
+  payments: Payment[];
   deliveryZones: DeliveryZone[];
   deliveryZoneId?: DeliveryZoneId;
 }) {
@@ -36,6 +38,7 @@ export default function OptimisticOrder({
     <div className="m-4">
       <Modal open={open} setOpen={setOpen}>
         <OrderForm
+          payments={payments}
           order={order}
           deliveryZones={deliveryZones}
           deliveryZoneId={deliveryZoneId}

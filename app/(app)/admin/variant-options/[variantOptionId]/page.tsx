@@ -5,7 +5,7 @@ import { getVariantOptionById } from '@/lib/api/variantOptions/queries';
 import { getOptions } from '@/lib/api/options/queries';
 import { getOptionValues } from '@/lib/api/optionValues/queries';
 import { getVariants } from '@/lib/api/variants/queries';
-import OptimisticVariantOption from '@/app/(app)/variant-options/[variantOptionId]/OptimisticVariantOption';
+import OptimisticVariantOption from '@/app/(app)/admin/variant-options/[variantOptionId]/OptimisticVariantOption';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
