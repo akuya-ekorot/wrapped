@@ -1,0 +1,18 @@
+{
+  "hasSrc": false,
+  "packages": [
+    "shadcn-ui",
+    "drizzle",
+    "next-auth",
+    "resend"
+  ],
+  "preferredPackageManager": "bun",
+  "t3": false,
+  "alias": "@",
+  "rootPath": "",
+  "componentLib": "shadcn-ui",
+  "driver": "pg",
+  "provider": "node-postgres",
+  "orm": "drizzle",
+  "auth": "next-auth"
+}
