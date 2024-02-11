@@ -53,16 +53,33 @@ export const getProductByIdWithProductImagesAndOptionsAndProductTags = async (
     .leftJoin(productImages, eq(products.id, productImages.productId))
     .leftJoin(options, eq(products.id, options.productId))
     .leftJoin(productTags, eq(products.id, productTags.productId));
+
   if (rows.length === 0) return {};
+
   const p = rows[0].product;
+
   const p_images = rows
     .filter((r) => r.productImage !== null)
+    .filter(
+      (r, i, self) =>
+        self.findIndex((s) => s.productImage!.id === r.productImage!.id) === i,
+    )
     .map((p) => p.productImage) as CompleteProductImage[];
+
   const po = rows
     .filter((r) => r.option !== null)
+    .filter(
+      (r, i, self) =>
+        self.findIndex((s) => s.option!.id === r.option!.id) === i,
+    )
     .map((o) => o.option) as CompleteOption[];
+
   const p_tags = rows
     .filter((r) => r.productTag !== null)
+    .filter(
+      (r, i, self) =>
+        self.findIndex((s) => s.productTag!.id === r.productTag!.id) === i,
+    )
     .map((p) => p.productTag) as CompleteProductTag[];
 
   return {

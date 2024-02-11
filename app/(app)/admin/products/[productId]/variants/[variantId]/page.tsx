@@ -3,8 +3,8 @@ import { notFound } from 'next/navigation';
 
 import { getVariantByIdWithVariantOptions } from '@/lib/api/variants/queries';
 import { getProducts } from '@/lib/api/products/queries';
-import OptimisticVariant from './OptimisticVariant';
 import VariantOptionList from '@/components/variantOptions/VariantOptionList';
+import OptimisticVariant from '@/app/(app)/admin/variants/[variantId]/OptimisticVariant';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
@@ -16,23 +16,35 @@ export const revalidate = 0;
 export default async function VariantPage({
   params,
 }: {
-  params: { variantId: string };
+  params: { variantId: string; productId: string };
 }) {
   return (
     <main className="overflow-auto">
-      <Variant id={params.variantId} />
+      <Variant id={params.variantId} productId={params.productId} />
     </main>
   );
 }
 
-const Variant = async ({ id }: { id: string }) => {
+const Variant = async ({
+  id,
+  productId,
+}: {
+  id: string;
+  productId: string;
+}) => {
   const { variant, variantOptions } =
     await getVariantByIdWithVariantOptions(id);
   const { products } = await getProducts();
   const { options } = await getOptions();
-  const {optionValues}   = await getOptionValues();
+  const { optionValues } = await getOptionValues();
 
   if (!variant) notFound();
+
+  const productOptions = options.filter((o) => o.productId === productId);
+  const productOptionValues = optionValues.filter(
+    (ov) => ov.option?.productId === productId,
+  );
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
@@ -44,8 +56,8 @@ const Variant = async ({ id }: { id: string }) => {
           {variant.productId}&apos;s Variant Options
         </h3>
         <VariantOptionList
-          options={options}
-          optionValues={optionValues}
+          options={productOptions}
+          optionValues={productOptionValues}
           variants={[]}
           variantId={variant.id}
           variantOptions={variantOptions}

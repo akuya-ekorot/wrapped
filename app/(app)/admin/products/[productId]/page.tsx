@@ -38,6 +38,10 @@ const Product = async ({ id }: { id: string }) => {
   const { variants } = await getVariants();
 
   if (!product) notFound();
+
+  const productVariants = variants.filter((v) => v.productId === product.id);
+  const productOptions = options.filter((o) => o.productId === product.id);
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
@@ -59,17 +63,26 @@ const Product = async ({ id }: { id: string }) => {
 
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
-          {product.name}&apos;s Product Variants
+          {product.name}&apos;s Options
         </h3>
-        <VariantList productId={product.id} variants={variants} products={[]} />
+        <OptionList
+          products={[]}
+          productId={product.id}
+          options={productOptions}
+        />
       </div>
 
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
-          {product.name}&apos;s Options
+          {product.name}&apos;s Product Variants
         </h3>
-        <OptionList products={[]} productId={product.id} options={options} />
+        <VariantList
+          productId={product.id}
+          variants={productVariants}
+          products={[]}
+        />
       </div>
+
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
           {product.name}&apos;s Product Tags
