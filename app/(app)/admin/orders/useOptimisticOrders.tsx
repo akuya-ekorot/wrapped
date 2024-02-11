@@ -1,5 +1,6 @@
 import { type DeliveryZone } from '@/lib/db/schema/deliveryZones';
 import { type Order, type CompleteOrder } from '@/lib/db/schema/orders';
+import { Payment } from '@/lib/db/schema/payments';
 import { OptimisticAction } from '@/lib/utils';
 import { useOptimistic } from 'react';
 
@@ -8,6 +9,7 @@ export type TAddOptimistic = (action: OptimisticAction<Order>) => void;
 export const useOptimisticOrders = (
   orders: CompleteOrder[],
   deliveryZones: DeliveryZone[],
+  payments: Payment[],
 ) => {
   const [optimisticOrders, addOptimisticOrder] = useOptimistic(
     orders,
@@ -21,9 +23,14 @@ export const useOptimisticOrders = (
         (deliveryZone) => deliveryZone.id === data.deliveryZoneId,
       )!;
 
+      const optimisticPayment = payments.find(
+        (payment) => payment.id === data.paymentId,
+      )!;
+
       const optimisticOrder = {
         ...data,
         deliveryZone: optimisticDeliveryZone,
+        payment: optimisticPayment,
         id: 'optimistic',
       };
 

@@ -15,14 +15,17 @@ import { useOptimisticOrders } from '@/app/(app)/admin/orders/useOptimisticOrder
 import { Button } from '@/components/ui/button';
 import OrderForm from './OrderForm';
 import { PlusIcon } from 'lucide-react';
+import { Payment } from '@/lib/db/schema/payments';
 
 type TOpenModal = (order?: Order) => void;
 
 export default function OrderList({
+  payments,
   orders,
   deliveryZones,
   deliveryZoneId,
 }: {
+  payments: Payment[];
   orders: CompleteOrder[];
   deliveryZones: DeliveryZone[];
   deliveryZoneId?: DeliveryZoneId;
@@ -30,6 +33,7 @@ export default function OrderList({
   const { optimisticOrders, addOptimisticOrder } = useOptimisticOrders(
     orders,
     deliveryZones,
+    payments,
   );
   const [open, setOpen] = useState(false);
   const [activeOrder, setActiveOrder] = useState<Order | null>(null);
@@ -47,6 +51,7 @@ export default function OrderList({
         title={activeOrder ? 'Edit Order' : 'Create Order'}
       >
         <OrderForm
+          payments={payments}
           order={activeOrder}
           addOptimistic={addOptimisticOrder}
           openModal={openModal}

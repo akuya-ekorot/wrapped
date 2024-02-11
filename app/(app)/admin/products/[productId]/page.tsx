@@ -3,13 +3,17 @@ import { notFound } from 'next/navigation';
 
 import { getProductByIdWithProductImagesAndOptionsAndProductTags } from '@/lib/api/products/queries';
 import { getCollections } from '@/lib/api/collections/queries';
-import OptimisticProduct from '@/app/(app)/products/[productId]/OptimisticProduct';
+import OptimisticProduct from '@/app/(app)/admin/products/[productId]/OptimisticProduct';
 import ProductImageList from '@/components/productImages/ProductImageList';
 import OptionList from '@/components/options/OptionList';
 import ProductTagList from '@/components/productTags/ProductTagList';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
+import { getImages } from '@/lib/api/images/queries';
+import { getTags } from '@/lib/api/tags/queries';
+import VariantList from '@/components/variants/VariantList';
+import { getVariants } from '@/lib/api/variants/queries';
 
 export const revalidate = 0;
 
@@ -29,6 +33,9 @@ const Product = async ({ id }: { id: string }) => {
   const { product, productImages, options, productTags } =
     await getProductByIdWithProductImagesAndOptionsAndProductTags(id);
   const { collections } = await getCollections();
+  const { images } = await getImages();
+  const { tags } = await getTags();
+  const { variants } = await getVariants();
 
   if (!product) notFound();
   return (
@@ -37,16 +44,26 @@ const Product = async ({ id }: { id: string }) => {
         <BackButton currentResource="products" />
         <OptimisticProduct product={product} collections={collections} />
       </div>
+
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
           {product.name}&apos;s Product Images
         </h3>
         <ProductImageList
+          images={images}
           products={[]}
           productId={product.id}
           productImages={productImages}
         />
       </div>
+
+      <div className="relative mt-8 mx-4">
+        <h3 className="text-xl font-medium mb-4">
+          {product.name}&apos;s Product Variants
+        </h3>
+        <VariantList productId={product.id} variants={variants} products={[]} />
+      </div>
+
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
           {product.name}&apos;s Options
@@ -58,6 +75,7 @@ const Product = async ({ id }: { id: string }) => {
           {product.name}&apos;s Product Tags
         </h3>
         <ProductTagList
+          tags={tags}
           products={[]}
           productId={product.id}
           productTags={productTags}

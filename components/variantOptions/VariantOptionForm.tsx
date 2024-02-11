@@ -142,6 +142,8 @@ const VariantOptionForm = ({
     }
   };
 
+  const [activeOptionId, setActiveOptionId] = useState<OptionId | null>(null);
+
   return (
     <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
       {/* Schema fields start */}
@@ -156,7 +158,11 @@ const VariantOptionForm = ({
           >
             Option
           </Label>
-          <Select defaultValue={variantOption?.optionId} name="optionId">
+          <Select
+            defaultValue={variantOption?.optionId}
+            name="optionId"
+            onValueChange={setActiveOptionId}
+          >
             <SelectTrigger
               className={cn(errors?.optionId ? 'ring ring-destructive' : '')}
             >
@@ -165,7 +171,7 @@ const VariantOptionForm = ({
             <SelectContent>
               {options?.map((option) => (
                 <SelectItem key={option.id} value={option.id.toString()}>
-                  {option.id}
+                  {option.name}
                   {/* TODO: Replace with a field from the option model */}
                 </SelectItem>
               ))}
@@ -203,15 +209,17 @@ const VariantOptionForm = ({
               <SelectValue placeholder="Select a optionValue" />
             </SelectTrigger>
             <SelectContent>
-              {optionValues?.map((optionValue) => (
-                <SelectItem
-                  key={optionValue.id}
-                  value={optionValue.id.toString()}
-                >
-                  {optionValue.id}
-                  {/* TODO: Replace with a field from the optionValue model */}
-                </SelectItem>
-              ))}
+              {optionValues
+                ?.filter((ov) => ov.optionId === activeOptionId)
+                .map((optionValue) => (
+                  <SelectItem
+                    key={optionValue.id}
+                    value={optionValue.id.toString()}
+                  >
+                    {optionValue.name}
+                    {/* TODO: Replace with a field from the optionValue model */}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
           {errors?.optionValueId ? (

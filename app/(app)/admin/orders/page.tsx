@@ -5,6 +5,7 @@ import OrderList from '@/components/orders/OrderList';
 import { getOrders } from '@/lib/api/orders/queries';
 import { getDeliveryZones } from '@/lib/api/deliveryZones/queries';
 import { checkAuth } from '@/lib/auth/utils';
+import { getPayments } from '@/lib/api/payments/queries';
 
 export const revalidate = 0;
 
@@ -26,9 +27,15 @@ const Orders = async () => {
 
   const { orders } = await getOrders();
   const { deliveryZones } = await getDeliveryZones();
+  const { payments } = await getPayments();
+
   return (
     <Suspense fallback={<Loading />}>
-      <OrderList orders={orders} deliveryZones={deliveryZones} />
+      <OrderList
+        payments={payments}
+        orders={orders}
+        deliveryZones={deliveryZones}
+      />
     </Suspense>
   );
 };

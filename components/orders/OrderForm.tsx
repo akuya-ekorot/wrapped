@@ -32,8 +32,11 @@ import {
   type DeliveryZone,
   type DeliveryZoneId,
 } from '@/lib/db/schema/deliveryZones';
+import { Payment, PaymentId } from '@/lib/db/schema/payments';
 
 const OrderForm = ({
+  payments,
+  paymentId,
   deliveryZones,
   deliveryZoneId,
   order,
@@ -42,6 +45,8 @@ const OrderForm = ({
   addOptimistic,
   postSuccess,
 }: {
+  payments: Payment[];
+  paymentId?: PaymentId;
   order?: Order | null;
   deliveryZones: DeliveryZone[];
   deliveryZoneId?: DeliveryZoneId;
@@ -207,6 +212,41 @@ const OrderForm = ({
           {errors?.deliveryZoneId ? (
             <p className="text-xs text-destructive mt-2">
               {errors.deliveryZoneId[0]}
+            </p>
+          ) : (
+            <div className="h-6" />
+          )}
+        </div>
+      )}
+
+      {paymentId ? null : (
+        <div>
+          <Label
+            className={cn(
+              'mb-2 inline-block',
+              errors?.paymentId ? 'text-destructive' : '',
+            )}
+          >
+            Payment
+          </Label>
+          <Select defaultValue={order?.paymentId ?? undefined} name="paymentId">
+            <SelectTrigger
+              className={cn(errors?.paymentId ? 'ring ring-destructive' : '')}
+            >
+              <SelectValue placeholder="Select a payment" />
+            </SelectTrigger>
+            <SelectContent>
+              {payments?.map((payment) => (
+                <SelectItem key={payment.id} value={payment.id.toString()}>
+                  {payment.amount}
+                  {/* TODO: Replace with a field from the deliveryZone model */}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.paymentId ? (
+            <p className="text-xs text-destructive mt-2">
+              {errors.paymentId[0]}
             </p>
           ) : (
             <div className="h-6" />
