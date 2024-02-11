@@ -1,9 +1,8 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import Loading from "@/app/loading";
-import ImageList from "@/components/images/ImageList";
-import { getImages } from "@/lib/api/images/queries";
-
+import Loading from '@/app/loading';
+import ImageList from '@/components/images/ImageList';
+import { getImages } from '@/lib/api/images/queries';
 
 export const revalidate = 0;
 
@@ -21,12 +20,11 @@ export default async function ImagesPage() {
 }
 
 const Images = async () => {
-  
   const { images } = await getImages();
-  
+
   return (
     <Suspense fallback={<Loading />}>
-      <ImageList images={images}  />
+      <ImageList images={images} />
     </Suspense>
   );
 };

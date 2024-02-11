@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import Link from 'next/link';
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
-import { AlignRight } from "lucide-react";
-import { defaultLinks } from "@/config/nav";
+import { AlignRight } from 'lucide-react';
+import { defaultLinks } from '@/config/nav';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -29,8 +29,8 @@ export default function Navbar() {
                   href={link.href}
                   className={
                     pathname === link.href
-                      ? "text-primary hover:text-primary font-semibold"
-                      : "text-muted-foreground hover:text-primary"
+                      ? 'text-primary hover:text-primary font-semibold'
+                      : 'text-muted-foreground hover:text-primary'
                   }
                 >
                   {link.title}

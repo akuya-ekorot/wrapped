@@ -1,13 +1,13 @@
-import { db } from "@/lib/db/index";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
-import { redirect } from "next/navigation";
-import { env } from "@/lib/env.mjs"
-import GoogleProvider from "next-auth/providers/google";
+import { db } from '@/lib/db/index';
+import { DrizzleAdapter } from '@auth/drizzle-adapter';
+import { DefaultSession, getServerSession, NextAuthOptions } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { env } from '@/lib/env.mjs';
+import GoogleProvider from 'next-auth/providers/google';
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
-    user: DefaultSession["user"] & {
+    user: DefaultSession['user'] & {
       id: string;
     };
   }
@@ -32,13 +32,12 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers: [
-     GoogleProvider({
+    GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-    })
+    }),
   ],
 };
-
 
 export const getUserAuth = async () => {
   const session = await getServerSession(authOptions);
@@ -47,6 +46,5 @@ export const getUserAuth = async () => {
 
 export const checkAuth = async () => {
   const { session } = await getUserAuth();
-  if (!session) redirect("/api/auth/signin");
+  if (!session) redirect('/api/auth/signin');
 };
-

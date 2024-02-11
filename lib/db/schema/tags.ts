@@ -1,36 +1,36 @@
-import { sql } from "drizzle-orm";
+import { sql } from 'drizzle-orm';
 import {
   text,
   varchar,
   timestamp,
   pgTable,
   uniqueIndex,
-} from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
+} from 'drizzle-orm/pg-core';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import { z } from 'zod';
 
-import { type getTags } from "@/lib/api/tags/queries";
+import { type getTags } from '@/lib/api/tags/queries';
 
-import { nanoid, timestamps } from "@/lib/utils";
+import { nanoid, timestamps } from '@/lib/utils';
 
 export const tags = pgTable(
-  "tags",
+  'tags',
   {
-    id: varchar("id", { length: 191 })
+    id: varchar('id', { length: 191 })
       .primaryKey()
       .$defaultFn(() => nanoid()),
-    name: text("name").notNull(),
+    name: text('name').notNull(),
 
-    createdAt: timestamp("created_at")
+    createdAt: timestamp('created_at')
       .notNull()
       .default(sql`now()`),
-    updatedAt: timestamp("updated_at")
+    updatedAt: timestamp('updated_at')
       .notNull()
       .default(sql`now()`),
   },
   (tags) => {
     return {
-      nameIndex: uniqueIndex("tag_name_idx").on(tags.name),
+      nameIndex: uniqueIndex('tag_name_idx').on(tags.name),
     };
   },
 );
@@ -52,7 +52,7 @@ export type Tag = typeof tags.$inferSelect;
 export type NewTag = z.infer<typeof insertTagSchema>;
 export type NewTagParams = z.infer<typeof insertTagParams>;
 export type UpdateTagParams = z.infer<typeof updateTagParams>;
-export type TagId = z.infer<typeof tagIdSchema>["id"];
+export type TagId = z.infer<typeof tagIdSchema>['id'];
 
 // this type infers the return from getTags() - meaning it will include any joins
-export type CompleteTag = Awaited<ReturnType<typeof getTags>>["tags"][number];
+export type CompleteTag = Awaited<ReturnType<typeof getTags>>['tags'][number];

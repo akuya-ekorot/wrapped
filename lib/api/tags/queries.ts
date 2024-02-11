@@ -1,10 +1,10 @@
-import { db } from "@/lib/db/index";
-import { eq } from "drizzle-orm";
-import { type TagId, tagIdSchema, tags } from "@/lib/db/schema/tags";
+import { db } from '@/lib/db/index';
+import { eq } from 'drizzle-orm';
+import { type TagId, tagIdSchema, tags } from '@/lib/db/schema/tags';
 
 export const getTags = async () => {
   const rows = await db.select().from(tags);
-  const t = rows
+  const t = rows;
   return { tags: t };
 };
 
@@ -15,5 +15,3 @@ export const getTagById = async (id: TagId) => {
   const t = row;
   return { tag: t };
 };
-
-

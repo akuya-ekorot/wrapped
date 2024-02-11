@@ -1,23 +1,15 @@
-"use client";
+'use client';
 
-import { useOptimistic, useState } from "react";
-import { TAddOptimistic } from "@/app/(app)/tags/useOptimisticTags";
-import { type Tag } from "@/lib/db/schema/tags";
-import { cn } from "@/lib/utils";
+import { useOptimistic, useState } from 'react';
+import { TAddOptimistic } from '@/app/(app)/tags/useOptimisticTags';
+import { type Tag } from '@/lib/db/schema/tags';
+import { cn } from '@/lib/utils';
 
-import { Button } from "@/components/ui/button";
-import Modal from "@/components/shared/Modal";
-import TagForm from "@/components/tags/TagForm";
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/shared/Modal';
+import TagForm from '@/components/tags/TagForm';
 
-
-export default function OptimisticTag({ 
-  tag,
-   
-}: { 
-  tag: Tag; 
-  
-  
-}) {
+export default function OptimisticTag({ tag }: { tag: Tag }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: Tag) => {
     setOpen(true);
@@ -32,7 +24,6 @@ export default function OptimisticTag({
       <Modal open={open} setOpen={setOpen}>
         <TagForm
           tag={tag}
-          
           closeModal={closeModal}
           openModal={openModal}
           addOptimistic={updateTag}
@@ -46,8 +37,8 @@ export default function OptimisticTag({
       </div>
       <pre
         className={cn(
-          "bg-secondary p-4 rounded-lg break-all text-wrap",
-          optimisticTag.id === "optimistic" ? "animate-pulse" : "",
+          'bg-secondary p-4 rounded-lg break-all text-wrap',
+          optimisticTag.id === 'optimistic' ? 'animate-pulse' : '',
         )}
       >
         {JSON.stringify(optimisticTag, null, 2)}

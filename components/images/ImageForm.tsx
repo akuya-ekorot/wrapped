@@ -1,31 +1,27 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { useState, useTransition } from "react";
-import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useValidatedForm } from "@/lib/hooks/useValidatedForm";
+import { useState, useTransition } from 'react';
+import { useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 
-import { type Action, cn } from "@/lib/utils";
-import { type TAddOptimistic } from "@/app/(app)/images/useOptimisticImages";
+import { type Action, cn } from '@/lib/utils';
+import { type TAddOptimistic } from '@/app/(app)/images/useOptimisticImages';
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useBackPath } from "@/components/shared/BackButton";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { useBackPath } from '@/components/shared/BackButton';
 
-
-
-import { type Image, insertImageParams } from "@/lib/db/schema/images";
+import { type Image, insertImageParams } from '@/lib/db/schema/images';
 import {
   createImageAction,
   deleteImageAction,
   updateImageAction,
-} from "@/lib/actions/images";
-
+} from '@/lib/actions/images';
 
 const ImageForm = ({
-  
   image,
   openModal,
   closeModal,
@@ -33,7 +29,7 @@ const ImageForm = ({
   postSuccess,
 }: {
   image?: Image | null;
-  
+
   openModal?: (image?: Image) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
@@ -42,13 +38,12 @@ const ImageForm = ({
   const { errors, hasErrors, setErrors, handleChange } =
     useValidatedForm<Image>(insertImageParams);
   const editing = !!image?.id;
-  
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [pending, startMutation] = useTransition();
 
   const router = useRouter();
-  const backpath = useBackPath("images");
-
+  const backpath = useBackPath('images');
 
   const onSuccess = (
     action: Action,
@@ -58,13 +53,13 @@ const ImageForm = ({
     if (failed) {
       openModal && openModal(data?.values);
       toast.error(`Failed to ${action}`, {
-        description: data?.error ?? "Error",
+        description: data?.error ?? 'Error',
       });
     } else {
       router.refresh();
       postSuccess && postSuccess();
       toast.success(`Image ${action}d!`);
-      if (action === "delete") router.push(backpath);
+      if (action === 'delete') router.push(backpath);
     }
   };
 
@@ -72,7 +67,7 @@ const ImageForm = ({
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
-    const imageParsed = await insertImageParams.safeParseAsync({  ...payload });
+    const imageParsed = await insertImageParams.safeParseAsync({ ...payload });
     if (!imageParsed.success) {
       setErrors(imageParsed?.error.flatten().fieldErrors);
       return;
@@ -83,26 +78,27 @@ const ImageForm = ({
     const pendingImage: Image = {
       updatedAt: image?.updatedAt ?? new Date(),
       createdAt: image?.createdAt ?? new Date(),
-      id: image?.id ?? "",
+      id: image?.id ?? '',
       ...values,
     };
     try {
       startMutation(async () => {
-        addOptimistic && addOptimistic({
-          data: pendingImage,
-          action: editing ? "update" : "create",
-        });
+        addOptimistic &&
+          addOptimistic({
+            data: pendingImage,
+            action: editing ? 'update' : 'create',
+          });
 
         const error = editing
           ? await updateImageAction({ ...values, id: image.id })
           : await createImageAction(values);
 
         const errorFormatted = {
-          error: error ?? "Error",
-          values: pendingImage 
+          error: error ?? 'Error',
+          values: pendingImage,
         };
         onSuccess(
-          editing ? "update" : "create",
+          editing ? 'update' : 'create',
           error ? errorFormatted : undefined,
         );
       });
@@ -114,13 +110,13 @@ const ImageForm = ({
   };
 
   return (
-    <form action={handleSubmit} onChange={handleChange} className={"space-y-8"}>
+    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
       {/* Schema fields start */}
-              <div>
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.url ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.url ? 'text-destructive' : '',
           )}
         >
           Url
@@ -128,8 +124,8 @@ const ImageForm = ({
         <Input
           type="text"
           name="url"
-          className={cn(errors?.url ? "ring ring-destructive" : "")}
-          defaultValue={image?.url ?? ""}
+          className={cn(errors?.url ? 'ring ring-destructive' : '')}
+          defaultValue={image?.url ?? ''}
         />
         {errors?.url ? (
           <p className="text-xs text-destructive mt-2">{errors.url[0]}</p>
@@ -147,24 +143,24 @@ const ImageForm = ({
         <Button
           type="button"
           disabled={isDeleting || pending || hasErrors}
-          variant={"destructive"}
+          variant={'destructive'}
           onClick={() => {
             setIsDeleting(true);
             closeModal && closeModal();
             startMutation(async () => {
-              addOptimistic && addOptimistic({ action: "delete", data: image });
+              addOptimistic && addOptimistic({ action: 'delete', data: image });
               const error = await deleteImageAction(image.id);
               setIsDeleting(false);
               const errorFormatted = {
-                error: error ?? "Error",
+                error: error ?? 'Error',
                 values: image,
               };
 
-              onSuccess("delete", error ? errorFormatted : undefined);
+              onSuccess('delete', error ? errorFormatted : undefined);
             });
           }}
         >
-          Delet{isDeleting ? "ing..." : "e"}
+          Delet{isDeleting ? 'ing...' : 'e'}
         </Button>
       ) : null}
     </form>
@@ -191,8 +187,8 @@ const SaveButton = ({
       aria-disabled={isCreating || isUpdating || errors}
     >
       {editing
-        ? `Sav${isUpdating ? "ing..." : "e"}`
-        : `Creat${isCreating ? "ing..." : "e"}`}
+        ? `Sav${isUpdating ? 'ing...' : 'e'}`
+        : `Creat${isCreating ? 'ing...' : 'e'}`}
     </Button>
   );
 };

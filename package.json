@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "format": "prettier --write .",
     "start": "next start",
     "lint": "next lint",
     "db:generate": "drizzle-kit generate:pg",
@@ -52,6 +53,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "postcss": "^8",
+    "prettier": "^3.2.5",
     "tailwindcss": "^3.3.0",
     "tsx": "^4.7.1",
     "typescript": "^5"

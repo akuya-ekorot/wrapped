@@ -1,31 +1,22 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type Image, CompleteImage } from "@/lib/db/schema/images";
-import Modal from "@/components/shared/Modal";
+import { cn } from '@/lib/utils';
+import { type Image, CompleteImage } from '@/lib/db/schema/images';
+import Modal from '@/components/shared/Modal';
 
-import { useOptimisticImages } from "@/app/(app)/images/useOptimisticImages";
-import { Button } from "@/components/ui/button";
-import ImageForm from "./ImageForm";
-import { PlusIcon } from "lucide-react";
+import { useOptimisticImages } from '@/app/(app)/images/useOptimisticImages';
+import { Button } from '@/components/ui/button';
+import ImageForm from './ImageForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (image?: Image) => void;
 
-export default function ImageList({
-  images,
-   
-}: {
-  images: CompleteImage[];
-   
-}) {
-  const { optimisticImages, addOptimisticImage } = useOptimisticImages(
-    images,
-     
-  );
+export default function ImageList({ images }: { images: CompleteImage[] }) {
+  const { optimisticImages, addOptimisticImage } = useOptimisticImages(images);
   const [open, setOpen] = useState(false);
   const [activeImage, setActiveImage] = useState<Image | null>(null);
   const openModal = (image?: Image) => {
@@ -39,18 +30,17 @@ export default function ImageList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activeImage ? "Edit Image" : "Create Image"}
+        title={activeImage ? 'Edit Image' : 'Create Image'}
       >
         <ImageForm
           image={activeImage}
           addOptimistic={addOptimisticImage}
           openModal={openModal}
           closeModal={closeModal}
-          
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -59,11 +49,7 @@ export default function ImageList({
       ) : (
         <ul>
           {optimisticImages.map((image) => (
-            <Image
-              image={image}
-              key={image.id}
-              openModal={openModal}
-            />
+            <Image image={image} key={image.id} openModal={openModal} />
           ))}
         </ul>
       )}
@@ -78,30 +64,27 @@ const Image = ({
   image: CompleteImage;
   openModal: TOpenModal;
 }) => {
-  const optimistic = image.id === "optimistic";
-  const deleting = image.id === "delete";
+  const optimistic = image.id === 'optimistic';
+  const deleting = image.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("images")
+  const basePath = pathname.includes('images')
     ? pathname
-    : pathname + "/images/";
-
+    : pathname + '/images/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{image.url}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + image.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + image.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -118,7 +101,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Images </Button>
+          <PlusIcon className="h-4" /> New Images{' '}
+        </Button>
       </div>
     </div>
   );

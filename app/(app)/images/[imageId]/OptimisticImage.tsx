@@ -1,23 +1,15 @@
-"use client";
+'use client';
 
-import { useOptimistic, useState } from "react";
-import { TAddOptimistic } from "@/app/(app)/images/useOptimisticImages";
-import { type Image } from "@/lib/db/schema/images";
-import { cn } from "@/lib/utils";
+import { useOptimistic, useState } from 'react';
+import { TAddOptimistic } from '@/app/(app)/images/useOptimisticImages';
+import { type Image } from '@/lib/db/schema/images';
+import { cn } from '@/lib/utils';
 
-import { Button } from "@/components/ui/button";
-import Modal from "@/components/shared/Modal";
-import ImageForm from "@/components/images/ImageForm";
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/shared/Modal';
+import ImageForm from '@/components/images/ImageForm';
 
-
-export default function OptimisticImage({ 
-  image,
-   
-}: { 
-  image: Image; 
-  
-  
-}) {
+export default function OptimisticImage({ image }: { image: Image }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: Image) => {
     setOpen(true);
@@ -32,7 +24,6 @@ export default function OptimisticImage({
       <Modal open={open} setOpen={setOpen}>
         <ImageForm
           image={image}
-          
           closeModal={closeModal}
           openModal={openModal}
           addOptimistic={updateImage}
@@ -46,8 +37,8 @@ export default function OptimisticImage({
       </div>
       <pre
         className={cn(
-          "bg-secondary p-4 rounded-lg break-all text-wrap",
-          optimisticImage.id === "optimistic" ? "animate-pulse" : "",
+          'bg-secondary p-4 rounded-lg break-all text-wrap',
+          optimisticImage.id === 'optimistic' ? 'animate-pulse' : '',
         )}
       >
         {JSON.stringify(optimisticImage, null, 2)}

@@ -1,36 +1,36 @@
-import { sql } from "drizzle-orm";
+import { sql } from 'drizzle-orm';
 import {
   text,
   varchar,
   timestamp,
   pgTable,
   uniqueIndex,
-} from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
+} from 'drizzle-orm/pg-core';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import { z } from 'zod';
 
-import { type getImages } from "@/lib/api/images/queries";
+import { type getImages } from '@/lib/api/images/queries';
 
-import { nanoid, timestamps } from "@/lib/utils";
+import { nanoid, timestamps } from '@/lib/utils';
 
 export const images = pgTable(
-  "images",
+  'images',
   {
-    id: varchar("id", { length: 191 })
+    id: varchar('id', { length: 191 })
       .primaryKey()
       .$defaultFn(() => nanoid()),
-    url: text("url").notNull(),
+    url: text('url').notNull(),
 
-    createdAt: timestamp("created_at")
+    createdAt: timestamp('created_at')
       .notNull()
       .default(sql`now()`),
-    updatedAt: timestamp("updated_at")
+    updatedAt: timestamp('updated_at')
       .notNull()
       .default(sql`now()`),
   },
   (images) => {
     return {
-      urlIndex: uniqueIndex("image_url_idx").on(images.url),
+      urlIndex: uniqueIndex('image_url_idx').on(images.url),
     };
   },
 );
@@ -52,9 +52,9 @@ export type Image = typeof images.$inferSelect;
 export type NewImage = z.infer<typeof insertImageSchema>;
 export type NewImageParams = z.infer<typeof insertImageParams>;
 export type UpdateImageParams = z.infer<typeof updateImageParams>;
-export type ImageId = z.infer<typeof imageIdSchema>["id"];
+export type ImageId = z.infer<typeof imageIdSchema>['id'];
 
 // this type infers the return from getImages() - meaning it will include any joins
 export type CompleteImage = Awaited<
   ReturnType<typeof getImages>
->["images"][number];
+>['images'][number];
