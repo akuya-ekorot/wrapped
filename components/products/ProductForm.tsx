@@ -22,7 +22,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { type Product, insertProductParams } from '@/lib/db/schema/products';
+import {
+  type Product,
+  insertProductParams,
+  ProductStatus,
+} from '@/lib/db/schema/products';
 import {
   createProductAction,
   deleteProductAction,
@@ -216,6 +220,7 @@ const ProductForm = ({
           <div className="h-6" />
         )}
       </div>
+
       <div>
         <Label
           className={cn(
@@ -225,17 +230,20 @@ const ProductForm = ({
         >
           Status
         </Label>
-        <Input
-          type="text"
-          name="status"
-          className={cn(errors?.status ? 'ring ring-destructive' : '')}
-          defaultValue={product?.status ?? ''}
-        />
-        {errors?.status ? (
-          <p className="text-xs text-destructive mt-2">{errors.status[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
+        <Select defaultValue={product?.status} name="status">
+          <SelectTrigger
+            className={cn(errors?.status ? 'ring ring-destructive' : '')}
+          >
+            <SelectValue placeholder="Select a status" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(ProductStatus).map(([key, value]) => (
+              <SelectItem key={value} value={value}>
+                {key}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {collectionId ? null : (

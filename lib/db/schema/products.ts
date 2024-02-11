@@ -16,6 +16,10 @@ import { type getProducts } from '@/lib/api/products/queries';
 import { nanoid, timestamps } from '@/lib/utils';
 
 export const productStatus = pgEnum('product_status', ['active', 'draft']);
+export enum ProductStatus {
+  Active = 'active',
+  Draft = 'draft',
+}
 
 export const products = pgTable(
   'products',

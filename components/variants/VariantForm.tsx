@@ -22,7 +22,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { type Variant, insertVariantParams } from '@/lib/db/schema/variants';
+import {
+  type Variant,
+  insertVariantParams,
+  VariantStatus,
+} from '@/lib/db/schema/variants';
 import {
   createVariantAction,
   deleteVariantAction,
@@ -162,6 +166,7 @@ const VariantForm = ({
           )}
         </div>
       )}
+
       <div>
         <Label
           className={cn(
@@ -183,6 +188,7 @@ const VariantForm = ({
           <div className="h-6" />
         )}
       </div>
+
       <div>
         <Label
           className={cn(
@@ -206,6 +212,7 @@ const VariantForm = ({
           <div className="h-6" />
         )}
       </div>
+
       <div>
         <Label
           className={cn(
@@ -227,6 +234,32 @@ const VariantForm = ({
           <div className="h-6" />
         )}
       </div>
+
+      <div>
+        <Label
+          className={cn(
+            'mb-2 inline-block',
+            errors?.status ? 'text-destructive' : '',
+          )}
+        >
+          Status
+        </Label>
+        <Select defaultValue={variant?.status} name="status">
+          <SelectTrigger
+            className={cn(errors?.status ? 'ring ring-destructive' : '')}
+          >
+            <SelectValue placeholder="Select a status" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(VariantStatus).map(([key, value]) => (
+              <SelectItem key={value} value={value}>
+                {key}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Schema fields end */}
 
       {/* Save Button */}
