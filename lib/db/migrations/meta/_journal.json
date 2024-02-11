@@ -8,6 +8,20 @@
       "when": 1707643228594,
       "tag": "0000_soft_grandmaster",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1707643430633,
+      "tag": "0001_soft_skin",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1707643562161,
+      "tag": "0002_productive_wolverine",
+      "breakpoints": true
     }
   ]
 }
