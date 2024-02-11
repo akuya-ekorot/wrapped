@@ -16,7 +16,6 @@ export const optionValues = pgTable('option_values', {
   optionId: varchar('option_id', { length: 256 })
     .references(() => options.id, { onDelete: 'cascade' })
     .notNull(),
-
   createdAt: timestamp('created_at')
     .notNull()
     .default(sql`now()`),
