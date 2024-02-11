@@ -36,6 +36,13 @@
       "when": 1707644088973,
       "tag": "0004_real_thunderball",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1707645860129,
+      "tag": "0005_windy_sprite",
+      "breakpoints": true
     }
   ]
 }
