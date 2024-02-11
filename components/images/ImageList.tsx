@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { type Image, CompleteImage } from '@/lib/db/schema/images';
 import Modal from '@/components/shared/Modal';
 
-import { useOptimisticImages } from '@/app/(app)/images/useOptimisticImages';
+import { useOptimisticImages } from '@/app/(app)/admin/images/useOptimisticImages';
 import { Button } from '@/components/ui/button';
 import ImageForm from './ImageForm';
 import { PlusIcon } from 'lucide-react';
