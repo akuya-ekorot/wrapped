@@ -1,19 +1,25 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type VariantOption, CompleteVariantOption } from "@/lib/db/schema/variantOptions";
-import Modal from "@/components/shared/Modal";
-import { type Option, type OptionId } from "@/lib/db/schema/options";
-import { type OptionValue, type OptionValueId } from "@/lib/db/schema/optionValues";
-import { type Variant, type VariantId } from "@/lib/db/schema/variants";
-import { useOptimisticVariantOptions } from "@/app/(app)/variant-options/useOptimisticVariantOptions";
-import { Button } from "@/components/ui/button";
-import VariantOptionForm from "./VariantOptionForm";
-import { PlusIcon } from "lucide-react";
+import { cn } from '@/lib/utils';
+import {
+  type VariantOption,
+  CompleteVariantOption,
+} from '@/lib/db/schema/variantOptions';
+import Modal from '@/components/shared/Modal';
+import { type Option, type OptionId } from '@/lib/db/schema/options';
+import {
+  type OptionValue,
+  type OptionValueId,
+} from '@/lib/db/schema/optionValues';
+import { type Variant, type VariantId } from '@/lib/db/schema/variants';
+import { useOptimisticVariantOptions } from '@/app/(app)/variant-options/useOptimisticVariantOptions';
+import { Button } from '@/components/ui/button';
+import VariantOptionForm from './VariantOptionForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (variantOption?: VariantOption) => void;
 
@@ -24,7 +30,7 @@ export default function VariantOptionList({
   optionValues,
   optionValueId,
   variants,
-  variantId 
+  variantId,
 }: {
   variantOptions: CompleteVariantOption[];
   options: Option[];
@@ -32,19 +38,23 @@ export default function VariantOptionList({
   optionValues: OptionValue[];
   optionValueId?: OptionValueId;
   variants: Variant[];
-  variantId?: VariantId 
+  variantId?: VariantId;
 }) {
-  const { optimisticVariantOptions, addOptimisticVariantOption } = useOptimisticVariantOptions(
-    variantOptions,
-    options,
-  optionValues,
-  variants 
-  );
+  const { optimisticVariantOptions, addOptimisticVariantOption } =
+    useOptimisticVariantOptions(
+      variantOptions,
+      options,
+      optionValues,
+      variants,
+    );
   const [open, setOpen] = useState(false);
-  const [activeVariantOption, setActiveVariantOption] = useState<VariantOption | null>(null);
+  const [activeVariantOption, setActiveVariantOption] =
+    useState<VariantOption | null>(null);
   const openModal = (variantOption?: VariantOption) => {
     setOpen(true);
-    variantOption ? setActiveVariantOption(variantOption) : setActiveVariantOption(null);
+    variantOption
+      ? setActiveVariantOption(variantOption)
+      : setActiveVariantOption(null);
   };
   const closeModal = () => setOpen(false);
 
@@ -53,7 +63,9 @@ export default function VariantOptionList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activeVariantOption ? "Edit VariantOption" : "Create Variant Option"}
+        title={
+          activeVariantOption ? 'Edit VariantOption' : 'Create Variant Option'
+        }
       >
         <VariantOptionForm
           variantOption={activeVariantOption}
@@ -61,15 +73,15 @@ export default function VariantOptionList({
           openModal={openModal}
           closeModal={closeModal}
           options={options}
-        optionId={optionId}
-        optionValues={optionValues}
-        optionValueId={optionValueId}
-        variants={variants}
-        variantId={variantId}
+          optionId={optionId}
+          optionValues={optionValues}
+          optionValueId={optionValueId}
+          variants={variants}
+          variantId={variantId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -97,30 +109,27 @@ const VariantOption = ({
   variantOption: CompleteVariantOption;
   openModal: TOpenModal;
 }) => {
-  const optimistic = variantOption.id === "optimistic";
-  const deleting = variantOption.id === "delete";
+  const optimistic = variantOption.id === 'optimistic';
+  const deleting = variantOption.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("variant-options")
+  const basePath = pathname.includes('variant-options')
     ? pathname
-    : pathname + "/variant-options/";
-
+    : pathname + '/variant-options/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{variantOption.optionId}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + variantOption.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + variantOption.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -137,7 +146,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Variant Options </Button>
+          <PlusIcon className="h-4" /> New Variant Options{' '}
+        </Button>
       </div>
     </div>
   );

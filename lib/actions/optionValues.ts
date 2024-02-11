@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 import {
   createOptionValue,
   deleteOptionValue,
   updateOptionValue,
-} from "@/lib/api/optionValues/mutations";
+} from '@/lib/api/optionValues/mutations';
 import {
   OptionValueId,
   NewOptionValueParams,
@@ -13,19 +13,19 @@ import {
   optionValueIdSchema,
   insertOptionValueParams,
   updateOptionValueParams,
-} from "@/lib/db/schema/optionValues";
+} from '@/lib/db/schema/optionValues';
 
 const handleErrors = (e: unknown) => {
-  const errMsg = "Error, please try again.";
+  const errMsg = 'Error, please try again.';
   if (e instanceof Error) return e.message.length > 0 ? e.message : errMsg;
-  if (e && typeof e === "object" && "error" in e) {
+  if (e && typeof e === 'object' && 'error' in e) {
     const errAsStr = e.error as string;
     return errAsStr.length > 0 ? errAsStr : errMsg;
   }
   return errMsg;
 };
 
-const revalidateOptionValues = () => revalidatePath("/option-values");
+const revalidateOptionValues = () => revalidatePath('/option-values');
 
 export const createOptionValueAction = async (input: NewOptionValueParams) => {
   try {
@@ -37,7 +37,9 @@ export const createOptionValueAction = async (input: NewOptionValueParams) => {
   }
 };
 
-export const updateOptionValueAction = async (input: UpdateOptionValueParams) => {
+export const updateOptionValueAction = async (
+  input: UpdateOptionValueParams,
+) => {
   try {
     const payload = updateOptionValueParams.parse(input);
     await updateOptionValue(payload.id, payload);

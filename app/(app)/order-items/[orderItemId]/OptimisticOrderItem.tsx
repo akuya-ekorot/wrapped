@@ -1,36 +1,37 @@
-"use client";
+'use client';
 
-import { useOptimistic, useState } from "react";
-import { TAddOptimistic } from "@/app/(app)/order-items/useOptimisticOrderItems";
-import { type OrderItem } from "@/lib/db/schema/orderItems";
-import { cn } from "@/lib/utils";
+import { useOptimistic, useState } from 'react';
+import { TAddOptimistic } from '@/app/(app)/order-items/useOptimisticOrderItems';
+import { type OrderItem } from '@/lib/db/schema/orderItems';
+import { cn } from '@/lib/utils';
 
-import { Button } from "@/components/ui/button";
-import Modal from "@/components/shared/Modal";
-import OrderItemForm from "@/components/orderItems/OrderItemForm";
-import { type Variant, type VariantId } from "@/lib/db/schema/variants";
-import { type Order, type OrderId } from "@/lib/db/schema/orders";
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/shared/Modal';
+import OrderItemForm from '@/components/orderItems/OrderItemForm';
+import { type Variant, type VariantId } from '@/lib/db/schema/variants';
+import { type Order, type OrderId } from '@/lib/db/schema/orders';
 
-export default function OptimisticOrderItem({ 
+export default function OptimisticOrderItem({
   orderItem,
   variants,
   variantId,
   orders,
-  orderId 
-}: { 
-  orderItem: OrderItem; 
-  
+  orderId,
+}: {
+  orderItem: OrderItem;
+
   variants: Variant[];
-  variantId?: VariantId
+  variantId?: VariantId;
   orders: Order[];
-  orderId?: OrderId
+  orderId?: OrderId;
 }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: OrderItem) => {
     setOpen(true);
   };
   const closeModal = () => setOpen(false);
-  const [optimisticOrderItem, setOptimisticOrderItem] = useOptimistic(orderItem);
+  const [optimisticOrderItem, setOptimisticOrderItem] =
+    useOptimistic(orderItem);
   const updateOrderItem: TAddOptimistic = (input) =>
     setOptimisticOrderItem({ ...input.data });
 
@@ -40,9 +41,9 @@ export default function OptimisticOrderItem({
         <OrderItemForm
           orderItem={orderItem}
           variants={variants}
-        variantId={variantId}
-        orders={orders}
-        orderId={orderId}
+          variantId={variantId}
+          orders={orders}
+          orderId={orderId}
           closeModal={closeModal}
           openModal={openModal}
           addOptimistic={updateOrderItem}
@@ -56,8 +57,8 @@ export default function OptimisticOrderItem({
       </div>
       <pre
         className={cn(
-          "bg-secondary p-4 rounded-lg break-all text-wrap",
-          optimisticOrderItem.id === "optimistic" ? "animate-pulse" : "",
+          'bg-secondary p-4 rounded-lg break-all text-wrap',
+          optimisticOrderItem.id === 'optimistic' ? 'animate-pulse' : '',
         )}
       >
         {JSON.stringify(optimisticOrderItem, null, 2)}

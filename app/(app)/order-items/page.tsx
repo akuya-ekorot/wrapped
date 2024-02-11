@@ -1,11 +1,11 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import Loading from "@/app/loading";
-import OrderItemList from "@/components/orderItems/OrderItemList";
-import { getOrderItems } from "@/lib/api/orderItems/queries";
-import { getVariants } from "@/lib/api/variants/queries";
-import { getOrders } from "@/lib/api/orders/queries";
-import { checkAuth } from "@/lib/auth/utils";
+import Loading from '@/app/loading';
+import OrderItemList from '@/components/orderItems/OrderItemList';
+import { getOrderItems } from '@/lib/api/orderItems/queries';
+import { getVariants } from '@/lib/api/variants/queries';
+import { getOrders } from '@/lib/api/orders/queries';
+import { checkAuth } from '@/lib/auth/utils';
 
 export const revalidate = 0;
 
@@ -30,7 +30,11 @@ const OrderItems = async () => {
   const { orders } = await getOrders();
   return (
     <Suspense fallback={<Loading />}>
-      <OrderItemList orderItems={orderItems} variants={variants} orders={orders} />
+      <OrderItemList
+        orderItems={orderItems}
+        variants={variants}
+        orders={orders}
+      />
     </Suspense>
   );
 };

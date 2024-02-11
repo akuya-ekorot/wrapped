@@ -1,32 +1,27 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { useState, useTransition } from "react";
-import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useValidatedForm } from "@/lib/hooks/useValidatedForm";
+import { useState, useTransition } from 'react';
+import { useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 
-import { type Action, cn } from "@/lib/utils";
-import { type TAddOptimistic } from "@/app/(app)/payments/useOptimisticPayments";
+import { type Action, cn } from '@/lib/utils';
+import { type TAddOptimistic } from '@/app/(app)/payments/useOptimisticPayments';
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useBackPath } from "@/components/shared/BackButton";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { useBackPath } from '@/components/shared/BackButton';
 
-
-
-
-import { type Payment, insertPaymentParams } from "@/lib/db/schema/payments";
+import { type Payment, insertPaymentParams } from '@/lib/db/schema/payments';
 import {
   createPaymentAction,
   deletePaymentAction,
   updatePaymentAction,
-} from "@/lib/actions/payments";
-
+} from '@/lib/actions/payments';
 
 const PaymentForm = ({
-  
   payment,
   openModal,
   closeModal,
@@ -34,7 +29,7 @@ const PaymentForm = ({
   postSuccess,
 }: {
   payment?: Payment | null;
-  
+
   openModal?: (payment?: Payment) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
@@ -43,13 +38,12 @@ const PaymentForm = ({
   const { errors, hasErrors, setErrors, handleChange } =
     useValidatedForm<Payment>(insertPaymentParams);
   const editing = !!payment?.id;
-  
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [pending, startMutation] = useTransition();
 
   const router = useRouter();
-  const backpath = useBackPath("payments");
-
+  const backpath = useBackPath('payments');
 
   const onSuccess = (
     action: Action,
@@ -59,13 +53,13 @@ const PaymentForm = ({
     if (failed) {
       openModal && openModal(data?.values);
       toast.error(`Failed to ${action}`, {
-        description: data?.error ?? "Error",
+        description: data?.error ?? 'Error',
       });
     } else {
       router.refresh();
       postSuccess && postSuccess();
       toast.success(`Payment ${action}d!`);
-      if (action === "delete") router.push(backpath);
+      if (action === 'delete') router.push(backpath);
     }
   };
 
@@ -73,7 +67,9 @@ const PaymentForm = ({
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
-    const paymentParsed = await insertPaymentParams.safeParseAsync({  ...payload });
+    const paymentParsed = await insertPaymentParams.safeParseAsync({
+      ...payload,
+    });
     if (!paymentParsed.success) {
       setErrors(paymentParsed?.error.flatten().fieldErrors);
       return;
@@ -84,26 +80,27 @@ const PaymentForm = ({
     const pendingPayment: Payment = {
       updatedAt: payment?.updatedAt ?? new Date(),
       createdAt: payment?.createdAt ?? new Date(),
-      id: payment?.id ?? "",
+      id: payment?.id ?? '',
       ...values,
     };
     try {
       startMutation(async () => {
-        addOptimistic && addOptimistic({
-          data: pendingPayment,
-          action: editing ? "update" : "create",
-        });
+        addOptimistic &&
+          addOptimistic({
+            data: pendingPayment,
+            action: editing ? 'update' : 'create',
+          });
 
         const error = editing
           ? await updatePaymentAction({ ...values, id: payment.id })
           : await createPaymentAction(values);
 
         const errorFormatted = {
-          error: error ?? "Error",
-          values: pendingPayment 
+          error: error ?? 'Error',
+          values: pendingPayment,
         };
         onSuccess(
-          editing ? "update" : "create",
+          editing ? 'update' : 'create',
           error ? errorFormatted : undefined,
         );
       });
@@ -115,13 +112,13 @@ const PaymentForm = ({
   };
 
   return (
-    <form action={handleSubmit} onChange={handleChange} className={"space-y-8"}>
+    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
       {/* Schema fields start */}
-              <div>
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.reference ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.reference ? 'text-destructive' : '',
           )}
         >
           Reference
@@ -129,8 +126,8 @@ const PaymentForm = ({
         <Input
           type="text"
           name="reference"
-          className={cn(errors?.reference ? "ring ring-destructive" : "")}
-          defaultValue={payment?.reference ?? ""}
+          className={cn(errors?.reference ? 'ring ring-destructive' : '')}
+          defaultValue={payment?.reference ?? ''}
         />
         {errors?.reference ? (
           <p className="text-xs text-destructive mt-2">{errors.reference[0]}</p>
@@ -138,11 +135,11 @@ const PaymentForm = ({
           <div className="h-6" />
         )}
       </div>
-        <div>
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.status ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.status ? 'text-destructive' : '',
           )}
         >
           Status
@@ -150,8 +147,8 @@ const PaymentForm = ({
         <Input
           type="text"
           name="status"
-          className={cn(errors?.status ? "ring ring-destructive" : "")}
-          defaultValue={payment?.status ?? ""}
+          className={cn(errors?.status ? 'ring ring-destructive' : '')}
+          defaultValue={payment?.status ?? ''}
         />
         {errors?.status ? (
           <p className="text-xs text-destructive mt-2">{errors.status[0]}</p>
@@ -159,11 +156,11 @@ const PaymentForm = ({
           <div className="h-6" />
         )}
       </div>
-        <div>
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.amount ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.amount ? 'text-destructive' : '',
           )}
         >
           Amount
@@ -171,8 +168,8 @@ const PaymentForm = ({
         <Input
           type="text"
           name="amount"
-          className={cn(errors?.amount ? "ring ring-destructive" : "")}
-          defaultValue={payment?.amount ?? ""}
+          className={cn(errors?.amount ? 'ring ring-destructive' : '')}
+          defaultValue={payment?.amount ?? ''}
         />
         {errors?.amount ? (
           <p className="text-xs text-destructive mt-2">{errors.amount[0]}</p>
@@ -190,24 +187,25 @@ const PaymentForm = ({
         <Button
           type="button"
           disabled={isDeleting || pending || hasErrors}
-          variant={"destructive"}
+          variant={'destructive'}
           onClick={() => {
             setIsDeleting(true);
             closeModal && closeModal();
             startMutation(async () => {
-              addOptimistic && addOptimistic({ action: "delete", data: payment });
+              addOptimistic &&
+                addOptimistic({ action: 'delete', data: payment });
               const error = await deletePaymentAction(payment.id);
               setIsDeleting(false);
               const errorFormatted = {
-                error: error ?? "Error",
+                error: error ?? 'Error',
                 values: payment,
               };
 
-              onSuccess("delete", error ? errorFormatted : undefined);
+              onSuccess('delete', error ? errorFormatted : undefined);
             });
           }}
         >
-          Delet{isDeleting ? "ing..." : "e"}
+          Delet{isDeleting ? 'ing...' : 'e'}
         </Button>
       ) : null}
     </form>
@@ -234,8 +232,8 @@ const SaveButton = ({
       aria-disabled={isCreating || isUpdating || errors}
     >
       {editing
-        ? `Sav${isUpdating ? "ing..." : "e"}`
-        : `Creat${isCreating ? "ing..." : "e"}`}
+        ? `Sav${isUpdating ? 'ing...' : 'e'}`
+        : `Creat${isCreating ? 'ing...' : 'e'}`}
     </Button>
   );
 };

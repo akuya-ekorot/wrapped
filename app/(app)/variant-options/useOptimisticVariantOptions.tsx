@@ -1,9 +1,12 @@
-import { type Option } from "@/lib/db/schema/options";
-import { type OptionValue } from "@/lib/db/schema/optionValues";
-import { type Variant } from "@/lib/db/schema/variants";
-import { type VariantOption, type CompleteVariantOption } from "@/lib/db/schema/variantOptions";
-import { OptimisticAction } from "@/lib/utils";
-import { useOptimistic } from "react";
+import { type Option } from '@/lib/db/schema/options';
+import { type OptionValue } from '@/lib/db/schema/optionValues';
+import { type Variant } from '@/lib/db/schema/variants';
+import {
+  type VariantOption,
+  type CompleteVariantOption,
+} from '@/lib/db/schema/variantOptions';
+import { OptimisticAction } from '@/lib/utils';
+import { useOptimistic } from 'react';
 
 export type TAddOptimistic = (action: OptimisticAction<VariantOption>) => void;
 
@@ -11,7 +14,7 @@ export const useOptimisticVariantOptions = (
   variantOptions: CompleteVariantOption[],
   options: Option[],
   optionValues: OptionValue[],
-  variants: Variant[]
+  variants: Variant[],
 ) => {
   const [optimisticVariantOptions, addOptimisticVariantOption] = useOptimistic(
     variantOptions,
@@ -36,23 +39,25 @@ export const useOptimisticVariantOptions = (
       const optimisticVariantOption = {
         ...data,
         option: optimisticOption,
-       optionValue: optimisticOptionValue,
-       variant: optimisticVariant,
-        id: "optimistic",
+        optionValue: optimisticOptionValue,
+        variant: optimisticVariant,
+        id: 'optimistic',
       };
 
       switch (action.action) {
-        case "create":
+        case 'create':
           return currentState.length === 0
             ? [optimisticVariantOption]
             : [...currentState, optimisticVariantOption];
-        case "update":
+        case 'update':
           return currentState.map((item) =>
-            item.id === data.id ? { ...item, ...optimisticVariantOption } : item,
+            item.id === data.id
+              ? { ...item, ...optimisticVariantOption }
+              : item,
           );
-        case "delete":
+        case 'delete':
           return currentState.map((item) =>
-            item.id === data.id ? { ...item, id: "delete" } : item,
+            item.id === data.id ? { ...item, id: 'delete' } : item,
           );
         default:
           return currentState;

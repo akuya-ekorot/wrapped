@@ -1,32 +1,32 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type Variant, CompleteVariant } from "@/lib/db/schema/variants";
-import Modal from "@/components/shared/Modal";
-import { type Product, type ProductId } from "@/lib/db/schema/products";
-import { useOptimisticVariants } from "@/app/(app)/variants/useOptimisticVariants";
-import { Button } from "@/components/ui/button";
-import VariantForm from "./VariantForm";
-import { PlusIcon } from "lucide-react";
+import { cn } from '@/lib/utils';
+import { type Variant, CompleteVariant } from '@/lib/db/schema/variants';
+import Modal from '@/components/shared/Modal';
+import { type Product, type ProductId } from '@/lib/db/schema/products';
+import { useOptimisticVariants } from '@/app/(app)/variants/useOptimisticVariants';
+import { Button } from '@/components/ui/button';
+import VariantForm from './VariantForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (variant?: Variant) => void;
 
 export default function VariantList({
   variants,
   products,
-  productId 
+  productId,
 }: {
   variants: CompleteVariant[];
   products: Product[];
-  productId?: ProductId 
+  productId?: ProductId;
 }) {
   const { optimisticVariants, addOptimisticVariant } = useOptimisticVariants(
     variants,
-    products 
+    products,
   );
   const [open, setOpen] = useState(false);
   const [activeVariant, setActiveVariant] = useState<Variant | null>(null);
@@ -41,7 +41,7 @@ export default function VariantList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activeVariant ? "Edit Variant" : "Create Variant"}
+        title={activeVariant ? 'Edit Variant' : 'Create Variant'}
       >
         <VariantForm
           variant={activeVariant}
@@ -49,11 +49,11 @@ export default function VariantList({
           openModal={openModal}
           closeModal={closeModal}
           products={products}
-        productId={productId}
+          productId={productId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -62,11 +62,7 @@ export default function VariantList({
       ) : (
         <ul>
           {optimisticVariants.map((variant) => (
-            <Variant
-              variant={variant}
-              key={variant.id}
-              openModal={openModal}
-            />
+            <Variant variant={variant} key={variant.id} openModal={openModal} />
           ))}
         </ul>
       )}
@@ -81,30 +77,27 @@ const Variant = ({
   variant: CompleteVariant;
   openModal: TOpenModal;
 }) => {
-  const optimistic = variant.id === "optimistic";
-  const deleting = variant.id === "delete";
+  const optimistic = variant.id === 'optimistic';
+  const deleting = variant.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("variants")
+  const basePath = pathname.includes('variants')
     ? pathname
-    : pathname + "/variants/";
-
+    : pathname + '/variants/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{variant.productId}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + variant.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + variant.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -121,7 +114,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Variants </Button>
+          <PlusIcon className="h-4" /> New Variants{' '}
+        </Button>
       </div>
     </div>
   );

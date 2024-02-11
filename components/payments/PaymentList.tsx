@@ -1,31 +1,27 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type Payment, CompletePayment } from "@/lib/db/schema/payments";
-import Modal from "@/components/shared/Modal";
+import { cn } from '@/lib/utils';
+import { type Payment, CompletePayment } from '@/lib/db/schema/payments';
+import Modal from '@/components/shared/Modal';
 
-import { useOptimisticPayments } from "@/app/(app)/payments/useOptimisticPayments";
-import { Button } from "@/components/ui/button";
-import PaymentForm from "./PaymentForm";
-import { PlusIcon } from "lucide-react";
+import { useOptimisticPayments } from '@/app/(app)/payments/useOptimisticPayments';
+import { Button } from '@/components/ui/button';
+import PaymentForm from './PaymentForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (payment?: Payment) => void;
 
 export default function PaymentList({
   payments,
-   
 }: {
   payments: CompletePayment[];
-   
 }) {
-  const { optimisticPayments, addOptimisticPayment } = useOptimisticPayments(
-    payments,
-     
-  );
+  const { optimisticPayments, addOptimisticPayment } =
+    useOptimisticPayments(payments);
   const [open, setOpen] = useState(false);
   const [activePayment, setActivePayment] = useState<Payment | null>(null);
   const openModal = (payment?: Payment) => {
@@ -39,18 +35,17 @@ export default function PaymentList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activePayment ? "Edit Payment" : "Create Payment"}
+        title={activePayment ? 'Edit Payment' : 'Create Payment'}
       >
         <PaymentForm
           payment={activePayment}
           addOptimistic={addOptimisticPayment}
           openModal={openModal}
           closeModal={closeModal}
-          
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -59,11 +54,7 @@ export default function PaymentList({
       ) : (
         <ul>
           {optimisticPayments.map((payment) => (
-            <Payment
-              payment={payment}
-              key={payment.id}
-              openModal={openModal}
-            />
+            <Payment payment={payment} key={payment.id} openModal={openModal} />
           ))}
         </ul>
       )}
@@ -78,30 +69,27 @@ const Payment = ({
   payment: CompletePayment;
   openModal: TOpenModal;
 }) => {
-  const optimistic = payment.id === "optimistic";
-  const deleting = payment.id === "delete";
+  const optimistic = payment.id === 'optimistic';
+  const deleting = payment.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("payments")
+  const basePath = pathname.includes('payments')
     ? pathname
-    : pathname + "/payments/";
-
+    : pathname + '/payments/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{payment.reference}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + payment.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + payment.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -118,7 +106,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Payments </Button>
+          <PlusIcon className="h-4" /> New Payments{' '}
+        </Button>
       </div>
     </div>
   );

@@ -1,18 +1,18 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { useState, useTransition } from "react";
-import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useValidatedForm } from "@/lib/hooks/useValidatedForm";
+import { useState, useTransition } from 'react';
+import { useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 
-import { type Action, cn } from "@/lib/utils";
-import { type TAddOptimistic } from "@/app/(app)/variants/useOptimisticVariants";
+import { type Action, cn } from '@/lib/utils';
+import { type TAddOptimistic } from '@/app/(app)/variants/useOptimisticVariants';
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useBackPath } from "@/components/shared/BackButton";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { useBackPath } from '@/components/shared/BackButton';
 
 import {
   Select,
@@ -20,17 +20,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
-
-
-import { type Variant, insertVariantParams } from "@/lib/db/schema/variants";
+import { type Variant, insertVariantParams } from '@/lib/db/schema/variants';
 import {
   createVariantAction,
   deleteVariantAction,
   updateVariantAction,
-} from "@/lib/actions/variants";
-import { type Product, type ProductId } from "@/lib/db/schema/products";
+} from '@/lib/actions/variants';
+import { type Product, type ProductId } from '@/lib/db/schema/products';
 
 const VariantForm = ({
   products,
@@ -43,7 +41,7 @@ const VariantForm = ({
 }: {
   variant?: Variant | null;
   products: Product[];
-  productId?: ProductId
+  productId?: ProductId;
   openModal?: (variant?: Variant) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
@@ -52,13 +50,12 @@ const VariantForm = ({
   const { errors, hasErrors, setErrors, handleChange } =
     useValidatedForm<Variant>(insertVariantParams);
   const editing = !!variant?.id;
-  
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [pending, startMutation] = useTransition();
 
   const router = useRouter();
-  const backpath = useBackPath("variants");
-
+  const backpath = useBackPath('variants');
 
   const onSuccess = (
     action: Action,
@@ -68,13 +65,13 @@ const VariantForm = ({
     if (failed) {
       openModal && openModal(data?.values);
       toast.error(`Failed to ${action}`, {
-        description: data?.error ?? "Error",
+        description: data?.error ?? 'Error',
       });
     } else {
       router.refresh();
       postSuccess && postSuccess();
       toast.success(`Variant ${action}d!`);
-      if (action === "delete") router.push(backpath);
+      if (action === 'delete') router.push(backpath);
     }
   };
 
@@ -82,7 +79,10 @@ const VariantForm = ({
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
-    const variantParsed = await insertVariantParams.safeParseAsync({ productId, ...payload });
+    const variantParsed = await insertVariantParams.safeParseAsync({
+      productId,
+      ...payload,
+    });
     if (!variantParsed.success) {
       setErrors(variantParsed?.error.flatten().fieldErrors);
       return;
@@ -93,26 +93,27 @@ const VariantForm = ({
     const pendingVariant: Variant = {
       updatedAt: variant?.updatedAt ?? new Date(),
       createdAt: variant?.createdAt ?? new Date(),
-      id: variant?.id ?? "",
+      id: variant?.id ?? '',
       ...values,
     };
     try {
       startMutation(async () => {
-        addOptimistic && addOptimistic({
-          data: pendingVariant,
-          action: editing ? "update" : "create",
-        });
+        addOptimistic &&
+          addOptimistic({
+            data: pendingVariant,
+            action: editing ? 'update' : 'create',
+          });
 
         const error = editing
           ? await updateVariantAction({ ...values, id: variant.id })
           : await createVariantAction(values);
 
         const errorFormatted = {
-          error: error ?? "Error",
-          values: pendingVariant 
+          error: error ?? 'Error',
+          values: pendingVariant,
         };
         onSuccess(
-          editing ? "update" : "create",
+          editing ? 'update' : 'create',
           error ? errorFormatted : undefined,
         );
       });
@@ -124,43 +125,48 @@ const VariantForm = ({
   };
 
   return (
-    <form action={handleSubmit} onChange={handleChange} className={"space-y-8"}>
+    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
       {/* Schema fields start */}
-      
-      {productId ? null : <div>
-        <Label
-          className={cn(
-            "mb-2 inline-block",
-            errors?.productId ? "text-destructive" : "",
-          )}
-        >
-          Product
-        </Label>
-        <Select defaultValue={variant?.productId} name="productId">
-          <SelectTrigger
-            className={cn(errors?.productId ? "ring ring-destructive" : "")}
-          >
-            <SelectValue placeholder="Select a product" />
-          </SelectTrigger>
-          <SelectContent>
-          {products?.map((product) => (
-            <SelectItem key={product.id} value={product.id.toString()}>
-              {product.id}{/* TODO: Replace with a field from the product model */}
-            </SelectItem>
-           ))}
-          </SelectContent>
-        </Select>
-        {errors?.productId ? (
-          <p className="text-xs text-destructive mt-2">{errors.productId[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div> }
+
+      {productId ? null : (
         <div>
+          <Label
+            className={cn(
+              'mb-2 inline-block',
+              errors?.productId ? 'text-destructive' : '',
+            )}
+          >
+            Product
+          </Label>
+          <Select defaultValue={variant?.productId} name="productId">
+            <SelectTrigger
+              className={cn(errors?.productId ? 'ring ring-destructive' : '')}
+            >
+              <SelectValue placeholder="Select a product" />
+            </SelectTrigger>
+            <SelectContent>
+              {products?.map((product) => (
+                <SelectItem key={product.id} value={product.id.toString()}>
+                  {product.id}
+                  {/* TODO: Replace with a field from the product model */}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.productId ? (
+            <p className="text-xs text-destructive mt-2">
+              {errors.productId[0]}
+            </p>
+          ) : (
+            <div className="h-6" />
+          )}
+        </div>
+      )}
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.name ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.name ? 'text-destructive' : '',
           )}
         >
           Name
@@ -168,8 +174,8 @@ const VariantForm = ({
         <Input
           type="text"
           name="name"
-          className={cn(errors?.name ? "ring ring-destructive" : "")}
-          defaultValue={variant?.name ?? ""}
+          className={cn(errors?.name ? 'ring ring-destructive' : '')}
+          defaultValue={variant?.name ?? ''}
         />
         {errors?.name ? (
           <p className="text-xs text-destructive mt-2">{errors.name[0]}</p>
@@ -177,11 +183,11 @@ const VariantForm = ({
           <div className="h-6" />
         )}
       </div>
-        <div>
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.description ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.description ? 'text-destructive' : '',
           )}
         >
           Description
@@ -189,20 +195,22 @@ const VariantForm = ({
         <Input
           type="text"
           name="description"
-          className={cn(errors?.description ? "ring ring-destructive" : "")}
-          defaultValue={variant?.description ?? ""}
+          className={cn(errors?.description ? 'ring ring-destructive' : '')}
+          defaultValue={variant?.description ?? ''}
         />
         {errors?.description ? (
-          <p className="text-xs text-destructive mt-2">{errors.description[0]}</p>
+          <p className="text-xs text-destructive mt-2">
+            {errors.description[0]}
+          </p>
         ) : (
           <div className="h-6" />
         )}
       </div>
-        <div>
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.price ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.price ? 'text-destructive' : '',
           )}
         >
           Price
@@ -210,8 +218,8 @@ const VariantForm = ({
         <Input
           type="text"
           name="price"
-          className={cn(errors?.price ? "ring ring-destructive" : "")}
-          defaultValue={variant?.price ?? ""}
+          className={cn(errors?.price ? 'ring ring-destructive' : '')}
+          defaultValue={variant?.price ?? ''}
         />
         {errors?.price ? (
           <p className="text-xs text-destructive mt-2">{errors.price[0]}</p>
@@ -229,24 +237,25 @@ const VariantForm = ({
         <Button
           type="button"
           disabled={isDeleting || pending || hasErrors}
-          variant={"destructive"}
+          variant={'destructive'}
           onClick={() => {
             setIsDeleting(true);
             closeModal && closeModal();
             startMutation(async () => {
-              addOptimistic && addOptimistic({ action: "delete", data: variant });
+              addOptimistic &&
+                addOptimistic({ action: 'delete', data: variant });
               const error = await deleteVariantAction(variant.id);
               setIsDeleting(false);
               const errorFormatted = {
-                error: error ?? "Error",
+                error: error ?? 'Error',
                 values: variant,
               };
 
-              onSuccess("delete", error ? errorFormatted : undefined);
+              onSuccess('delete', error ? errorFormatted : undefined);
             });
           }}
         >
-          Delet{isDeleting ? "ing..." : "e"}
+          Delet{isDeleting ? 'ing...' : 'e'}
         </Button>
       ) : null}
     </form>
@@ -273,8 +282,8 @@ const SaveButton = ({
       aria-disabled={isCreating || isUpdating || errors}
     >
       {editing
-        ? `Sav${isUpdating ? "ing..." : "e"}`
-        : `Creat${isCreating ? "ing..." : "e"}`}
+        ? `Sav${isUpdating ? 'ing...' : 'e'}`
+        : `Creat${isCreating ? 'ing...' : 'e'}`}
     </Button>
   );
 };

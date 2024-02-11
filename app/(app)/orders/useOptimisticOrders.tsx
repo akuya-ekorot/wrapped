@@ -1,13 +1,13 @@
-import { type DeliveryZone } from "@/lib/db/schema/deliveryZones";
-import { type Order, type CompleteOrder } from "@/lib/db/schema/orders";
-import { OptimisticAction } from "@/lib/utils";
-import { useOptimistic } from "react";
+import { type DeliveryZone } from '@/lib/db/schema/deliveryZones';
+import { type Order, type CompleteOrder } from '@/lib/db/schema/orders';
+import { OptimisticAction } from '@/lib/utils';
+import { useOptimistic } from 'react';
 
 export type TAddOptimistic = (action: OptimisticAction<Order>) => void;
 
 export const useOptimisticOrders = (
   orders: CompleteOrder[],
-  deliveryZones: DeliveryZone[]
+  deliveryZones: DeliveryZone[],
 ) => {
   const [optimisticOrders, addOptimisticOrder] = useOptimistic(
     orders,
@@ -24,21 +24,21 @@ export const useOptimisticOrders = (
       const optimisticOrder = {
         ...data,
         deliveryZone: optimisticDeliveryZone,
-        id: "optimistic",
+        id: 'optimistic',
       };
 
       switch (action.action) {
-        case "create":
+        case 'create':
           return currentState.length === 0
             ? [optimisticOrder]
             : [...currentState, optimisticOrder];
-        case "update":
+        case 'update':
           return currentState.map((item) =>
             item.id === data.id ? { ...item, ...optimisticOrder } : item,
           );
-        case "delete":
+        case 'delete':
           return currentState.map((item) =>
-            item.id === data.id ? { ...item, id: "delete" } : item,
+            item.id === data.id ? { ...item, id: 'delete' } : item,
           );
         default:
           return currentState;

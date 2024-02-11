@@ -1,13 +1,13 @@
-import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 
-import { getOptionByIdWithOptionValues } from "@/lib/api/options/queries";
-import { getProducts } from "@/lib/api/products/queries";import OptimisticOption from "@/app/(app)/options/[optionId]/OptimisticOption";
-import OptionValueList from "@/components/optionValues/OptionValueList";
+import { getOptionByIdWithOptionValues } from '@/lib/api/options/queries';
+import { getProducts } from '@/lib/api/products/queries';
+import OptimisticOption from '@/app/(app)/options/[optionId]/OptimisticOption';
+import OptionValueList from '@/components/optionValues/OptionValueList';
 
-import { BackButton } from "@/components/shared/BackButton";
-import Loading from "@/app/loading";
-
+import { BackButton } from '@/components/shared/BackButton';
+import Loading from '@/app/loading';
 
 export const revalidate = 0;
 
@@ -16,7 +16,6 @@ export default async function OptionPage({
 }: {
   params: { optionId: string };
 }) {
-
   return (
     <main className="overflow-auto">
       <Option id={params.optionId} />
@@ -25,7 +24,6 @@ export default async function OptionPage({
 }
 
 const Option = async ({ id }: { id: string }) => {
-  
   const { option, optionValues } = await getOptionByIdWithOptionValues(id);
   const { products } = await getProducts();
 
@@ -37,7 +35,9 @@ const Option = async ({ id }: { id: string }) => {
         <OptimisticOption option={option} products={products} />
       </div>
       <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">{option.name}&apos;s Option Values</h3>
+        <h3 className="text-xl font-medium mb-4">
+          {option.name}&apos;s Option Values
+        </h3>
         <OptionValueList
           options={[]}
           optionId={option.id}

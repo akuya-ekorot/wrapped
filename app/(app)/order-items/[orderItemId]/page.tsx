@@ -1,15 +1,14 @@
-import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 
-import { getOrderItemById } from "@/lib/api/orderItems/queries";
-import { getVariants } from "@/lib/api/variants/queries";
-import { getOrders } from "@/lib/api/orders/queries";import OptimisticOrderItem from "@/app/(app)/order-items/[orderItemId]/OptimisticOrderItem";
-import { checkAuth } from "@/lib/auth/utils";
+import { getOrderItemById } from '@/lib/api/orderItems/queries';
+import { getVariants } from '@/lib/api/variants/queries';
+import { getOrders } from '@/lib/api/orders/queries';
+import OptimisticOrderItem from '@/app/(app)/order-items/[orderItemId]/OptimisticOrderItem';
+import { checkAuth } from '@/lib/auth/utils';
 
-
-import { BackButton } from "@/components/shared/BackButton";
-import Loading from "@/app/loading";
-
+import { BackButton } from '@/components/shared/BackButton';
+import Loading from '@/app/loading';
 
 export const revalidate = 0;
 
@@ -18,7 +17,6 @@ export default async function OrderItemPage({
 }: {
   params: { orderItemId: string };
 }) {
-
   return (
     <main className="overflow-auto">
       <OrderItem id={params.orderItemId} />
@@ -38,7 +36,11 @@ const OrderItem = async ({ id }: { id: string }) => {
     <Suspense fallback={<Loading />}>
       <div className="relative">
         <BackButton currentResource="order-items" />
-        <OptimisticOrderItem orderItem={orderItem} variants={variants} orders={orders} />
+        <OptimisticOrderItem
+          orderItem={orderItem}
+          variants={variants}
+          orders={orders}
+        />
       </div>
     </Suspense>
   );

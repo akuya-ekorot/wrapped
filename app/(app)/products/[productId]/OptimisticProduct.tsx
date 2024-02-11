@@ -1,24 +1,27 @@
-"use client";
+'use client';
 
-import { useOptimistic, useState } from "react";
-import { TAddOptimistic } from "@/app/(app)/products/useOptimisticProducts";
-import { type Product } from "@/lib/db/schema/products";
-import { cn } from "@/lib/utils";
+import { useOptimistic, useState } from 'react';
+import { TAddOptimistic } from '@/app/(app)/products/useOptimisticProducts';
+import { type Product } from '@/lib/db/schema/products';
+import { cn } from '@/lib/utils';
 
-import { Button } from "@/components/ui/button";
-import Modal from "@/components/shared/Modal";
-import ProductForm from "@/components/products/ProductForm";
-import { type Collection, type CollectionId } from "@/lib/db/schema/collections";
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/shared/Modal';
+import ProductForm from '@/components/products/ProductForm';
+import {
+  type Collection,
+  type CollectionId,
+} from '@/lib/db/schema/collections';
 
-export default function OptimisticProduct({ 
+export default function OptimisticProduct({
   product,
   collections,
-  collectionId 
-}: { 
-  product: Product; 
-  
+  collectionId,
+}: {
+  product: Product;
+
   collections: Collection[];
-  collectionId?: CollectionId
+  collectionId?: CollectionId;
 }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: Product) => {
@@ -35,7 +38,7 @@ export default function OptimisticProduct({
         <ProductForm
           product={product}
           collections={collections}
-        collectionId={collectionId}
+          collectionId={collectionId}
           closeModal={closeModal}
           openModal={openModal}
           addOptimistic={updateProduct}
@@ -49,8 +52,8 @@ export default function OptimisticProduct({
       </div>
       <pre
         className={cn(
-          "bg-secondary p-4 rounded-lg break-all text-wrap",
-          optimisticProduct.id === "optimistic" ? "animate-pulse" : "",
+          'bg-secondary p-4 rounded-lg break-all text-wrap',
+          optimisticProduct.id === 'optimistic' ? 'animate-pulse' : '',
         )}
       >
         {JSON.stringify(optimisticProduct, null, 2)}

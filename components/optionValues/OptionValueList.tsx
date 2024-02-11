@@ -1,38 +1,42 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type OptionValue, CompleteOptionValue } from "@/lib/db/schema/optionValues";
-import Modal from "@/components/shared/Modal";
-import { type Option, type OptionId } from "@/lib/db/schema/options";
-import { useOptimisticOptionValues } from "@/app/(app)/option-values/useOptimisticOptionValues";
-import { Button } from "@/components/ui/button";
-import OptionValueForm from "./OptionValueForm";
-import { PlusIcon } from "lucide-react";
+import { cn } from '@/lib/utils';
+import {
+  type OptionValue,
+  CompleteOptionValue,
+} from '@/lib/db/schema/optionValues';
+import Modal from '@/components/shared/Modal';
+import { type Option, type OptionId } from '@/lib/db/schema/options';
+import { useOptimisticOptionValues } from '@/app/(app)/option-values/useOptimisticOptionValues';
+import { Button } from '@/components/ui/button';
+import OptionValueForm from './OptionValueForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (optionValue?: OptionValue) => void;
 
 export default function OptionValueList({
   optionValues,
   options,
-  optionId 
+  optionId,
 }: {
   optionValues: CompleteOptionValue[];
   options: Option[];
-  optionId?: OptionId 
+  optionId?: OptionId;
 }) {
-  const { optimisticOptionValues, addOptimisticOptionValue } = useOptimisticOptionValues(
-    optionValues,
-    options 
-  );
+  const { optimisticOptionValues, addOptimisticOptionValue } =
+    useOptimisticOptionValues(optionValues, options);
   const [open, setOpen] = useState(false);
-  const [activeOptionValue, setActiveOptionValue] = useState<OptionValue | null>(null);
+  const [activeOptionValue, setActiveOptionValue] =
+    useState<OptionValue | null>(null);
   const openModal = (optionValue?: OptionValue) => {
     setOpen(true);
-    optionValue ? setActiveOptionValue(optionValue) : setActiveOptionValue(null);
+    optionValue
+      ? setActiveOptionValue(optionValue)
+      : setActiveOptionValue(null);
   };
   const closeModal = () => setOpen(false);
 
@@ -41,7 +45,7 @@ export default function OptionValueList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activeOptionValue ? "Edit OptionValue" : "Create Option Value"}
+        title={activeOptionValue ? 'Edit OptionValue' : 'Create Option Value'}
       >
         <OptionValueForm
           optionValue={activeOptionValue}
@@ -49,11 +53,11 @@ export default function OptionValueList({
           openModal={openModal}
           closeModal={closeModal}
           options={options}
-        optionId={optionId}
+          optionId={optionId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -81,30 +85,27 @@ const OptionValue = ({
   optionValue: CompleteOptionValue;
   openModal: TOpenModal;
 }) => {
-  const optimistic = optionValue.id === "optimistic";
-  const deleting = optionValue.id === "delete";
+  const optimistic = optionValue.id === 'optimistic';
+  const deleting = optionValue.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("option-values")
+  const basePath = pathname.includes('option-values')
     ? pathname
-    : pathname + "/option-values/";
-
+    : pathname + '/option-values/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{optionValue.name}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + optionValue.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + optionValue.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -121,7 +122,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Option Values </Button>
+          <PlusIcon className="h-4" /> New Option Values{' '}
+        </Button>
       </div>
     </div>
   );

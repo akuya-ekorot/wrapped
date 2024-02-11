@@ -1,32 +1,32 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type Option, CompleteOption } from "@/lib/db/schema/options";
-import Modal from "@/components/shared/Modal";
-import { type Product, type ProductId } from "@/lib/db/schema/products";
-import { useOptimisticOptions } from "@/app/(app)/options/useOptimisticOptions";
-import { Button } from "@/components/ui/button";
-import OptionForm from "./OptionForm";
-import { PlusIcon } from "lucide-react";
+import { cn } from '@/lib/utils';
+import { type Option, CompleteOption } from '@/lib/db/schema/options';
+import Modal from '@/components/shared/Modal';
+import { type Product, type ProductId } from '@/lib/db/schema/products';
+import { useOptimisticOptions } from '@/app/(app)/options/useOptimisticOptions';
+import { Button } from '@/components/ui/button';
+import OptionForm from './OptionForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (option?: Option) => void;
 
 export default function OptionList({
   options,
   products,
-  productId 
+  productId,
 }: {
   options: CompleteOption[];
   products: Product[];
-  productId?: ProductId 
+  productId?: ProductId;
 }) {
   const { optimisticOptions, addOptimisticOption } = useOptimisticOptions(
     options,
-    products 
+    products,
   );
   const [open, setOpen] = useState(false);
   const [activeOption, setActiveOption] = useState<Option | null>(null);
@@ -41,7 +41,7 @@ export default function OptionList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activeOption ? "Edit Option" : "Create Option"}
+        title={activeOption ? 'Edit Option' : 'Create Option'}
       >
         <OptionForm
           option={activeOption}
@@ -49,11 +49,11 @@ export default function OptionList({
           openModal={openModal}
           closeModal={closeModal}
           products={products}
-        productId={productId}
+          productId={productId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -62,11 +62,7 @@ export default function OptionList({
       ) : (
         <ul>
           {optimisticOptions.map((option) => (
-            <Option
-              option={option}
-              key={option.id}
-              openModal={openModal}
-            />
+            <Option option={option} key={option.id} openModal={openModal} />
           ))}
         </ul>
       )}
@@ -81,30 +77,27 @@ const Option = ({
   option: CompleteOption;
   openModal: TOpenModal;
 }) => {
-  const optimistic = option.id === "optimistic";
-  const deleting = option.id === "delete";
+  const optimistic = option.id === 'optimistic';
+  const deleting = option.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("options")
+  const basePath = pathname.includes('options')
     ? pathname
-    : pathname + "/options/";
-
+    : pathname + '/options/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{option.name}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + option.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + option.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -121,7 +114,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Options </Button>
+          <PlusIcon className="h-4" /> New Options{' '}
+        </Button>
       </div>
     </div>
   );

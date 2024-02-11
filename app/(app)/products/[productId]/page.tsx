@@ -1,15 +1,15 @@
-import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 
-import { getProductByIdWithProductImagesAndOptionsAndProductTags } from "@/lib/api/products/queries";
-import { getCollections } from "@/lib/api/collections/queries";import OptimisticProduct from "@/app/(app)/products/[productId]/OptimisticProduct";
-import ProductImageList from "@/components/productImages/ProductImageList";
-import OptionList from "@/components/options/OptionList";
-import ProductTagList from "@/components/productTags/ProductTagList";
+import { getProductByIdWithProductImagesAndOptionsAndProductTags } from '@/lib/api/products/queries';
+import { getCollections } from '@/lib/api/collections/queries';
+import OptimisticProduct from '@/app/(app)/products/[productId]/OptimisticProduct';
+import ProductImageList from '@/components/productImages/ProductImageList';
+import OptionList from '@/components/options/OptionList';
+import ProductTagList from '@/components/productTags/ProductTagList';
 
-import { BackButton } from "@/components/shared/BackButton";
-import Loading from "@/app/loading";
-
+import { BackButton } from '@/components/shared/BackButton';
+import Loading from '@/app/loading';
 
 export const revalidate = 0;
 
@@ -18,7 +18,6 @@ export default async function ProductPage({
 }: {
   params: { productId: string };
 }) {
-
   return (
     <main className="overflow-auto">
       <Product id={params.productId} />
@@ -27,8 +26,8 @@ export default async function ProductPage({
 }
 
 const Product = async ({ id }: { id: string }) => {
-  
-  const { product, productImages, options, productTags } = await getProductByIdWithProductImagesAndOptionsAndProductTags(id);
+  const { product, productImages, options, productTags } =
+    await getProductByIdWithProductImagesAndOptionsAndProductTags(id);
   const { collections } = await getCollections();
 
   if (!product) notFound();
@@ -39,7 +38,9 @@ const Product = async ({ id }: { id: string }) => {
         <OptimisticProduct product={product} collections={collections} />
       </div>
       <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">{product.name}&apos;s Product Images</h3>
+        <h3 className="text-xl font-medium mb-4">
+          {product.name}&apos;s Product Images
+        </h3>
         <ProductImageList
           products={[]}
           productId={product.id}
@@ -47,15 +48,15 @@ const Product = async ({ id }: { id: string }) => {
         />
       </div>
       <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">{product.name}&apos;s Options</h3>
-        <OptionList
-          products={[]}
-          productId={product.id}
-          options={options}
-        />
+        <h3 className="text-xl font-medium mb-4">
+          {product.name}&apos;s Options
+        </h3>
+        <OptionList products={[]} productId={product.id} options={options} />
       </div>
       <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">{product.name}&apos;s Product Tags</h3>
+        <h3 className="text-xl font-medium mb-4">
+          {product.name}&apos;s Product Tags
+        </h3>
         <ProductTagList
           products={[]}
           productId={product.id}

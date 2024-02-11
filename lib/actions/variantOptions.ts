@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 import {
   createVariantOption,
   deleteVariantOption,
   updateVariantOption,
-} from "@/lib/api/variantOptions/mutations";
+} from '@/lib/api/variantOptions/mutations';
 import {
   VariantOptionId,
   NewVariantOptionParams,
@@ -13,21 +13,23 @@ import {
   variantOptionIdSchema,
   insertVariantOptionParams,
   updateVariantOptionParams,
-} from "@/lib/db/schema/variantOptions";
+} from '@/lib/db/schema/variantOptions';
 
 const handleErrors = (e: unknown) => {
-  const errMsg = "Error, please try again.";
+  const errMsg = 'Error, please try again.';
   if (e instanceof Error) return e.message.length > 0 ? e.message : errMsg;
-  if (e && typeof e === "object" && "error" in e) {
+  if (e && typeof e === 'object' && 'error' in e) {
     const errAsStr = e.error as string;
     return errAsStr.length > 0 ? errAsStr : errMsg;
   }
   return errMsg;
 };
 
-const revalidateVariantOptions = () => revalidatePath("/variant-options");
+const revalidateVariantOptions = () => revalidatePath('/variant-options');
 
-export const createVariantOptionAction = async (input: NewVariantOptionParams) => {
+export const createVariantOptionAction = async (
+  input: NewVariantOptionParams,
+) => {
   try {
     const payload = insertVariantOptionParams.parse(input);
     await createVariantOption(payload);
@@ -37,7 +39,9 @@ export const createVariantOptionAction = async (input: NewVariantOptionParams) =
   }
 };
 
-export const updateVariantOptionAction = async (input: UpdateVariantOptionParams) => {
+export const updateVariantOptionAction = async (
+  input: UpdateVariantOptionParams,
+) => {
   try {
     const payload = updateVariantOptionParams.parse(input);
     await updateVariantOption(payload.id, payload);

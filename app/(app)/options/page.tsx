@@ -1,9 +1,9 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import Loading from "@/app/loading";
-import OptionList from "@/components/options/OptionList";
-import { getOptions } from "@/lib/api/options/queries";
-import { getProducts } from "@/lib/api/products/queries";
+import Loading from '@/app/loading';
+import OptionList from '@/components/options/OptionList';
+import { getOptions } from '@/lib/api/options/queries';
+import { getProducts } from '@/lib/api/products/queries';
 
 export const revalidate = 0;
 
@@ -21,7 +21,6 @@ export default async function OptionsPage() {
 }
 
 const Options = async () => {
-  
   const { options } = await getOptions();
   const { products } = await getProducts();
   return (

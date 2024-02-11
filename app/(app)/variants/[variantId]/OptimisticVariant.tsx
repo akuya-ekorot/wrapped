@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { useOptimistic, useState } from "react";
-import { TAddOptimistic } from "@/app/(app)/variants/useOptimisticVariants";
-import { type Variant } from "@/lib/db/schema/variants";
-import { cn } from "@/lib/utils";
+import { useOptimistic, useState } from 'react';
+import { TAddOptimistic } from '@/app/(app)/variants/useOptimisticVariants';
+import { type Variant } from '@/lib/db/schema/variants';
+import { cn } from '@/lib/utils';
 
-import { Button } from "@/components/ui/button";
-import Modal from "@/components/shared/Modal";
-import VariantForm from "@/components/variants/VariantForm";
-import { type Product, type ProductId } from "@/lib/db/schema/products";
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/shared/Modal';
+import VariantForm from '@/components/variants/VariantForm';
+import { type Product, type ProductId } from '@/lib/db/schema/products';
 
-export default function OptimisticVariant({ 
+export default function OptimisticVariant({
   variant,
   products,
-  productId 
-}: { 
-  variant: Variant; 
-  
+  productId,
+}: {
+  variant: Variant;
+
   products: Product[];
-  productId?: ProductId
+  productId?: ProductId;
 }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: Variant) => {
@@ -35,7 +35,7 @@ export default function OptimisticVariant({
         <VariantForm
           variant={variant}
           products={products}
-        productId={productId}
+          productId={productId}
           closeModal={closeModal}
           openModal={openModal}
           addOptimistic={updateVariant}
@@ -49,8 +49,8 @@ export default function OptimisticVariant({
       </div>
       <pre
         className={cn(
-          "bg-secondary p-4 rounded-lg break-all text-wrap",
-          optimisticVariant.id === "optimistic" ? "animate-pulse" : "",
+          'bg-secondary p-4 rounded-lg break-all text-wrap',
+          optimisticVariant.id === 'optimistic' ? 'animate-pulse' : '',
         )}
       >
         {JSON.stringify(optimisticVariant, null, 2)}

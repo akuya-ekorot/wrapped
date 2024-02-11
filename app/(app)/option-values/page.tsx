@@ -1,9 +1,9 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import Loading from "@/app/loading";
-import OptionValueList from "@/components/optionValues/OptionValueList";
-import { getOptionValues } from "@/lib/api/optionValues/queries";
-import { getOptions } from "@/lib/api/options/queries";
+import Loading from '@/app/loading';
+import OptionValueList from '@/components/optionValues/OptionValueList';
+import { getOptionValues } from '@/lib/api/optionValues/queries';
+import { getOptions } from '@/lib/api/options/queries';
 
 export const revalidate = 0;
 
@@ -21,7 +21,6 @@ export default async function OptionValuesPage() {
 }
 
 const OptionValues = async () => {
-  
   const { optionValues } = await getOptionValues();
   const { options } = await getOptions();
   return (

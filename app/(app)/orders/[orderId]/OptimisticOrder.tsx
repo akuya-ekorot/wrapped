@@ -1,24 +1,27 @@
-"use client";
+'use client';
 
-import { useOptimistic, useState } from "react";
-import { TAddOptimistic } from "@/app/(app)/orders/useOptimisticOrders";
-import { type Order } from "@/lib/db/schema/orders";
-import { cn } from "@/lib/utils";
+import { useOptimistic, useState } from 'react';
+import { TAddOptimistic } from '@/app/(app)/orders/useOptimisticOrders';
+import { type Order } from '@/lib/db/schema/orders';
+import { cn } from '@/lib/utils';
 
-import { Button } from "@/components/ui/button";
-import Modal from "@/components/shared/Modal";
-import OrderForm from "@/components/orders/OrderForm";
-import { type DeliveryZone, type DeliveryZoneId } from "@/lib/db/schema/deliveryZones";
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/shared/Modal';
+import OrderForm from '@/components/orders/OrderForm';
+import {
+  type DeliveryZone,
+  type DeliveryZoneId,
+} from '@/lib/db/schema/deliveryZones';
 
-export default function OptimisticOrder({ 
+export default function OptimisticOrder({
   order,
   deliveryZones,
-  deliveryZoneId 
-}: { 
-  order: Order; 
-  
+  deliveryZoneId,
+}: {
+  order: Order;
+
   deliveryZones: DeliveryZone[];
-  deliveryZoneId?: DeliveryZoneId
+  deliveryZoneId?: DeliveryZoneId;
 }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: Order) => {
@@ -35,7 +38,7 @@ export default function OptimisticOrder({
         <OrderForm
           order={order}
           deliveryZones={deliveryZones}
-        deliveryZoneId={deliveryZoneId}
+          deliveryZoneId={deliveryZoneId}
           closeModal={closeModal}
           openModal={openModal}
           addOptimistic={updateOrder}
@@ -49,8 +52,8 @@ export default function OptimisticOrder({
       </div>
       <pre
         className={cn(
-          "bg-secondary p-4 rounded-lg break-all text-wrap",
-          optimisticOrder.id === "optimistic" ? "animate-pulse" : "",
+          'bg-secondary p-4 rounded-lg break-all text-wrap',
+          optimisticOrder.id === 'optimistic' ? 'animate-pulse' : '',
         )}
       >
         {JSON.stringify(optimisticOrder, null, 2)}

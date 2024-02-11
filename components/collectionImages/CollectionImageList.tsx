@@ -1,18 +1,24 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type CollectionImage, CompleteCollectionImage } from "@/lib/db/schema/collectionImages";
-import Modal from "@/components/shared/Modal";
-import { type Image, type ImageId } from "@/lib/db/schema/images";
-import { type Collection, type CollectionId } from "@/lib/db/schema/collections";
-import { useOptimisticCollectionImages } from "@/app/(app)/collection-images/useOptimisticCollectionImages";
-import { Button } from "@/components/ui/button";
-import CollectionImageForm from "./CollectionImageForm";
-import { PlusIcon } from "lucide-react";
+import { cn } from '@/lib/utils';
+import {
+  type CollectionImage,
+  CompleteCollectionImage,
+} from '@/lib/db/schema/collectionImages';
+import Modal from '@/components/shared/Modal';
+import { type Image, type ImageId } from '@/lib/db/schema/images';
+import {
+  type Collection,
+  type CollectionId,
+} from '@/lib/db/schema/collections';
+import { useOptimisticCollectionImages } from '@/app/(app)/admin/collection-images/useOptimisticCollectionImages';
+import { Button } from '@/components/ui/button';
+import CollectionImageForm from './CollectionImageForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (collectionImage?: CollectionImage) => void;
 
@@ -21,24 +27,24 @@ export default function CollectionImageList({
   images,
   imageId,
   collections,
-  collectionId 
+  collectionId,
 }: {
   collectionImages: CompleteCollectionImage[];
   images: Image[];
   imageId?: ImageId;
   collections: Collection[];
-  collectionId?: CollectionId 
+  collectionId?: CollectionId;
 }) {
-  const { optimisticCollectionImages, addOptimisticCollectionImage } = useOptimisticCollectionImages(
-    collectionImages,
-    images,
-  collections 
-  );
+  const { optimisticCollectionImages, addOptimisticCollectionImage } =
+    useOptimisticCollectionImages(collectionImages, images, collections);
   const [open, setOpen] = useState(false);
-  const [activeCollectionImage, setActiveCollectionImage] = useState<CollectionImage | null>(null);
+  const [activeCollectionImage, setActiveCollectionImage] =
+    useState<CollectionImage | null>(null);
   const openModal = (collectionImage?: CollectionImage) => {
     setOpen(true);
-    collectionImage ? setActiveCollectionImage(collectionImage) : setActiveCollectionImage(null);
+    collectionImage
+      ? setActiveCollectionImage(collectionImage)
+      : setActiveCollectionImage(null);
   };
   const closeModal = () => setOpen(false);
 
@@ -47,7 +53,11 @@ export default function CollectionImageList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activeCollectionImage ? "Edit CollectionImage" : "Create Collection Image"}
+        title={
+          activeCollectionImage
+            ? 'Edit CollectionImage'
+            : 'Create Collection Image'
+        }
       >
         <CollectionImageForm
           collectionImage={activeCollectionImage}
@@ -55,13 +65,13 @@ export default function CollectionImageList({
           openModal={openModal}
           closeModal={closeModal}
           images={images}
-        imageId={imageId}
-        collections={collections}
-        collectionId={collectionId}
+          imageId={imageId}
+          collections={collections}
+          collectionId={collectionId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -89,30 +99,27 @@ const CollectionImage = ({
   collectionImage: CompleteCollectionImage;
   openModal: TOpenModal;
 }) => {
-  const optimistic = collectionImage.id === "optimistic";
-  const deleting = collectionImage.id === "delete";
+  const optimistic = collectionImage.id === 'optimistic';
+  const deleting = collectionImage.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("collection-images")
+  const basePath = pathname.includes('collection-images')
     ? pathname
-    : pathname + "/collection-images/";
-
+    : pathname + '/collection-images/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{collectionImage.imageId}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + collectionImage.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + collectionImage.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -129,7 +136,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Collection Images </Button>
+          <PlusIcon className="h-4" /> New Collection Images{' '}
+        </Button>
       </div>
     </div>
   );

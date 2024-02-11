@@ -1,9 +1,9 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import Loading from "@/app/loading";
-import VariantList from "@/components/variants/VariantList";
-import { getVariants } from "@/lib/api/variants/queries";
-import { getProducts } from "@/lib/api/products/queries";
+import Loading from '@/app/loading';
+import VariantList from '@/components/variants/VariantList';
+import { getVariants } from '@/lib/api/variants/queries';
+import { getProducts } from '@/lib/api/products/queries';
 
 export const revalidate = 0;
 
@@ -21,7 +21,6 @@ export default async function VariantsPage() {
 }
 
 const Variants = async () => {
-  
   const { variants } = await getVariants();
   const { products } = await getProducts();
   return (

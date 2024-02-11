@@ -1,9 +1,9 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import Loading from "@/app/loading";
-import ProductList from "@/components/products/ProductList";
-import { getProducts } from "@/lib/api/products/queries";
-import { getCollections } from "@/lib/api/collections/queries";
+import Loading from '@/app/loading';
+import ProductList from '@/components/products/ProductList';
+import { getProducts } from '@/lib/api/products/queries';
+import { getCollections } from '@/lib/api/collections/queries';
 
 export const revalidate = 0;
 
@@ -21,7 +21,6 @@ export default async function ProductsPage() {
 }
 
 const Products = async () => {
-  
   const { products } = await getProducts();
   const { collections } = await getCollections();
   return (

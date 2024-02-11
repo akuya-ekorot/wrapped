@@ -1,14 +1,13 @@
-import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 
-import { getProductTagById } from "@/lib/api/productTags/queries";
-import { getTags } from "@/lib/api/tags/queries";
-import { getProducts } from "@/lib/api/products/queries";import OptimisticProductTag from "@/app/(app)/product-tags/[productTagId]/OptimisticProductTag";
+import { getProductTagById } from '@/lib/api/productTags/queries';
+import { getTags } from '@/lib/api/tags/queries';
+import { getProducts } from '@/lib/api/products/queries';
+import OptimisticProductTag from '@/app/(app)/product-tags/[productTagId]/OptimisticProductTag';
 
-
-import { BackButton } from "@/components/shared/BackButton";
-import Loading from "@/app/loading";
-
+import { BackButton } from '@/components/shared/BackButton';
+import Loading from '@/app/loading';
 
 export const revalidate = 0;
 
@@ -17,7 +16,6 @@ export default async function ProductTagPage({
 }: {
   params: { productTagId: string };
 }) {
-
   return (
     <main className="overflow-auto">
       <ProductTag id={params.productTagId} />
@@ -26,7 +24,6 @@ export default async function ProductTagPage({
 }
 
 const ProductTag = async ({ id }: { id: string }) => {
-  
   const { productTag } = await getProductTagById(id);
   const { tags } = await getTags();
   const { products } = await getProducts();
@@ -36,7 +33,11 @@ const ProductTag = async ({ id }: { id: string }) => {
     <Suspense fallback={<Loading />}>
       <div className="relative">
         <BackButton currentResource="product-tags" />
-        <OptimisticProductTag productTag={productTag} tags={tags} products={products} />
+        <OptimisticProductTag
+          productTag={productTag}
+          tags={tags}
+          products={products}
+        />
       </div>
     </Suspense>
   );

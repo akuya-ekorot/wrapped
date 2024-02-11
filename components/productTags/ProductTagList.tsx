@@ -1,18 +1,21 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type ProductTag, CompleteProductTag } from "@/lib/db/schema/productTags";
-import Modal from "@/components/shared/Modal";
-import { type Tag, type TagId } from "@/lib/db/schema/tags";
-import { type Product, type ProductId } from "@/lib/db/schema/products";
-import { useOptimisticProductTags } from "@/app/(app)/product-tags/useOptimisticProductTags";
-import { Button } from "@/components/ui/button";
-import ProductTagForm from "./ProductTagForm";
-import { PlusIcon } from "lucide-react";
+import { cn } from '@/lib/utils';
+import {
+  type ProductTag,
+  CompleteProductTag,
+} from '@/lib/db/schema/productTags';
+import Modal from '@/components/shared/Modal';
+import { type Tag, type TagId } from '@/lib/db/schema/tags';
+import { type Product, type ProductId } from '@/lib/db/schema/products';
+import { useOptimisticProductTags } from '@/app/(app)/product-tags/useOptimisticProductTags';
+import { Button } from '@/components/ui/button';
+import ProductTagForm from './ProductTagForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (productTag?: ProductTag) => void;
 
@@ -21,21 +24,20 @@ export default function ProductTagList({
   tags,
   tagId,
   products,
-  productId 
+  productId,
 }: {
   productTags: CompleteProductTag[];
   tags: Tag[];
   tagId?: TagId;
   products: Product[];
-  productId?: ProductId 
+  productId?: ProductId;
 }) {
-  const { optimisticProductTags, addOptimisticProductTag } = useOptimisticProductTags(
-    productTags,
-    tags,
-  products 
-  );
+  const { optimisticProductTags, addOptimisticProductTag } =
+    useOptimisticProductTags(productTags, tags, products);
   const [open, setOpen] = useState(false);
-  const [activeProductTag, setActiveProductTag] = useState<ProductTag | null>(null);
+  const [activeProductTag, setActiveProductTag] = useState<ProductTag | null>(
+    null,
+  );
   const openModal = (productTag?: ProductTag) => {
     setOpen(true);
     productTag ? setActiveProductTag(productTag) : setActiveProductTag(null);
@@ -47,7 +49,7 @@ export default function ProductTagList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activeProductTag ? "Edit ProductTag" : "Create Product Tag"}
+        title={activeProductTag ? 'Edit ProductTag' : 'Create Product Tag'}
       >
         <ProductTagForm
           productTag={activeProductTag}
@@ -55,13 +57,13 @@ export default function ProductTagList({
           openModal={openModal}
           closeModal={closeModal}
           tags={tags}
-        tagId={tagId}
-        products={products}
-        productId={productId}
+          tagId={tagId}
+          products={products}
+          productId={productId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -89,30 +91,27 @@ const ProductTag = ({
   productTag: CompleteProductTag;
   openModal: TOpenModal;
 }) => {
-  const optimistic = productTag.id === "optimistic";
-  const deleting = productTag.id === "delete";
+  const optimistic = productTag.id === 'optimistic';
+  const deleting = productTag.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("product-tags")
+  const basePath = pathname.includes('product-tags')
     ? pathname
-    : pathname + "/product-tags/";
-
+    : pathname + '/product-tags/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{productTag.tagId}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + productTag.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + productTag.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -129,7 +128,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Product Tags </Button>
+          <PlusIcon className="h-4" /> New Product Tags{' '}
+        </Button>
       </div>
     </div>
   );

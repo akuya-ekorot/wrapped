@@ -1,9 +1,8 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import Loading from "@/app/loading";
-import PaymentList from "@/components/payments/PaymentList";
-import { getPayments } from "@/lib/api/payments/queries";
-
+import Loading from '@/app/loading';
+import PaymentList from '@/components/payments/PaymentList';
+import { getPayments } from '@/lib/api/payments/queries';
 
 export const revalidate = 0;
 
@@ -21,12 +20,11 @@ export default async function PaymentsPage() {
 }
 
 const Payments = async () => {
-  
   const { payments } = await getPayments();
-  
+
   return (
     <Suspense fallback={<Loading />}>
-      <PaymentList payments={payments}  />
+      <PaymentList payments={payments} />
     </Suspense>
   );
 };

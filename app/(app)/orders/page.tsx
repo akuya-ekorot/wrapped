@@ -1,10 +1,10 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import Loading from "@/app/loading";
-import OrderList from "@/components/orders/OrderList";
-import { getOrders } from "@/lib/api/orders/queries";
-import { getDeliveryZones } from "@/lib/api/deliveryZones/queries";
-import { checkAuth } from "@/lib/auth/utils";
+import Loading from '@/app/loading';
+import OrderList from '@/components/orders/OrderList';
+import { getOrders } from '@/lib/api/orders/queries';
+import { getDeliveryZones } from '@/lib/api/deliveryZones/queries';
+import { checkAuth } from '@/lib/auth/utils';
 
 export const revalidate = 0;
 

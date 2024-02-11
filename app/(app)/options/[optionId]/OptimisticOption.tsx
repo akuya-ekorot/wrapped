@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { useOptimistic, useState } from "react";
-import { TAddOptimistic } from "@/app/(app)/options/useOptimisticOptions";
-import { type Option } from "@/lib/db/schema/options";
-import { cn } from "@/lib/utils";
+import { useOptimistic, useState } from 'react';
+import { TAddOptimistic } from '@/app/(app)/options/useOptimisticOptions';
+import { type Option } from '@/lib/db/schema/options';
+import { cn } from '@/lib/utils';
 
-import { Button } from "@/components/ui/button";
-import Modal from "@/components/shared/Modal";
-import OptionForm from "@/components/options/OptionForm";
-import { type Product, type ProductId } from "@/lib/db/schema/products";
+import { Button } from '@/components/ui/button';
+import Modal from '@/components/shared/Modal';
+import OptionForm from '@/components/options/OptionForm';
+import { type Product, type ProductId } from '@/lib/db/schema/products';
 
-export default function OptimisticOption({ 
+export default function OptimisticOption({
   option,
   products,
-  productId 
-}: { 
-  option: Option; 
-  
+  productId,
+}: {
+  option: Option;
+
   products: Product[];
-  productId?: ProductId
+  productId?: ProductId;
 }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: Option) => {
@@ -35,7 +35,7 @@ export default function OptimisticOption({
         <OptionForm
           option={option}
           products={products}
-        productId={productId}
+          productId={productId}
           closeModal={closeModal}
           openModal={openModal}
           addOptimistic={updateOption}
@@ -49,8 +49,8 @@ export default function OptimisticOption({
       </div>
       <pre
         className={cn(
-          "bg-secondary p-4 rounded-lg break-all text-wrap",
-          optimisticOption.id === "optimistic" ? "animate-pulse" : "",
+          'bg-secondary p-4 rounded-lg break-all text-wrap',
+          optimisticOption.id === 'optimistic' ? 'animate-pulse' : '',
         )}
       >
         {JSON.stringify(optimisticOption, null, 2)}

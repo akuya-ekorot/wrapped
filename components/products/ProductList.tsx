@@ -1,32 +1,35 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type Product, CompleteProduct } from "@/lib/db/schema/products";
-import Modal from "@/components/shared/Modal";
-import { type Collection, type CollectionId } from "@/lib/db/schema/collections";
-import { useOptimisticProducts } from "@/app/(app)/products/useOptimisticProducts";
-import { Button } from "@/components/ui/button";
-import ProductForm from "./ProductForm";
-import { PlusIcon } from "lucide-react";
+import { cn } from '@/lib/utils';
+import { type Product, CompleteProduct } from '@/lib/db/schema/products';
+import Modal from '@/components/shared/Modal';
+import {
+  type Collection,
+  type CollectionId,
+} from '@/lib/db/schema/collections';
+import { useOptimisticProducts } from '@/app/(app)/products/useOptimisticProducts';
+import { Button } from '@/components/ui/button';
+import ProductForm from './ProductForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (product?: Product) => void;
 
 export default function ProductList({
   products,
   collections,
-  collectionId 
+  collectionId,
 }: {
   products: CompleteProduct[];
   collections: Collection[];
-  collectionId?: CollectionId 
+  collectionId?: CollectionId;
 }) {
   const { optimisticProducts, addOptimisticProduct } = useOptimisticProducts(
     products,
-    collections 
+    collections,
   );
   const [open, setOpen] = useState(false);
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
@@ -41,7 +44,7 @@ export default function ProductList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activeProduct ? "Edit Product" : "Create Product"}
+        title={activeProduct ? 'Edit Product' : 'Create Product'}
       >
         <ProductForm
           product={activeProduct}
@@ -49,11 +52,11 @@ export default function ProductList({
           openModal={openModal}
           closeModal={closeModal}
           collections={collections}
-        collectionId={collectionId}
+          collectionId={collectionId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -62,11 +65,7 @@ export default function ProductList({
       ) : (
         <ul>
           {optimisticProducts.map((product) => (
-            <Product
-              product={product}
-              key={product.id}
-              openModal={openModal}
-            />
+            <Product product={product} key={product.id} openModal={openModal} />
           ))}
         </ul>
       )}
@@ -81,30 +80,27 @@ const Product = ({
   product: CompleteProduct;
   openModal: TOpenModal;
 }) => {
-  const optimistic = product.id === "optimistic";
-  const deleting = product.id === "delete";
+  const optimistic = product.id === 'optimistic';
+  const deleting = product.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("products")
+  const basePath = pathname.includes('products')
     ? pathname
-    : pathname + "/products/";
-
+    : pathname + '/products/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{product.name}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + product.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + product.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -121,7 +117,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Products </Button>
+          <PlusIcon className="h-4" /> New Products{' '}
+        </Button>
       </div>
     </div>
   );

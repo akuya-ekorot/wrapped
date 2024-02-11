@@ -11,7 +11,7 @@ import {
 } from '@/lib/db/schema/deliveryZones';
 import Modal from '@/components/shared/Modal';
 
-import { useOptimisticDeliveryZones } from '@/app/(app)/delivery-zones/useOptimisticDeliveryZones';
+import { useOptimisticDeliveryZones } from '@/app/(app)/admin/delivery-zones/useOptimisticDeliveryZones';
 import { Button } from '@/components/ui/button';
 import DeliveryZoneForm from './DeliveryZoneForm';
 import { PlusIcon } from 'lucide-react';

@@ -1,19 +1,18 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { useState, useTransition } from "react";
-import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useValidatedForm } from "@/lib/hooks/useValidatedForm";
+import { useState, useTransition } from 'react';
+import { useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 
-import { type Action, cn } from "@/lib/utils";
-import { type TAddOptimistic } from "@/app/(app)/option-values/useOptimisticOptionValues";
+import { type Action, cn } from '@/lib/utils';
+import { type TAddOptimistic } from '@/app/(app)/option-values/useOptimisticOptionValues';
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useBackPath } from "@/components/shared/BackButton";
-
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { useBackPath } from '@/components/shared/BackButton';
 
 import {
   Select,
@@ -21,15 +20,18 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
-import { type OptionValue, insertOptionValueParams } from "@/lib/db/schema/optionValues";
+import {
+  type OptionValue,
+  insertOptionValueParams,
+} from '@/lib/db/schema/optionValues';
 import {
   createOptionValueAction,
   deleteOptionValueAction,
   updateOptionValueAction,
-} from "@/lib/actions/optionValues";
-import { type Option, type OptionId } from "@/lib/db/schema/options";
+} from '@/lib/actions/optionValues';
+import { type Option, type OptionId } from '@/lib/db/schema/options';
 
 const OptionValueForm = ({
   options,
@@ -42,7 +44,7 @@ const OptionValueForm = ({
 }: {
   optionValue?: OptionValue | null;
   options: Option[];
-  optionId?: OptionId
+  optionId?: OptionId;
   openModal?: (optionValue?: OptionValue) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
@@ -51,13 +53,12 @@ const OptionValueForm = ({
   const { errors, hasErrors, setErrors, handleChange } =
     useValidatedForm<OptionValue>(insertOptionValueParams);
   const editing = !!optionValue?.id;
-  
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [pending, startMutation] = useTransition();
 
   const router = useRouter();
-  const backpath = useBackPath("option-values");
-
+  const backpath = useBackPath('option-values');
 
   const onSuccess = (
     action: Action,
@@ -67,13 +68,13 @@ const OptionValueForm = ({
     if (failed) {
       openModal && openModal(data?.values);
       toast.error(`Failed to ${action}`, {
-        description: data?.error ?? "Error",
+        description: data?.error ?? 'Error',
       });
     } else {
       router.refresh();
       postSuccess && postSuccess();
       toast.success(`OptionValue ${action}d!`);
-      if (action === "delete") router.push(backpath);
+      if (action === 'delete') router.push(backpath);
     }
   };
 
@@ -81,7 +82,10 @@ const OptionValueForm = ({
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
-    const optionValueParsed = await insertOptionValueParams.safeParseAsync({ optionId, ...payload });
+    const optionValueParsed = await insertOptionValueParams.safeParseAsync({
+      optionId,
+      ...payload,
+    });
     if (!optionValueParsed.success) {
       setErrors(optionValueParsed?.error.flatten().fieldErrors);
       return;
@@ -92,26 +96,27 @@ const OptionValueForm = ({
     const pendingOptionValue: OptionValue = {
       updatedAt: optionValue?.updatedAt ?? new Date(),
       createdAt: optionValue?.createdAt ?? new Date(),
-      id: optionValue?.id ?? "",
+      id: optionValue?.id ?? '',
       ...values,
     };
     try {
       startMutation(async () => {
-        addOptimistic && addOptimistic({
-          data: pendingOptionValue,
-          action: editing ? "update" : "create",
-        });
+        addOptimistic &&
+          addOptimistic({
+            data: pendingOptionValue,
+            action: editing ? 'update' : 'create',
+          });
 
         const error = editing
           ? await updateOptionValueAction({ ...values, id: optionValue.id })
           : await createOptionValueAction(values);
 
         const errorFormatted = {
-          error: error ?? "Error",
-          values: pendingOptionValue 
+          error: error ?? 'Error',
+          values: pendingOptionValue,
         };
         onSuccess(
-          editing ? "update" : "create",
+          editing ? 'update' : 'create',
           error ? errorFormatted : undefined,
         );
       });
@@ -123,13 +128,13 @@ const OptionValueForm = ({
   };
 
   return (
-    <form action={handleSubmit} onChange={handleChange} className={"space-y-8"}>
+    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
       {/* Schema fields start */}
-              <div>
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.name ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.name ? 'text-destructive' : '',
           )}
         >
           Name
@@ -137,8 +142,8 @@ const OptionValueForm = ({
         <Input
           type="text"
           name="name"
-          className={cn(errors?.name ? "ring ring-destructive" : "")}
-          defaultValue={optionValue?.name ?? ""}
+          className={cn(errors?.name ? 'ring ring-destructive' : '')}
+          defaultValue={optionValue?.name ?? ''}
         />
         {errors?.name ? (
           <p className="text-xs text-destructive mt-2">{errors.name[0]}</p>
@@ -146,11 +151,11 @@ const OptionValueForm = ({
           <div className="h-6" />
         )}
       </div>
-        <div>
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.description ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.description ? 'text-destructive' : '',
           )}
         >
           Description
@@ -158,45 +163,52 @@ const OptionValueForm = ({
         <Input
           type="text"
           name="description"
-          className={cn(errors?.description ? "ring ring-destructive" : "")}
-          defaultValue={optionValue?.description ?? ""}
+          className={cn(errors?.description ? 'ring ring-destructive' : '')}
+          defaultValue={optionValue?.description ?? ''}
         />
         {errors?.description ? (
-          <p className="text-xs text-destructive mt-2">{errors.description[0]}</p>
+          <p className="text-xs text-destructive mt-2">
+            {errors.description[0]}
+          </p>
         ) : (
           <div className="h-6" />
         )}
       </div>
 
-      {optionId ? null : <div>
-        <Label
-          className={cn(
-            "mb-2 inline-block",
-            errors?.optionId ? "text-destructive" : "",
-          )}
-        >
-          Option
-        </Label>
-        <Select defaultValue={optionValue?.optionId} name="optionId">
-          <SelectTrigger
-            className={cn(errors?.optionId ? "ring ring-destructive" : "")}
+      {optionId ? null : (
+        <div>
+          <Label
+            className={cn(
+              'mb-2 inline-block',
+              errors?.optionId ? 'text-destructive' : '',
+            )}
           >
-            <SelectValue placeholder="Select a option" />
-          </SelectTrigger>
-          <SelectContent>
-          {options?.map((option) => (
-            <SelectItem key={option.id} value={option.id.toString()}>
-              {option.id}{/* TODO: Replace with a field from the option model */}
-            </SelectItem>
-           ))}
-          </SelectContent>
-        </Select>
-        {errors?.optionId ? (
-          <p className="text-xs text-destructive mt-2">{errors.optionId[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div> }
+            Option
+          </Label>
+          <Select defaultValue={optionValue?.optionId} name="optionId">
+            <SelectTrigger
+              className={cn(errors?.optionId ? 'ring ring-destructive' : '')}
+            >
+              <SelectValue placeholder="Select a option" />
+            </SelectTrigger>
+            <SelectContent>
+              {options?.map((option) => (
+                <SelectItem key={option.id} value={option.id.toString()}>
+                  {option.id}
+                  {/* TODO: Replace with a field from the option model */}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.optionId ? (
+            <p className="text-xs text-destructive mt-2">
+              {errors.optionId[0]}
+            </p>
+          ) : (
+            <div className="h-6" />
+          )}
+        </div>
+      )}
       {/* Schema fields end */}
 
       {/* Save Button */}
@@ -207,24 +219,25 @@ const OptionValueForm = ({
         <Button
           type="button"
           disabled={isDeleting || pending || hasErrors}
-          variant={"destructive"}
+          variant={'destructive'}
           onClick={() => {
             setIsDeleting(true);
             closeModal && closeModal();
             startMutation(async () => {
-              addOptimistic && addOptimistic({ action: "delete", data: optionValue });
+              addOptimistic &&
+                addOptimistic({ action: 'delete', data: optionValue });
               const error = await deleteOptionValueAction(optionValue.id);
               setIsDeleting(false);
               const errorFormatted = {
-                error: error ?? "Error",
+                error: error ?? 'Error',
                 values: optionValue,
               };
 
-              onSuccess("delete", error ? errorFormatted : undefined);
+              onSuccess('delete', error ? errorFormatted : undefined);
             });
           }}
         >
-          Delet{isDeleting ? "ing..." : "e"}
+          Delet{isDeleting ? 'ing...' : 'e'}
         </Button>
       ) : null}
     </form>
@@ -251,8 +264,8 @@ const SaveButton = ({
       aria-disabled={isCreating || isUpdating || errors}
     >
       {editing
-        ? `Sav${isUpdating ? "ing..." : "e"}`
-        : `Creat${isCreating ? "ing..." : "e"}`}
+        ? `Sav${isUpdating ? 'ing...' : 'e'}`
+        : `Creat${isCreating ? 'ing...' : 'e'}`}
     </Button>
   );
 };
