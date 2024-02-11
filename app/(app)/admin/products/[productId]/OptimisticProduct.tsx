@@ -1,7 +1,7 @@
 'use client';
 
 import { useOptimistic, useState } from 'react';
-import { TAddOptimistic } from '@/app/(app)/products/useOptimisticProducts';
+import { TAddOptimistic } from '@/app/(app)/admin/products/useOptimisticProducts';
 import { type Product } from '@/lib/db/schema/products';
 import { cn } from '@/lib/utils';
 

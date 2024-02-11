@@ -11,7 +11,7 @@ import {
   type Collection,
   type CollectionId,
 } from '@/lib/db/schema/collections';
-import { useOptimisticProducts } from '@/app/(app)/products/useOptimisticProducts';
+import { useOptimisticProducts } from '@/app/(app)/admin/products/useOptimisticProducts';
 import { Button } from '@/components/ui/button';
 import ProductForm from './ProductForm';
 import { PlusIcon } from 'lucide-react';

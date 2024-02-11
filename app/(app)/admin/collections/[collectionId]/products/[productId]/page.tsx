@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { getProductByIdWithProductImagesAndOptionsAndProductTags } from '@/lib/api/products/queries';
 import { getCollections } from '@/lib/api/collections/queries';
-import OptimisticProduct from '@/app/(app)/products/[productId]/OptimisticProduct';
+import OptimisticProduct from '@/app/(app)/admin/products/[productId]/OptimisticProduct';
 import ProductImageList from '@/components/productImages/ProductImageList';
 import OptionList from '@/components/options/OptionList';
 import ProductTagList from '@/components/productTags/ProductTagList';
