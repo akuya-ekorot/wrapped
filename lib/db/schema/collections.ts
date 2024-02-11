@@ -18,6 +18,10 @@ export const collectionStatus = pgEnum('collection_status', [
   'active',
   'draft',
 ]);
+export enum CollectionStatus {
+  Active = 'active',
+  Draft = 'draft',
+}
 
 export const collections = pgTable(
   'collections',

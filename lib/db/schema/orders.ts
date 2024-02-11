@@ -27,8 +27,23 @@ export const orderStatus = pgEnum('order_status', [
   'delivered',
   'cancelled',
 ]);
+export enum OrderStatus {
+  'Payment Pending' = 'payment_pending',
+  'Payment Paid' = 'payment_paid',
+  'Payment Failed' = 'payment_failed',
+  Processing = 'processing',
+  'Ready For Pickup' = 'ready_for_pickup',
+  'Picked Up' = 'picked_up',
+  Shipped = 'shipped',
+  Delivered = 'delivered',
+  Cancelled = 'cancelled',
+}
 
 export const orderType = pgEnum('order_type', ['pickup', 'delivery']);
+export enum OrderType {
+  Pickup = 'pickup',
+  Delivery = 'delivery',
+}
 
 export const orders = pgTable('orders', {
   id: varchar('id', { length: 191 })

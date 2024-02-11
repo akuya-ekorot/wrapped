@@ -15,6 +15,10 @@ import { type getVariants } from '@/lib/api/variants/queries';
 import { nanoid, timestamps } from '@/lib/utils';
 
 export const variantStatus = pgEnum('variant_status', ['active', 'draft']);
+export enum VariantStatus {
+  Active = 'active',
+  Draft = 'draft',
+}
 
 export const variants = pgTable('variants', {
   id: varchar('id', { length: 191 })

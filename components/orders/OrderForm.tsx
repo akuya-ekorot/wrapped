@@ -22,7 +22,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { type Order, insertOrderParams } from '@/lib/db/schema/orders';
+import {
+  type Order,
+  insertOrderParams,
+  OrderType,
+  OrderStatus,
+} from '@/lib/db/schema/orders';
 import {
   createOrderAction,
   deleteOrderAction,
@@ -136,6 +141,7 @@ const OrderForm = ({
   return (
     <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
       {/* Schema fields start */}
+
       <div>
         <Label
           className={cn(
@@ -145,18 +151,22 @@ const OrderForm = ({
         >
           Status
         </Label>
-        <Input
-          type="text"
-          name="status"
-          className={cn(errors?.status ? 'ring ring-destructive' : '')}
-          defaultValue={order?.status ?? ''}
-        />
-        {errors?.status ? (
-          <p className="text-xs text-destructive mt-2">{errors.status[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
+        <Select defaultValue={order?.status} name="status">
+          <SelectTrigger
+            className={cn(errors?.status ? 'ring ring-destructive' : '')}
+          >
+            <SelectValue placeholder="Select a status" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(OrderStatus).map(([key, value]) => (
+              <SelectItem key={value} value={value}>
+                {key}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
+
       <div>
         <Label
           className={cn(
@@ -166,17 +176,20 @@ const OrderForm = ({
         >
           Type
         </Label>
-        <Input
-          type="text"
-          name="type"
-          className={cn(errors?.type ? 'ring ring-destructive' : '')}
-          defaultValue={order?.type ?? ''}
-        />
-        {errors?.type ? (
-          <p className="text-xs text-destructive mt-2">{errors.type[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
+        <Select defaultValue={order?.type} name="type">
+          <SelectTrigger
+            className={cn(errors?.type ? 'ring ring-destructive' : '')}
+          >
+            <SelectValue placeholder="Select a type" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(OrderType).map(([key, value]) => (
+              <SelectItem key={value} value={value}>
+                {key}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {deliveryZoneId ? null : (

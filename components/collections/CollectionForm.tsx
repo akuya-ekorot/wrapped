@@ -17,12 +17,20 @@ import { useBackPath } from '@/components/shared/BackButton';
 import {
   type Collection,
   insertCollectionParams,
+  CollectionStatus,
 } from '@/lib/db/schema/collections';
 import {
   createCollectionAction,
   deleteCollectionAction,
   updateCollectionAction,
 } from '@/lib/actions/collections';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 
 const CollectionForm = ({
   collection,
@@ -182,6 +190,32 @@ const CollectionForm = ({
           <div className="h-6" />
         )}
       </div>
+
+      <div>
+        <Label
+          className={cn(
+            'mb-2 inline-block',
+            errors?.status ? 'text-destructive' : '',
+          )}
+        >
+          Status
+        </Label>
+        <Select defaultValue={collection?.status} name="status">
+          <SelectTrigger
+            className={cn(errors?.status ? 'ring ring-destructive' : '')}
+          >
+            <SelectValue placeholder="Select a status" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(CollectionStatus).map(([key, value]) => (
+              <SelectItem key={value} value={value}>
+                {key}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Schema fields end */}
 
       {/* Save Button */}
