@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getOrderItemById } from '@/lib/api/orderItems/queries';
 import { getVariants } from '@/lib/api/variants/queries';
 import { getOrders } from '@/lib/api/orders/queries';
-import OptimisticOrderItem from '@/app/(app)/order-items/[orderItemId]/OptimisticOrderItem';
+import OptimisticOrderItem from '@/app/(app)/admin/order-items/[orderItemId]/OptimisticOrderItem';
 import { checkAuth } from '@/lib/auth/utils';
 
 import { BackButton } from '@/components/shared/BackButton';

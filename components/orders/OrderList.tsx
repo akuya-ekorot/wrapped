@@ -11,7 +11,7 @@ import {
   type DeliveryZone,
   type DeliveryZoneId,
 } from '@/lib/db/schema/deliveryZones';
-import { useOptimisticOrders } from '@/app/(app)/orders/useOptimisticOrders';
+import { useOptimisticOrders } from '@/app/(app)/admin/orders/useOptimisticOrders';
 import { Button } from '@/components/ui/button';
 import OrderForm from './OrderForm';
 import { PlusIcon } from 'lucide-react';

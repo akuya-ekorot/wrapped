@@ -9,6 +9,7 @@ import OrderItemList from '@/components/orderItems/OrderItemList';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
+import { getVariants } from '@/lib/api/variants/queries';
 
 export const revalidate = 0;
 
@@ -29,6 +30,7 @@ const Order = async ({ id }: { id: string }) => {
 
   const { order, orderItems } = await getOrderByIdWithOrderItems(id);
   const { deliveryZones } = await getDeliveryZones();
+  const { variants } = await getVariants();
 
   if (!order) notFound();
   return (
@@ -41,7 +43,12 @@ const Order = async ({ id }: { id: string }) => {
         <h3 className="text-xl font-medium mb-4">
           {order.status}&apos;s Order Items
         </h3>
-        <OrderItemList orders={[]} orderId={order.id} orderItems={orderItems} />
+        <OrderItemList
+          variants={variants}
+          orders={[]}
+          orderId={order.id}
+          orderItems={orderItems}
+        />
       </div>
     </Suspense>
   );
