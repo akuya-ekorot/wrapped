@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { type Option, CompleteOption } from '@/lib/db/schema/options';
 import Modal from '@/components/shared/Modal';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
-import { useOptimisticOptions } from '@/app/(app)/options/useOptimisticOptions';
+import { useOptimisticOptions } from '@/app/(app)/admin/options/useOptimisticOptions';
 import { Button } from '@/components/ui/button';
 import OptionForm from './OptionForm';
 import { PlusIcon } from 'lucide-react';

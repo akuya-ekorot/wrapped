@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { getOptionByIdWithOptionValues } from '@/lib/api/options/queries';
 import { getProducts } from '@/lib/api/products/queries';
-import OptimisticOption from '@/app/(app)/options/[optionId]/OptimisticOption';
+import OptimisticOption from '@/app/(app)/admin/options/[optionId]/OptimisticOption';
 import OptionValueList from '@/components/optionValues/OptionValueList';
 
 import { BackButton } from '@/components/shared/BackButton';
