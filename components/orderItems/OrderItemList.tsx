@@ -9,7 +9,7 @@ import { type OrderItem, CompleteOrderItem } from '@/lib/db/schema/orderItems';
 import Modal from '@/components/shared/Modal';
 import { type Variant, type VariantId } from '@/lib/db/schema/variants';
 import { type Order, type OrderId } from '@/lib/db/schema/orders';
-import { useOptimisticOrderItems } from '@/app/(app)/order-items/useOptimisticOrderItems';
+import { useOptimisticOrderItems } from '@/app/(app)/admin/order-items/useOptimisticOrderItems';
 import { Button } from '@/components/ui/button';
 import OrderItemForm from './OrderItemForm';
 import { PlusIcon } from 'lucide-react';
