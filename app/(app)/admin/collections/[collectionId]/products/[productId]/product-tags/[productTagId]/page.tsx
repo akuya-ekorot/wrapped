@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getProductTagById } from '@/lib/api/productTags/queries';
 import { getTags } from '@/lib/api/tags/queries';
 import { getProducts } from '@/lib/api/products/queries';
-import OptimisticProductTag from '@/app/(app)/product-tags/[productTagId]/OptimisticProductTag';
+import OptimisticProductTag from '@/app/(app)/admin/product-tags/[productTagId]/OptimisticProductTag';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';

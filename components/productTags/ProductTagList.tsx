@@ -12,7 +12,7 @@ import {
 import Modal from '@/components/shared/Modal';
 import { type Tag, type TagId } from '@/lib/db/schema/tags';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
-import { useOptimisticProductTags } from '@/app/(app)/product-tags/useOptimisticProductTags';
+import { useOptimisticProductTags } from '@/app/(app)/admin/product-tags/useOptimisticProductTags';
 import { Button } from '@/components/ui/button';
 import ProductTagForm from './ProductTagForm';
 import { PlusIcon } from 'lucide-react';

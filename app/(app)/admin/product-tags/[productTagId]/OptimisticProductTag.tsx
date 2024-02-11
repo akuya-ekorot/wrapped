@@ -1,7 +1,7 @@
 'use client';
 
 import { useOptimistic, useState } from 'react';
-import { TAddOptimistic } from '@/app/(app)/product-tags/useOptimisticProductTags';
+import { TAddOptimistic } from '@/app/(app)/admin/product-tags/useOptimisticProductTags';
 import { type ProductTag } from '@/lib/db/schema/productTags';
 import { cn } from '@/lib/utils';
 
