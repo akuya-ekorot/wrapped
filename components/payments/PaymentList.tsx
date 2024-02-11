@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { type Payment, CompletePayment } from '@/lib/db/schema/payments';
 import Modal from '@/components/shared/Modal';
 
-import { useOptimisticPayments } from '@/app/(app)/payments/useOptimisticPayments';
+import { useOptimisticPayments } from '@/app/(app)/admin/payments/useOptimisticPayments';
 import { Button } from '@/components/ui/button';
 import PaymentForm from './PaymentForm';
 import { PlusIcon } from 'lucide-react';

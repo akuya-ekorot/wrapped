@@ -1,7 +1,7 @@
 'use client';
 
 import { useOptimistic, useState } from 'react';
-import { TAddOptimistic } from '@/app/(app)/payments/useOptimisticPayments';
+import { TAddOptimistic } from '@/app/(app)/admin/payments/useOptimisticPayments';
 import { type Payment } from '@/lib/db/schema/payments';
 import { cn } from '@/lib/utils';
 
