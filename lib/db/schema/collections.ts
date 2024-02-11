@@ -5,6 +5,7 @@ import {
   timestamp,
   pgTable,
   uniqueIndex,
+  pgEnum,
 } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -12,6 +13,11 @@ import { z } from 'zod';
 import { type getCollections } from '@/lib/api/collections/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
+
+export const collectionStatus = pgEnum('collection_status', [
+  'active',
+  'draft',
+]);
 
 export const collections = pgTable(
   'collections',
@@ -22,7 +28,7 @@ export const collections = pgTable(
     name: text('name').notNull(),
     description: text('description'),
     slug: text('slug').notNull(),
-
+    status: collectionStatus('status').notNull().default('active'),
     createdAt: timestamp('created_at')
       .notNull()
       .default(sql`now()`),

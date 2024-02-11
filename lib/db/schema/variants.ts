@@ -1,11 +1,20 @@
 import { sql } from 'drizzle-orm';
-import { varchar, text, real, timestamp, pgTable } from 'drizzle-orm/pg-core';
+import {
+  varchar,
+  text,
+  real,
+  timestamp,
+  pgTable,
+  pgEnum,
+} from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { products } from './products';
 import { type getVariants } from '@/lib/api/variants/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
+
+export const variantStatus = pgEnum('variant_status', ['active', 'draft']);
 
 export const variants = pgTable('variants', {
   id: varchar('id', { length: 191 })
@@ -17,6 +26,7 @@ export const variants = pgTable('variants', {
   name: text('name').notNull(),
   description: text('description'),
   price: real('price'),
+  status: variantStatus('status').notNull().default('active'),
   createdAt: timestamp('created_at')
     .notNull()
     .default(sql`now()`),

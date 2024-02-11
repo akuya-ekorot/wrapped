@@ -1,5 +1,12 @@
 import { sql } from 'drizzle-orm';
-import { text, varchar, real, timestamp, pgTable } from 'drizzle-orm/pg-core';
+import {
+  text,
+  varchar,
+  real,
+  timestamp,
+  pgTable,
+  pgEnum,
+} from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { deliveryZones } from './deliveryZones';
@@ -9,12 +16,26 @@ import { type getOrders } from '@/lib/api/orders/queries';
 import { nanoid, timestamps } from '@/lib/utils';
 import { payments } from './payments';
 
+export const orderStatus = pgEnum('order_status', [
+  'payment_pending',
+  'payment_paid',
+  'payment_failed',
+  'processing',
+  'ready_for_pickup',
+  'picked_up',
+  'shipped',
+  'delivered',
+  'cancelled',
+]);
+
+export const orderType = pgEnum('order_type', ['pickup', 'delivery']);
+
 export const orders = pgTable('orders', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),
-  status: text('status').notNull(),
-  type: text('type').notNull(),
+  status: orderStatus('status').notNull(),
+  type: orderType('type').notNull(),
   deliveryZoneId: varchar('delivery_zone_id', { length: 256 })
     .references(() => deliveryZones.id)
     .notNull(),
