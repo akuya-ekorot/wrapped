@@ -31,8 +31,13 @@ import {
   deleteProductImageAction,
   updateProductImageAction,
 } from '@/lib/actions/productImages';
-import { type Image, type ImageId } from '@/lib/db/schema/images';
+import { type Image as TImage, type ImageId } from '@/lib/db/schema/images';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
+
+import Modal from '../shared/Modal';
+import ImageForm from '../images/ImageForm';
+import { useOptimisticImages } from '@/app/(app)/admin/images/useOptimisticImages';
+import Image from 'next/image';
 
 const ProductImageForm = ({
   images,
@@ -46,7 +51,7 @@ const ProductImageForm = ({
   postSuccess,
 }: {
   productImage?: ProductImage | null;
-  images: Image[];
+  images: TImage[];
   imageId?: ImageId;
   products: Product[];
   productId?: ProductId;
@@ -83,7 +88,10 @@ const ProductImageForm = ({
     }
   };
 
-  const handleSubmit = async (data: FormData) => {
+  const handleSubmit = async (
+    { imageId }: { imageId: string | undefined },
+    data: FormData,
+  ) => {
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
@@ -92,6 +100,7 @@ const ProductImageForm = ({
       productId,
       ...payload,
     });
+
     if (!productImageParsed.success) {
       setErrors(productImageParsed?.error.flatten().fieldErrors);
       return;
@@ -133,35 +142,79 @@ const ProductImageForm = ({
     }
   };
 
+  const { addOptimisticImage } = useOptimisticImages(images);
+  const [activeImage, setActiveImage] = useState<TImage | null>(null);
+  const [open, setOpen] = useState(false);
+  const openImageModal = (image?: TImage) => {
+    setOpen(true);
+    image ? setActiveImage(image) : setActiveImage(null);
+  };
+  const closeImageModal = () => setOpen(false);
+
+  const handleSubmitWrapper = handleSubmit.bind(null, {
+    imageId: activeImage?.id,
+  });
+
   return (
-    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
+    <form
+      action={handleSubmitWrapper}
+      onChange={handleChange}
+      className={'space-y-8'}
+    >
       {/* Schema fields start */}
 
       {imageId ? null : (
         <div>
           <Label
             className={cn(
-              'mb-2 inline-block',
+              'my-2 inline-block',
               errors?.imageId ? 'text-destructive' : '',
             )}
           >
             Image
           </Label>
-          <Select defaultValue={productImage?.imageId} name="imageId">
-            <SelectTrigger
-              className={cn(errors?.imageId ? 'ring ring-destructive' : '')}
-            >
-              <SelectValue placeholder="Select a image" />
-            </SelectTrigger>
-            <SelectContent>
-              {images?.map((image) => (
-                <SelectItem key={image.id} value={image.id.toString()}>
-                  {image.id}
-                  {/* TODO: Replace with a field from the image model */}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+
+          {activeImage && (
+            <div className="w-full h-40">
+              <Image
+                src={activeImage.url}
+                alt=""
+                height={240 / 2}
+                width={240 / 2}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
+          {productImage?.imageId ? null : (
+            <>
+              <Modal
+                open={open}
+                setOpen={setOpen}
+                title={activeImage ? 'Edit Image' : 'Create Image'}
+              >
+                <ImageForm
+                  image={activeImage}
+                  addOptimistic={addOptimisticImage}
+                  openModal={openImageModal}
+                  closeModal={closeImageModal}
+                  setActiveImage={setActiveImage}
+                />
+              </Modal>
+              {!activeImage && (
+                <div className="w-full">
+                  <Button
+                    className="w-full"
+                    type="button"
+                    onClick={() => openImageModal()}
+                  >
+                    Upload Image
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+
           {errors?.imageId ? (
             <p className="text-xs text-destructive mt-2">{errors.imageId[0]}</p>
           ) : (

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 
-import { type Action, cn } from '@/lib/utils';
+import { type Action, cn, uploadImageAction } from '@/lib/utils';
 import { type TAddOptimistic } from '@/app/(app)/admin/images/useOptimisticImages';
 
 import { Input } from '@/components/ui/input';
@@ -27,13 +27,14 @@ const ImageForm = ({
   closeModal,
   addOptimistic,
   postSuccess,
+  setActiveImage,
 }: {
   image?: Image | null;
-
   openModal?: (image?: Image) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
   postSuccess?: () => void;
+  setActiveImage?: (image: Image) => void;
 }) => {
   const { errors, hasErrors, setErrors, handleChange } =
     useValidatedForm<Image>(insertImageParams);
@@ -63,11 +64,26 @@ const ImageForm = ({
     }
   };
 
-  const handleSubmit = async (data: FormData) => {
+  const handleSubmit = async (
+    { images }: { images: FileList | null },
+    data: FormData,
+  ) => {
     setErrors(null);
+    let url: string;
 
-    const payload = Object.fromEntries(data.entries());
-    const imageParsed = await insertImageParams.safeParseAsync({ ...payload });
+    try {
+      if (images) {
+        url = await uploadImageAction(images[0]);
+      } else {
+        throw new Error('No image provided');
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error('Failed to upload image');
+      return;
+    }
+
+    const imageParsed = await insertImageParams.safeParseAsync({ url });
     if (!imageParsed.success) {
       setErrors(imageParsed?.error.flatten().fieldErrors);
       return;
@@ -89,7 +105,7 @@ const ImageForm = ({
             action: editing ? 'update' : 'create',
           });
 
-        const error = editing
+        const { data, error } = editing
           ? await updateImageAction({ ...values, id: image.id })
           : await createImageAction(values);
 
@@ -97,10 +113,15 @@ const ImageForm = ({
           error: error ?? 'Error',
           values: pendingImage,
         };
+
         onSuccess(
           editing ? 'update' : 'create',
           error ? errorFormatted : undefined,
         );
+
+        if (data) {
+          setActiveImage && setActiveImage(data.image);
+        }
       });
     } catch (e) {
       if (e instanceof z.ZodError) {
@@ -109,8 +130,15 @@ const ImageForm = ({
     }
   };
 
+  const [images, setImages] = useState<FileList | null>(null);
+  const handleSubmitWrapper = handleSubmit.bind(null, { images });
+
   return (
-    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
+    <form
+      action={handleSubmitWrapper}
+      onChange={handleChange}
+      className={'space-y-8'}
+    >
       {/* Schema fields start */}
       <div>
         <Label
@@ -122,10 +150,14 @@ const ImageForm = ({
           Url
         </Label>
         <Input
-          type="text"
+          type="file"
           name="url"
+          accept="image/*"
           className={cn(errors?.url ? 'ring ring-destructive' : '')}
           defaultValue={image?.url ?? ''}
+          onChange={(e) => {
+            setImages(e.target.files);
+          }}
         />
         {errors?.url ? (
           <p className="text-xs text-destructive mt-2">{errors.url[0]}</p>
