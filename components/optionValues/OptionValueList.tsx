@@ -11,7 +11,7 @@ import {
 } from '@/lib/db/schema/optionValues';
 import Modal from '@/components/shared/Modal';
 import { type Option, type OptionId } from '@/lib/db/schema/options';
-import { useOptimisticOptionValues } from '@/app/(app)/option-values/useOptimisticOptionValues';
+import { useOptimisticOptionValues } from '@/app/(app)/admin/option-values/useOptimisticOptionValues';
 import { Button } from '@/components/ui/button';
 import OptionValueForm from './OptionValueForm';
 import { PlusIcon } from 'lucide-react';
