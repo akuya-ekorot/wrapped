@@ -2,17 +2,21 @@
 
 import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/collection-images/useOptimisticCollectionImages';
-import { type CollectionImage } from '@/lib/db/schema/collectionImages';
+import {
+  CompleteCollectionImage,
+  type CollectionImage,
+} from '@/lib/db/schema/collectionImages';
 import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import CollectionImageForm from '@/components/collectionImages/CollectionImageForm';
-import { type Image, type ImageId } from '@/lib/db/schema/images';
+import { type TImage, type ImageId } from '@/lib/db/schema/images';
 import {
   type Collection,
   type CollectionId,
 } from '@/lib/db/schema/collections';
+import Image from 'next/image';
 
 export default function OptimisticCollectionImage({
   collectionImage,
@@ -21,9 +25,8 @@ export default function OptimisticCollectionImage({
   collections,
   collectionId,
 }: {
-  collectionImage: CollectionImage;
-
-  images: Image[];
+  collectionImage: CompleteCollectionImage;
+  images: TImage[];
   imageId?: ImageId;
   collections: Collection[];
   collectionId?: CollectionId;
@@ -53,7 +56,9 @@ export default function OptimisticCollectionImage({
         />
       </Modal>
       <div className="flex justify-between items-end mb-4">
-        <h1 className="font-semibold text-2xl">{collectionImage.imageId}</h1>
+        <h1 className="font-semibold text-2xl">
+          {`${collectionImage.collection?.name}'s image`}
+        </h1>
         <Button className="" onClick={() => setOpen(true)}>
           Edit
         </Button>
@@ -64,7 +69,12 @@ export default function OptimisticCollectionImage({
           optimisticCollectionImage.id === 'optimistic' ? 'animate-pulse' : '',
         )}
       >
-        {JSON.stringify(optimisticCollectionImage, null, 2)}
+        <Image
+          src={collectionImage.image?.url ?? ''}
+          alt=""
+          width={300}
+          height={300}
+        />
       </pre>
     </div>
   );

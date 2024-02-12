@@ -31,7 +31,7 @@ import {
   deleteCollectionImageAction,
   updateCollectionImageAction,
 } from '@/lib/actions/collectionImages';
-import { type Image as TImage, type ImageId } from '@/lib/db/schema/images';
+import { type TImage as TImage, type ImageId } from '@/lib/db/schema/images';
 import {
   type Collection,
   type CollectionId,

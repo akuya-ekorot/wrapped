@@ -1,15 +1,15 @@
-import { type Image, type CompleteImage } from '@/lib/db/schema/images';
+import { type TImage, type CompleteImage } from '@/lib/db/schema/images';
 import { OptimisticAction } from '@/lib/utils';
 import { useOptimistic } from 'react';
 
-export type TAddOptimistic = (action: OptimisticAction<Image>) => void;
+export type TAddOptimistic = (action: OptimisticAction<TImage>) => void;
 
 export const useOptimisticImages = (images: CompleteImage[]) => {
   const [optimisticImages, addOptimisticImage] = useOptimistic(
     images,
     (
       currentState: CompleteImage[],
-      action: OptimisticAction<Image>,
+      action: OptimisticAction<TImage>,
     ): CompleteImage[] => {
       const { data } = action;
 

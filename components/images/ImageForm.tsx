@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useBackPath } from '@/components/shared/BackButton';
 
-import { type Image, insertImageParams } from '@/lib/db/schema/images';
+import { type TImage, insertImageParams } from '@/lib/db/schema/images';
 import {
   createImageAction,
   deleteImageAction,
@@ -29,15 +29,15 @@ const ImageForm = ({
   postSuccess,
   setActiveImage,
 }: {
-  image?: Image | null;
-  openModal?: (image?: Image) => void;
+  image?: TImage | null;
+  openModal?: (image?: TImage) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
   postSuccess?: () => void;
-  setActiveImage?: (image: Image) => void;
+  setActiveImage?: (image: TImage) => void;
 }) => {
   const { errors, hasErrors, setErrors, handleChange } =
-    useValidatedForm<Image>(insertImageParams);
+    useValidatedForm<TImage>(insertImageParams);
   const editing = !!image?.id;
 
   const [isDeleting, setIsDeleting] = useState(false);
@@ -48,7 +48,7 @@ const ImageForm = ({
 
   const onSuccess = (
     action: Action,
-    data?: { error: string; values: Image },
+    data?: { error: string; values: TImage },
   ) => {
     const failed = Boolean(data?.error);
     if (failed) {
@@ -91,7 +91,7 @@ const ImageForm = ({
 
     closeModal && closeModal();
     const values = imageParsed.data;
-    const pendingImage: Image = {
+    const pendingImage: TImage = {
       updatedAt: image?.updatedAt ?? new Date(),
       createdAt: image?.createdAt ?? new Date(),
       id: image?.id ?? '',

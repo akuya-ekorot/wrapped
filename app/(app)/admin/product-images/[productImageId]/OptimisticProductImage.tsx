@@ -2,14 +2,18 @@
 
 import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/product-images/useOptimisticProductImages';
-import { type ProductImage } from '@/lib/db/schema/productImages';
+import {
+  CompleteProductImage,
+  type ProductImage,
+} from '@/lib/db/schema/productImages';
 import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import ProductImageForm from '@/components/productImages/ProductImageForm';
-import { type Image, type ImageId } from '@/lib/db/schema/images';
+import { type TImage, type ImageId } from '@/lib/db/schema/images';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
+import Image from 'next/image';
 
 export default function OptimisticProductImage({
   productImage,
@@ -18,9 +22,8 @@ export default function OptimisticProductImage({
   products,
   productId,
 }: {
-  productImage: ProductImage;
-
-  images: Image[];
+  productImage: CompleteProductImage;
+  images: TImage[];
   imageId?: ImageId;
   products: Product[];
   productId?: ProductId;
@@ -50,7 +53,9 @@ export default function OptimisticProductImage({
         />
       </Modal>
       <div className="flex justify-between items-end mb-4">
-        <h1 className="font-semibold text-2xl">{productImage.imageId}</h1>
+        <h1 className="font-semibold text-2xl">
+          {`${productImage.product?.name}'s image`}
+        </h1>
         <Button className="" onClick={() => setOpen(true)}>
           Edit
         </Button>
@@ -61,7 +66,12 @@ export default function OptimisticProductImage({
           optimisticProductImage.id === 'optimistic' ? 'animate-pulse' : '',
         )}
       >
-        {JSON.stringify(optimisticProductImage, null, 2)}
+        <Image
+          src={productImage.image?.url ?? ''}
+          alt=""
+          width={300}
+          height={300}
+        />
       </pre>
     </div>
   );

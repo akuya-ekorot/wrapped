@@ -10,7 +10,7 @@ import {
   CompleteCollectionImage,
 } from '@/lib/db/schema/collectionImages';
 import Modal from '@/components/shared/Modal';
-import { type Image, type ImageId } from '@/lib/db/schema/images';
+import { type TImage, type ImageId } from '@/lib/db/schema/images';
 import {
   type Collection,
   type CollectionId,
@@ -19,6 +19,14 @@ import { useOptimisticCollectionImages } from '@/app/(app)/admin/collection-imag
 import { Button } from '@/components/ui/button';
 import CollectionImageForm from './CollectionImageForm';
 import { PlusIcon } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '../ui/carousel';
+import Image from 'next/image';
 
 type TOpenModal = (collectionImage?: CollectionImage) => void;
 
@@ -30,7 +38,7 @@ export default function CollectionImageList({
   collectionId,
 }: {
   collectionImages: CompleteCollectionImage[];
-  images: Image[];
+  images: TImage[];
   imageId?: ImageId;
   collections: Collection[];
   collectionId?: CollectionId;
@@ -78,14 +86,25 @@ export default function CollectionImageList({
       {optimisticCollectionImages.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
-        <ul>
-          {optimisticCollectionImages.map((collectionImage) => (
-            <CollectionImage
-              collectionImage={collectionImage}
-              key={collectionImage.id}
-              openModal={openModal}
-            />
-          ))}
+        <ul className="relative px-16 mt-8">
+          <Carousel>
+            <CarouselContent>
+              {optimisticCollectionImages.map((collectionImage) => (
+                <CarouselItem key={collectionImage.id} className="basis-1/4">
+                  <CollectionImage
+                    collectionImage={collectionImage}
+                    key={collectionImage.id}
+                    openModal={openModal}
+                    image={images.find(
+                      (image) => image.id === collectionImage.imageId,
+                    )}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </ul>
       )}
     </div>
@@ -95,9 +114,11 @@ export default function CollectionImageList({
 const CollectionImage = ({
   collectionImage,
   openModal,
+  image,
 }: {
   collectionImage: CompleteCollectionImage;
   openModal: TOpenModal;
+  image?: TImage;
 }) => {
   const optimistic = collectionImage.id === 'optimistic';
   const deleting = collectionImage.id === 'delete';
@@ -110,13 +131,18 @@ const CollectionImage = ({
   return (
     <li
       className={cn(
-        'flex justify-between my-2',
+        'flex flex-col items-center',
         mutating ? 'opacity-30 animate-pulse' : '',
         deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
-        <div>{collectionImage.imageId}</div>
+        <Image
+          src={image?.url ?? collectionImage.imageId}
+          alt=""
+          width={300}
+          height={300}
+        />
       </div>
       <Button variant={'link'} asChild>
         <Link href={basePath + '/' + collectionImage.id}>Edit</Link>

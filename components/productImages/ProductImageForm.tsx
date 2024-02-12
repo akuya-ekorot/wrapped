@@ -31,7 +31,7 @@ import {
   deleteProductImageAction,
   updateProductImageAction,
 } from '@/lib/actions/productImages';
-import { type Image as TImage, type ImageId } from '@/lib/db/schema/images';
+import { type TImage as TImage, type ImageId } from '@/lib/db/schema/images';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
 
 import Modal from '../shared/Modal';

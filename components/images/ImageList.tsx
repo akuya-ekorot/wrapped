@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
-import { type Image, CompleteImage } from '@/lib/db/schema/images';
+import {
+  type TImage as ImageItem,
+  CompleteImage,
+} from '@/lib/db/schema/images';
 import Modal from '@/components/shared/Modal';
 
 import { useOptimisticImages } from '@/app/(app)/admin/images/useOptimisticImages';
@@ -13,13 +16,13 @@ import { Button } from '@/components/ui/button';
 import ImageForm from './ImageForm';
 import { PlusIcon } from 'lucide-react';
 
-type TOpenModal = (image?: Image) => void;
+type TOpenModal = (image?: ImageItem) => void;
 
 export default function ImageList({ images }: { images: CompleteImage[] }) {
   const { optimisticImages, addOptimisticImage } = useOptimisticImages(images);
   const [open, setOpen] = useState(false);
-  const [activeImage, setActiveImage] = useState<Image | null>(null);
-  const openModal = (image?: Image) => {
+  const [activeImage, setActiveImage] = useState<ImageItem | null>(null);
+  const openModal = (image?: ImageItem) => {
     setOpen(true);
     image ? setActiveImage(image) : setActiveImage(null);
   };
@@ -49,7 +52,7 @@ export default function ImageList({ images }: { images: CompleteImage[] }) {
       ) : (
         <ul>
           {optimisticImages.map((image) => (
-            <Image image={image} key={image.id} openModal={openModal} />
+            <ImageItem image={image} key={image.id} openModal={openModal} />
           ))}
         </ul>
       )}
@@ -57,7 +60,7 @@ export default function ImageList({ images }: { images: CompleteImage[] }) {
   );
 }
 
-const Image = ({
+const ImageItem = ({
   image,
   openModal,
 }: {
@@ -75,7 +78,7 @@ const Image = ({
   return (
     <li
       className={cn(
-        'flex justify-between my-2',
+        'flex flex-col justify-between my-2',
         mutating ? 'opacity-30 animate-pulse' : '',
         deleting ? 'text-destructive' : '',
       )}

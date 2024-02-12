@@ -10,12 +10,20 @@ import {
   CompleteProductImage,
 } from '@/lib/db/schema/productImages';
 import Modal from '@/components/shared/Modal';
-import { type Image, type ImageId } from '@/lib/db/schema/images';
+import { type TImage, type ImageId } from '@/lib/db/schema/images';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
 import { useOptimisticProductImages } from '@/app/(app)/admin/product-images/useOptimisticProductImages';
 import { Button } from '@/components/ui/button';
 import ProductImageForm from './ProductImageForm';
 import { PlusIcon } from 'lucide-react';
+import Image from 'next/image';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '../ui/carousel';
 
 type TOpenModal = (productImage?: ProductImage) => void;
 
@@ -27,7 +35,7 @@ export default function ProductImageList({
   productId,
 }: {
   productImages: CompleteProductImage[];
-  images: Image[];
+  images: TImage[];
   imageId?: ImageId;
   products: Product[];
   productId?: ProductId;
@@ -73,14 +81,25 @@ export default function ProductImageList({
       {optimisticProductImages.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
-        <ul>
-          {optimisticProductImages.map((productImage) => (
-            <ProductImage
-              productImage={productImage}
-              key={productImage.id}
-              openModal={openModal}
-            />
-          ))}
+        <ul className="relative px-16 mt-8">
+          <Carousel>
+            <CarouselContent>
+              {optimisticProductImages.map((productImage) => (
+                <CarouselItem key={productImage.id} className="basis-1/4">
+                  <ProductImage
+                    productImage={productImage}
+                    key={productImage.id}
+                    openModal={openModal}
+                    image={images.find(
+                      (image) => image.id === productImage.imageId,
+                    )}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </ul>
       )}
     </div>
@@ -90,9 +109,11 @@ export default function ProductImageList({
 const ProductImage = ({
   productImage,
   openModal,
+  image,
 }: {
   productImage: CompleteProductImage;
   openModal: TOpenModal;
+  image?: TImage;
 }) => {
   const optimistic = productImage.id === 'optimistic';
   const deleting = productImage.id === 'delete';
@@ -105,13 +126,13 @@ const ProductImage = ({
   return (
     <li
       className={cn(
-        'flex justify-between my-2',
+        'flex flex-col items-center',
         mutating ? 'opacity-30 animate-pulse' : '',
         deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
-        <div>{productImage.imageId}</div>
+        <Image src={image?.url ?? ''} alt="" height={300} width={300} />
       </div>
       <Button variant={'link'} asChild>
         <Link href={basePath + '/' + productImage.id}>Edit</Link>
