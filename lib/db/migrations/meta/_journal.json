@@ -57,6 +57,13 @@
       "when": 1707662927414,
       "tag": "0007_elite_lilith",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1707775148282,
+      "tag": "0008_freezing_gressill",
+      "breakpoints": true
     }
   ]
 }

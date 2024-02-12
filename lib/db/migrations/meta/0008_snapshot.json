@@ -1,6 +1,6 @@
 {
-  "id": "86035927-b873-4c46-8c19-e0c75cd3a47d",
-  "prevId": "61a80eac-176f-4398-b26c-40e716632229",
+  "id": "4007234d-1d53-4e14-9422-c6c2b31ab5b7",
+  "prevId": "86035927-b873-4c46-8c19-e0c75cd3a47d",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -418,6 +418,128 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "link_to_collections": {
+      "name": "link_to_collections",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "collection_id": {
+          "name": "collection_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "page_link_id": {
+          "name": "page_link_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "link_to_collections_collection_id_collections_id_fk": {
+          "name": "link_to_collections_collection_id_collections_id_fk",
+          "tableFrom": "link_to_collections",
+          "tableTo": "collections",
+          "columnsFrom": ["collection_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "link_to_collections_page_link_id_page_links_id_fk": {
+          "name": "link_to_collections_page_link_id_page_links_id_fk",
+          "tableFrom": "link_to_collections",
+          "tableTo": "page_links",
+          "columnsFrom": ["page_link_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "link_to_products": {
+      "name": "link_to_products",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "page_link_id": {
+          "name": "page_link_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "link_to_products_product_id_products_id_fk": {
+          "name": "link_to_products_product_id_products_id_fk",
+          "tableFrom": "link_to_products",
+          "tableTo": "products",
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "link_to_products_page_link_id_page_links_id_fk": {
+          "name": "link_to_products_page_link_id_page_links_id_fk",
+          "tableFrom": "link_to_products",
+          "tableTo": "page_links",
+          "columnsFrom": ["page_link_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "option_values": {
       "name": "option_values",
       "schema": "",
@@ -719,6 +841,42 @@
           "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "page_links": {
+      "name": "page_links",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },

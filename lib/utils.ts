@@ -40,3 +40,10 @@ export const uploadImageAction = async (file: File) => {
 
   return publicUrl;
 };
+
+export type Action = 'create' | 'update' | 'delete';
+
+export type OptimisticAction<T> = {
+  action: Action;
+  data: T;
+};
