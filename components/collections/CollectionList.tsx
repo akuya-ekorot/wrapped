@@ -15,6 +15,8 @@ import { useOptimisticCollections } from '@/app/(app)/admin/collections/useOptim
 import { Button } from '@/components/ui/button';
 import CollectionForm from './CollectionForm';
 import { PlusIcon } from 'lucide-react';
+import { DataTable } from '../shared/data-table';
+import { columns } from './columns';
 
 type TOpenModal = (collection?: Collection) => void;
 
@@ -57,15 +59,11 @@ export default function CollectionList({
       {optimisticCollections.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
-        <ul>
-          {optimisticCollections.map((collection) => (
-            <Collection
-              collection={collection}
-              key={collection.id}
-              openModal={openModal}
-            />
-          ))}
-        </ul>
+        <DataTable
+          resourceName="collections"
+          columns={columns}
+          data={optimisticCollections}
+        />
       )}
     </div>
   );

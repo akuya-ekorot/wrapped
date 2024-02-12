@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button';
 import OrderForm from './OrderForm';
 import { PlusIcon } from 'lucide-react';
 import { Payment } from '@/lib/db/schema/payments';
+import { DataTable } from '../shared/data-table';
+import { columns } from './columns';
 
 type TOpenModal = (order?: Order) => void;
 
@@ -68,11 +70,11 @@ export default function OrderList({
       {optimisticOrders.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
-        <ul>
-          {optimisticOrders.map((order) => (
-            <Order order={order} key={order.id} openModal={openModal} />
-          ))}
-        </ul>
+        <DataTable
+          resourceName="orders"
+          data={optimisticOrders}
+          columns={columns}
+        />
       )}
     </div>
   );

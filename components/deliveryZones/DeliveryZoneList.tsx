@@ -15,6 +15,8 @@ import { useOptimisticDeliveryZones } from '@/app/(app)/admin/delivery-zones/use
 import { Button } from '@/components/ui/button';
 import DeliveryZoneForm from './DeliveryZoneForm';
 import { PlusIcon } from 'lucide-react';
+import { DataTable } from '../shared/data-table';
+import { columns } from './columns';
 
 type TOpenModal = (deliveryZone?: DeliveryZone) => void;
 
@@ -60,15 +62,11 @@ export default function DeliveryZoneList({
       {optimisticDeliveryZones.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
-        <ul>
-          {optimisticDeliveryZones.map((deliveryZone) => (
-            <DeliveryZone
-              deliveryZone={deliveryZone}
-              key={deliveryZone.id}
-              openModal={openModal}
-            />
-          ))}
-        </ul>
+        <DataTable
+          resourceName="delivery zones"
+          columns={columns}
+          data={optimisticDeliveryZones}
+        />
       )}
     </div>
   );
