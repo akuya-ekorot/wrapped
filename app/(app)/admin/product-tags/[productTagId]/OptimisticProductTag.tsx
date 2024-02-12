@@ -2,14 +2,17 @@
 
 import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/product-tags/useOptimisticProductTags';
-import { type ProductTag } from '@/lib/db/schema/productTags';
-import { cn } from '@/lib/utils';
+import {
+  CompleteProductTag,
+  type ProductTag,
+} from '@/lib/db/schema/productTags';
 
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import ProductTagForm from '@/components/productTags/ProductTagForm';
 import { type Tag, type TagId } from '@/lib/db/schema/tags';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
+import InfoListItem from '@/components/shared/InfoListItem';
 
 export default function OptimisticProductTag({
   productTag,
@@ -17,13 +20,14 @@ export default function OptimisticProductTag({
   tagId,
   products,
   productId,
+  tag,
 }: {
-  productTag: ProductTag;
-
+  productTag: CompleteProductTag;
   tags: Tag[];
   tagId?: TagId;
   products: Product[];
   productId?: ProductId;
+  tag?: Tag;
 }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: ProductTag) => {
@@ -50,19 +54,31 @@ export default function OptimisticProductTag({
         />
       </Modal>
       <div className="flex justify-between items-end mb-4">
-        <h1 className="font-semibold text-2xl">{productTag.tagId}</h1>
+        <h1 className="font-semibold text-2xl">{tag?.name}</h1>
         <Button className="" onClick={() => setOpen(true)}>
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticProductTag.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticProductTag, null, 2)}
-      </pre>
+
+      <div className="grid grid-cols-2 gap-2">
+        {Object.entries(optimisticProductTag)
+          .filter(
+            ([key]) =>
+              ![
+                'id',
+                'createdAt',
+                'updatedAt',
+                'id',
+                'tagId',
+                'productId',
+                'product',
+              ].includes(key),
+          )
+          .map(([key, value]) => (
+            //@ts-ignore
+            <InfoListItem key={key} title={key} value={value?.name} />
+          ))}
+      </div>
     </div>
   );
 }

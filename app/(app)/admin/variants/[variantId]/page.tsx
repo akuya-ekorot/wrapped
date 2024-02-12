@@ -30,7 +30,7 @@ const Variant = async ({ id }: { id: string }) => {
     await getVariantByIdWithVariantOptions(id);
   const { products } = await getProducts();
   const { options } = await getOptions();
-  const {optionValues}   = await getOptionValues();
+  const { optionValues } = await getOptionValues();
 
   if (!variant) notFound();
   return (
@@ -41,7 +41,7 @@ const Variant = async ({ id }: { id: string }) => {
       </div>
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
-          {variant.productId}&apos;s Variant Options
+          {variant.name}&apos;s Variant Options
         </h3>
         <VariantOptionList
           options={options}

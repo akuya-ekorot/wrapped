@@ -1,7 +1,7 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { CompleteOrder } from '@/lib/db/schema/orders';
+import { CompleteOrderItem } from '@/lib/db/schema/orderItems';
 import { Badge } from '../ui/badge';
 import {
   DropdownMenu,
@@ -12,36 +12,42 @@ import {
 } from '../ui/dropdown-menu';
 import { ArrowUpDown, Eye, MoreHorizontal, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
-import Link from 'next/link';
 import { ViewResourceLink } from '../shared/view-resource-link';
 
-export const columns: ColumnDef<CompleteOrder>[] = [
+export const columns: ColumnDef<CompleteOrderItem>[] = [
   {
-    accessorKey: 'user.name',
+    id: 'variant.name',
+    accessorKey: 'variant.name',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Customer Name
+          Product Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: 'user.email',
+    accessorKey: 'quantity',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className="w-full flex items-center justify-end"
         >
-          Email
+          Quantity
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell({ row }) {
+      const quantity = row.original.quantity;
+
+      return <p className="text-right">{quantity}</p>;
     },
   },
   {
@@ -59,59 +65,21 @@ export const columns: ColumnDef<CompleteOrder>[] = [
       );
     },
     cell({ row }) {
-      const cost = row.original.amount;
+      const amount = row.original.amount;
 
       const formattedCost = new Intl.NumberFormat('en-KE', {
         style: 'currency',
         currency: 'KES',
-      }).format(cost);
+      }).format(amount ?? 0);
 
       return <p className="text-right">{formattedCost}</p>;
     },
   },
   {
-    accessorKey: 'status',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell({ row }) {
-      const status = row.original.status;
-
-      return <Badge variant={'default'}>{status}</Badge>;
-    },
-  },
-  {
-    accessorKey: 'deliveryZone.name',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className=""
-        >
-          Delivery Zone
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell({ row }) {
-      const deliveryzone = row.original.deliveryZone?.name;
-
-      return <Badge variant={'default'}>{deliveryzone}</Badge>;
-    },
-  },
-  {
     id: 'actions',
     cell({ row }) {
-      const order = row.original;
+      const orderItem = row.original;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -123,7 +91,7 @@ export const columns: ColumnDef<CompleteOrder>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <ViewResourceLink resourceName="orders" id={order.id} />
+              <ViewResourceLink id={orderItem.id} resourceName="order-items" />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

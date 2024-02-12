@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import VariantForm from '@/components/variants/VariantForm';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
+import InfoListItem from '@/components/shared/InfoListItem';
 
 export default function OptimisticVariant({
   variant,
@@ -42,19 +43,27 @@ export default function OptimisticVariant({
         />
       </Modal>
       <div className="flex justify-between items-end mb-4">
-        <h1 className="font-semibold text-2xl">{variant.productId}</h1>
+        <h1 className="font-semibold text-2xl">{variant.name}</h1>
         <Button className="" onClick={() => setOpen(true)}>
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticVariant.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticVariant, null, 2)}
-      </pre>
+
+      <div className="grid grid-cols-2 gap-2">
+        {Object.entries(optimisticVariant)
+          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
+          .map(([key, value]) =>
+            key === 'productId' ? (
+              <InfoListItem
+                key={key}
+                title={'product'}
+                value={products.find((p) => p.id === value)?.name!}
+              />
+            ) : (
+              <InfoListItem key={key} title={key} value={value} />
+            ),
+          )}
+      </div>
     </div>
   );
 }

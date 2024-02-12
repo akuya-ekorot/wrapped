@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import DeliveryZoneForm from '@/components/deliveryZones/DeliveryZoneForm';
+import InfoListItem from '@/components/shared/InfoListItem';
 
 export default function OptimisticDeliveryZone({
   deliveryZone,
@@ -40,14 +41,13 @@ export default function OptimisticDeliveryZone({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticDeliveryZone.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticDeliveryZone, null, 2)}
-      </pre>
+      <div className="grid grid-cols-2 gap-2">
+        {Object.entries(optimisticDeliveryZone)
+          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
+          .map(([key, value]) => (
+            <InfoListItem key={key} title={key} value={value} />
+          ))}
+      </div>
     </div>
   );
 }

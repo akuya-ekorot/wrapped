@@ -7,7 +7,9 @@ import {
 import { OptimisticAction } from '@/lib/utils';
 import { useOptimistic } from 'react';
 
-export type TAddOptimistic = (action: OptimisticAction<ProductTag>) => void;
+export type TAddOptimistic = (
+  action: OptimisticAction<CompleteProductTag>,
+) => void;
 
 export const useOptimisticProductTags = (
   productTags: CompleteProductTag[],

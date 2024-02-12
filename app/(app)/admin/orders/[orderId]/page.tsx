@@ -11,6 +11,7 @@ import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
 import { getVariants } from '@/lib/api/variants/queries';
 import { getPayments } from '@/lib/api/payments/queries';
+import { getUsers } from '@/lib/api/users/queries';
 
 export const revalidate = 0;
 
@@ -33,8 +34,12 @@ const Order = async ({ id }: { id: string }) => {
   const { deliveryZones } = await getDeliveryZones();
   const { variants } = await getVariants();
   const { payments } = await getPayments();
+  const { users } = await getUsers();
 
   if (!order) notFound();
+
+  const customer = users?.find((u) => u.id === order.userId);
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
@@ -43,11 +48,12 @@ const Order = async ({ id }: { id: string }) => {
           payments={payments}
           order={order}
           deliveryZones={deliveryZones}
+          customer={customer}
         />
       </div>
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
-          {order.status}&apos;s Order Items
+          {customer?.name}&apos;s Order Items
         </h3>
         <OrderItemList
           variants={variants}

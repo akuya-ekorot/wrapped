@@ -156,8 +156,7 @@ const ProductTagForm = ({
             <SelectContent>
               {tags?.map((tag) => (
                 <SelectItem key={tag.id} value={tag.id.toString()}>
-                  {tag.id}
-                  {/* TODO: Replace with a field from the tag model */}
+                  {tag.name}
                 </SelectItem>
               ))}
             </SelectContent>

@@ -96,7 +96,7 @@ const Variant = ({
       )}
     >
       <div className="w-full">
-        <div>{variant.productId}</div>
+        <div>{variant.name}</div>
       </div>
       <Button variant={'link'} asChild>
         <Link href={basePath + '/' + variant.id}>Edit</Link>

@@ -10,6 +10,8 @@ import {
   variantOptions,
   type CompleteVariantOption,
 } from '@/lib/db/schema/variantOptions';
+import { options } from '@/lib/db/schema/options';
+import { optionValues } from '@/lib/db/schema/optionValues';
 
 export const getVariants = async () => {
   const rows = await db
@@ -35,15 +37,37 @@ export const getVariantById = async (id: VariantId) => {
 export const getVariantByIdWithVariantOptions = async (id: VariantId) => {
   const { id: variantId } = variantIdSchema.parse({ id });
   const rows = await db
-    .select({ variant: variants, variantOption: variantOptions })
+    .select({
+      variant: variants,
+      variantOption: variantOptions,
+      option: options,
+      optionValue: optionValues,
+    })
     .from(variants)
     .where(eq(variants.id, variantId))
-    .leftJoin(variantOptions, eq(variants.id, variantOptions.variantId));
-  if (rows.length === 0) return {};
-  const v = rows[0].variant;
-  const vv = rows
-    .filter((r) => r.variantOption !== null)
-    .map((v) => v.variantOption) as CompleteVariantOption[];
+    .leftJoin(variantOptions, eq(variants.id, variantOptions.variantId))
+    .leftJoin(options, eq(variantOptions.optionId, options.id))
+    .leftJoin(optionValues, eq(variantOptions.optionValueId, optionValues.id));
 
-  return { variant: v, variantOptions: vv };
+  if (rows.length === 0) return {};
+
+  const v = rows[0].variant;
+
+  const v_options = rows
+    .filter((r) => r.variantOption !== null)
+    .filter(
+      (r, i, self) =>
+        self.findIndex((s) => s.variantOption!.id === r.variantOption!.id) ===
+        i,
+    )
+    .map((v) => ({
+      ...v.variantOption,
+      option: v.option,
+      optionValue: v.optionValue,
+    })) as CompleteVariantOption[];
+
+  return {
+    variant: v,
+    variantOptions: v_options,
+  };
 };

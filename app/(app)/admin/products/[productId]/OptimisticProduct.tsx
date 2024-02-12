@@ -12,6 +12,7 @@ import {
   type Collection,
   type CollectionId,
 } from '@/lib/db/schema/collections';
+import InfoListItem from '@/components/shared/InfoListItem';
 
 export default function OptimisticProduct({
   product,
@@ -50,14 +51,21 @@ export default function OptimisticProduct({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticProduct.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticProduct, null, 2)}
-      </pre>
+      <div className="grid grid-cols-2 gap-2">
+        {Object.entries(optimisticProduct)
+          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
+          .map(([key, value]) =>
+            key === 'collectionId' ? (
+              <InfoListItem
+                key={key}
+                title={'collection'}
+                value={collections.find((c) => c.id === value)?.name!}
+              />
+            ) : (
+              <InfoListItem key={key} title={key} value={value} />
+            ),
+          )}
+      </div>
     </div>
   );
 }

@@ -29,6 +29,9 @@ const ProductTag = async ({ id }: { id: string }) => {
   const { products } = await getProducts();
 
   if (!productTag) notFound();
+
+  const tag = tags.find((t) => t.id === productTag.tagId);
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
@@ -39,6 +42,7 @@ const ProductTag = async ({ id }: { id: string }) => {
           tagId={productTag.tagId}
           products={products}
           productId={productTag.productId}
+          tag={tag}
         />
       </div>
     </Suspense>

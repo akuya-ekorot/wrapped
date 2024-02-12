@@ -28,12 +28,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   resourceName: string;
+  searchColumn?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   resourceName,
+  searchColumn,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -58,9 +60,15 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4">
         <Input
           placeholder={`Filter ${resourceName ?? 'records'}...`}
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+          value={
+            (table
+              .getColumn(searchColumn ?? 'name')
+              ?.getFilterValue() as string) ?? ''
+          }
           onChange={(event) =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
+            table
+              .getColumn(searchColumn ?? 'name')
+              ?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

@@ -1,13 +1,14 @@
 'use client';
 
-import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/orders/useOptimisticOrders';
 import { type Order } from '@/lib/db/schema/orders';
-import { cn } from '@/lib/utils';
+import { useOptimistic, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import Modal from '@/components/shared/Modal';
 import OrderForm from '@/components/orders/OrderForm';
+import InfoListItem from '@/components/shared/InfoListItem';
+import Modal from '@/components/shared/Modal';
+import { Button } from '@/components/ui/button';
+import { User } from '@/lib/db/schema/auth';
 import {
   type DeliveryZone,
   type DeliveryZoneId,
@@ -19,11 +20,13 @@ export default function OptimisticOrder({
   deliveryZones,
   deliveryZoneId,
   payments,
+  customer: customer,
 }: {
   order: Order;
   payments: Payment[];
   deliveryZones: DeliveryZone[];
   deliveryZoneId?: DeliveryZoneId;
+  customer?: User;
 }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: Order) => {
@@ -48,19 +51,45 @@ export default function OptimisticOrder({
         />
       </Modal>
       <div className="flex justify-between items-end mb-4">
-        <h1 className="font-semibold text-2xl">{order.status}</h1>
+        <h1 className="font-semibold text-2xl">{customer?.name}</h1>
         <Button className="" onClick={() => setOpen(true)}>
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticOrder.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticOrder, null, 2)}
-      </pre>
+      <div className="grid grid-cols-2 gap-2">
+        {Object.entries(optimisticOrder)
+          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
+          .map(([key, value]) =>
+            key === 'deliveryZoneId' ? (
+              <InfoListItem
+                key={key}
+                title={'Delivery Zone'}
+                value={deliveryZones.find((dz) => dz.id === value)?.name!}
+              />
+            ) : key === 'userId' ? (
+              <InfoListItem
+                key={key}
+                title={'Customer'}
+                value={customer?.name!}
+                secondaryValue={customer?.email!}
+              />
+            ) : key === 'paymentId' ? (
+              <InfoListItem
+                key={key}
+                title={'Payment Made'}
+                value={payments.find((p) => p.id === value)?.amount ?? 0}
+              />
+            ) : key === 'amount' ? (
+              <InfoListItem
+                key={key}
+                title={'Total Amount Due'}
+                value={value}
+              />
+            ) : (
+              <InfoListItem key={key} title={key} value={value} />
+            ),
+          )}
+      </div>
     </div>
   );
 }

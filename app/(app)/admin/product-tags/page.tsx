@@ -25,6 +25,7 @@ const ProductTags = async () => {
   const { productTags } = await getProductTags();
   const { tags } = await getTags();
   const { products } = await getProducts();
+
   return (
     <Suspense fallback={<Loading />}>
       <ProductTagList
