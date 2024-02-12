@@ -1,7 +1,7 @@
 'use client';
 
 import { TAddOptimistic } from '@/app/(app)/admin/orders/useOptimisticOrders';
-import { type Order } from '@/lib/db/schema/orders';
+import { CompleteOrder, type Order } from '@/lib/db/schema/orders';
 import { useOptimistic, useState } from 'react';
 
 import OrderForm from '@/components/orders/OrderForm';
@@ -22,7 +22,7 @@ export default function OptimisticOrder({
   payments,
   customer: customer,
 }: {
-  order: Order;
+  order: CompleteOrder;
   payments: Payment[];
   deliveryZones: DeliveryZone[];
   deliveryZoneId?: DeliveryZoneId;
@@ -83,9 +83,11 @@ export default function OptimisticOrder({
               <InfoListItem
                 key={key}
                 title={'Total Amount Due'}
+                //@ts-ignore
                 value={value}
               />
             ) : (
+              //@ts-ignore
               <InfoListItem key={key} title={key} value={value} />
             ),
           )}

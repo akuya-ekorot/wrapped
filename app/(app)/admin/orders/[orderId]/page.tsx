@@ -12,6 +12,7 @@ import Loading from '@/app/loading';
 import { getVariants } from '@/lib/api/variants/queries';
 import { getPayments } from '@/lib/api/payments/queries';
 import { getUsers } from '@/lib/api/users/queries';
+import { CompleteOrder } from '@/lib/db/schema/orders';
 
 export const revalidate = 0;
 
@@ -46,7 +47,7 @@ const Order = async ({ id }: { id: string }) => {
         <BackButton currentResource="orders" />
         <OptimisticOrder
           payments={payments}
-          order={order}
+          order={order as CompleteOrder}
           deliveryZones={deliveryZones}
           customer={customer}
         />

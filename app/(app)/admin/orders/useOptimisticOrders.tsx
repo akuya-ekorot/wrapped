@@ -4,7 +4,7 @@ import { Payment } from '@/lib/db/schema/payments';
 import { OptimisticAction } from '@/lib/utils';
 import { useOptimistic } from 'react';
 
-export type TAddOptimistic = (action: OptimisticAction<Order>) => void;
+export type TAddOptimistic = (action: OptimisticAction<CompleteOrder>) => void;
 
 export const useOptimisticOrders = (
   orders: CompleteOrder[],
@@ -15,7 +15,7 @@ export const useOptimisticOrders = (
     orders,
     (
       currentState: CompleteOrder[],
-      action: OptimisticAction<Order>,
+      action: OptimisticAction<CompleteOrder>,
     ): CompleteOrder[] => {
       const { data } = action;
 
