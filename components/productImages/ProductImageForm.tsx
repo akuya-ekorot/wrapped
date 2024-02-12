@@ -9,7 +9,6 @@ import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 import { type Action, cn } from '@/lib/utils';
 import { type TAddOptimistic } from '@/app/(app)/admin/product-images/useOptimisticProductImages';
 
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useBackPath } from '@/components/shared/BackButton';
@@ -25,6 +24,7 @@ import {
 import {
   type ProductImage,
   insertProductImageParams,
+  CompleteProductImage,
 } from '@/lib/db/schema/productImages';
 import {
   createProductImageAction,
@@ -107,8 +107,11 @@ const ProductImageForm = ({
     }
 
     closeModal && closeModal();
-    const values = productImageParsed.data;
-    const pendingProductImage: ProductImage = {
+    const values = productImageParsed.data as Omit<
+      CompleteProductImage,
+      'updatedAt' | 'createdAt' | 'id'
+    >;
+    const pendingProductImage: CompleteProductImage = {
       updatedAt: productImage?.updatedAt ?? new Date(),
       createdAt: productImage?.createdAt ?? new Date(),
       id: productImage?.id ?? '',
@@ -242,7 +245,7 @@ const ProductImageForm = ({
             <SelectContent>
               {products?.map((product) => (
                 <SelectItem key={product.id} value={product.id.toString()}>
-                  {product.id}
+                  {product.name}
                   {/* TODO: Replace with a field from the product model */}
                 </SelectItem>
               ))}
@@ -273,7 +276,10 @@ const ProductImageForm = ({
             closeModal && closeModal();
             startMutation(async () => {
               addOptimistic &&
-                addOptimistic({ action: 'delete', data: productImage });
+                addOptimistic({
+                  action: 'delete',
+                  data: productImage as CompleteProductImage,
+                });
               const error = await deleteProductImageAction(productImage.id);
               setIsDeleting(false);
               const errorFormatted = {
