@@ -12,6 +12,8 @@ import { useOptimisticPayments } from '@/app/(app)/admin/payments/useOptimisticP
 import { Button } from '@/components/ui/button';
 import PaymentForm from './PaymentForm';
 import { PlusIcon } from 'lucide-react';
+import { DataTable } from '../shared/data-table';
+import { columns } from './columns';
 
 type TOpenModal = (payment?: Payment) => void;
 
@@ -52,11 +54,11 @@ export default function PaymentList({
       {optimisticPayments.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
-        <ul>
-          {optimisticPayments.map((payment) => (
-            <Payment payment={payment} key={payment.id} openModal={openModal} />
-          ))}
-        </ul>
+        <DataTable
+          resourceName="payments"
+          columns={columns}
+          data={optimisticPayments}
+        />
       )}
     </div>
   );

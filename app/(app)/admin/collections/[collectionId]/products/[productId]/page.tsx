@@ -12,6 +12,8 @@ import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
 import { getImages } from '@/lib/api/images/queries';
 import { getTags } from '@/lib/api/tags/queries';
+import { getVariants } from '@/lib/api/variants/queries';
+import VariantList from '@/components/variants/VariantList';
 
 export const revalidate = 0;
 
@@ -33,8 +35,13 @@ const Product = async ({ id }: { id: string }) => {
   const { collections } = await getCollections();
   const { images } = await getImages();
   const { tags } = await getTags();
+  const { variants } = await getVariants();
 
   if (!product) notFound();
+
+  const productVariants = variants.filter((v) => v.productId === product.id);
+  const productOptions = options.filter((o) => o.productId === product.id);
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
@@ -62,6 +69,18 @@ const Product = async ({ id }: { id: string }) => {
         </h3>
         <OptionList products={[]} productId={product.id} options={options} />
       </div>
+
+      <div className="relative mt-8 mx-4">
+        <h3 className="text-xl font-medium mb-4">
+          {product.name}&apos;s Product Variants
+        </h3>
+        <VariantList
+          productId={product.id}
+          variants={productVariants}
+          products={[]}
+        />
+      </div>
+
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
           {product.name}&apos;s Product Tags

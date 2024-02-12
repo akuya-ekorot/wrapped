@@ -12,6 +12,8 @@ import { useOptimisticVariants } from '@/app/(app)/admin/variants/useOptimisticV
 import { Button } from '@/components/ui/button';
 import VariantForm from './VariantForm';
 import { PlusIcon } from 'lucide-react';
+import { DataTable } from '../shared/data-table';
+import { columns } from './columns';
 
 type TOpenModal = (variant?: Variant) => void;
 
@@ -60,11 +62,11 @@ export default function VariantList({
       {optimisticVariants.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
-        <ul>
-          {optimisticVariants.map((variant) => (
-            <Variant variant={variant} key={variant.id} openModal={openModal} />
-          ))}
-        </ul>
+        <DataTable
+          resourceName="variants"
+          columns={columns}
+          data={optimisticVariants}
+        />
       )}
     </div>
   );
