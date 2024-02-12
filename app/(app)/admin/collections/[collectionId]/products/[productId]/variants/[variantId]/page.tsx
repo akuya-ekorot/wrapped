@@ -53,7 +53,7 @@ const Variant = async ({
       </div>
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
-          {variant.productId}&apos;s Variant Options
+          {variant.name}&apos;s Variant Options
         </h3>
         <VariantOptionList
           options={productOptions}

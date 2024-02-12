@@ -13,6 +13,7 @@ import {
 import { ArrowUpDown, Eye, MoreHorizontal, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { ViewResourceLink } from '../shared/view-resource-link';
 
 export const columns: ColumnDef<CompleteDeliveryZone>[] = [
   {
@@ -61,7 +62,7 @@ export const columns: ColumnDef<CompleteDeliveryZone>[] = [
   {
     id: 'actions',
     cell({ row }) {
-      const collection = row.original;
+      const deliveryZone = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -73,18 +74,15 @@ export const columns: ColumnDef<CompleteDeliveryZone>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link
-                className="flex items-center gap-2"
-                href={`collections/${collection.id}`}
-              >
-                <Eye className="w-4 h-4" />
-                <span>View collection details</span>
-              </Link>
+              <ViewResourceLink
+                id={deliveryZone.id}
+                resourceName="delivery-zones"
+              />
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Button variant={'destructive'}>
                 <Trash2 className="w-4 h-4 mr-2" />
-                <span>Delete collection</span>
+                <span>Delete delivery zone</span>
               </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>

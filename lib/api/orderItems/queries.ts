@@ -17,11 +17,13 @@ export const getOrderItems = async () => {
     .leftJoin(variants, eq(orderItems.variantId, variants.id))
     .leftJoin(orders, eq(orderItems.orderId, orders.id))
     .where(eq(orderItems.userId, session?.user.id!));
+
   const o = rows.map((r) => ({
     ...r.orderItem,
     variant: r.variant,
     order: r.order,
   }));
+
   return { orderItems: o };
 };
 

@@ -27,6 +27,7 @@ import {
   insertOrderParams,
   OrderType,
   OrderStatus,
+  CompleteOrder,
 } from '@/lib/db/schema/orders';
 import {
   createOrderAction,
@@ -52,16 +53,16 @@ const OrderForm = ({
 }: {
   payments: Payment[];
   paymentId?: PaymentId;
-  order?: Order | null;
+  order?: CompleteOrder | null;
   deliveryZones: DeliveryZone[];
   deliveryZoneId?: DeliveryZoneId;
-  openModal?: (order?: Order) => void;
+  openModal?: (order?: CompleteOrder) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
   postSuccess?: () => void;
 }) => {
   const { errors, hasErrors, setErrors, handleChange } =
-    useValidatedForm<Order>(insertOrderParams);
+    useValidatedForm<CompleteOrder>(insertOrderParams);
   const editing = !!order?.id;
 
   const [isDeleting, setIsDeleting] = useState(false);
@@ -72,7 +73,7 @@ const OrderForm = ({
 
   const onSuccess = (
     action: Action,
-    data?: { error: string; values: Order },
+    data?: { error: string; values: CompleteOrder },
   ) => {
     const failed = Boolean(data?.error);
     if (failed) {
@@ -96,14 +97,18 @@ const OrderForm = ({
       deliveryZoneId,
       ...payload,
     });
+
     if (!orderParsed.success) {
       setErrors(orderParsed?.error.flatten().fieldErrors);
       return;
     }
 
     closeModal && closeModal();
-    const values = orderParsed.data;
-    const pendingOrder: Order = {
+    const values = orderParsed.data as Omit<
+      CompleteOrder,
+      'updatedAt' | 'createdAt' | 'id' | 'userId'
+    >;
+    const pendingOrder: CompleteOrder = {
       updatedAt: order?.updatedAt ?? new Date(),
       createdAt: order?.createdAt ?? new Date(),
       id: order?.id ?? '',
@@ -216,7 +221,7 @@ const OrderForm = ({
                   key={deliveryZone.id}
                   value={deliveryZone.id.toString()}
                 >
-                  {deliveryZone.id}
+                  {deliveryZone.name}
                   {/* TODO: Replace with a field from the deliveryZone model */}
                 </SelectItem>
               ))}

@@ -29,6 +29,7 @@ const ProductTag = async ({ id }: { id: string }) => {
   const { products } = await getProducts();
 
   if (!productTag) notFound();
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">

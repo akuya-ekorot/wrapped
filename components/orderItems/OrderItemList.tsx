@@ -13,6 +13,8 @@ import { useOptimisticOrderItems } from '@/app/(app)/admin/order-items/useOptimi
 import { Button } from '@/components/ui/button';
 import OrderItemForm from './OrderItemForm';
 import { PlusIcon } from 'lucide-react';
+import { DataTable } from '../shared/data-table';
+import { columns } from './columns';
 
 type TOpenModal = (orderItem?: OrderItem) => void;
 
@@ -67,15 +69,12 @@ export default function OrderItemList({
       {optimisticOrderItems.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
-        <ul>
-          {optimisticOrderItems.map((orderItem) => (
-            <OrderItem
-              orderItem={orderItem}
-              key={orderItem.id}
-              openModal={openModal}
-            />
-          ))}
-        </ul>
+        <DataTable
+          data={optimisticOrderItems}
+          columns={columns}
+          resourceName={'Order Items'}
+          searchColumn="variant.name"
+        />
       )}
     </div>
   );

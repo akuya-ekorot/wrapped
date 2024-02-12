@@ -76,6 +76,7 @@ export default function ProductTagList({
               productTag={productTag}
               key={productTag.id}
               openModal={openModal}
+              tag={tags.find((t) => t.id === productTag.tagId)}
             />
           ))}
         </ul>
@@ -87,9 +88,11 @@ export default function ProductTagList({
 const ProductTag = ({
   productTag,
   openModal,
+  tag,
 }: {
   productTag: CompleteProductTag;
   openModal: TOpenModal;
+  tag: Tag | undefined;
 }) => {
   const optimistic = productTag.id === 'optimistic';
   const deleting = productTag.id === 'delete';
@@ -108,7 +111,7 @@ const ProductTag = ({
       )}
     >
       <div className="w-full">
-        <div>{productTag.tagId}</div>
+        <div>{tag?.name ?? productTag.tagId}</div>
       </div>
       <Button variant={'link'} asChild>
         <Link href={basePath + '/' + productTag.id}>Edit</Link>

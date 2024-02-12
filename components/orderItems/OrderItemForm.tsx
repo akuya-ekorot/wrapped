@@ -25,6 +25,7 @@ import {
 import {
   type OrderItem,
   insertOrderItemParams,
+  CompleteOrderItem,
 } from '@/lib/db/schema/orderItems';
 import {
   createOrderItemAction,
@@ -110,7 +111,7 @@ const OrderItemForm = ({
       startMutation(async () => {
         addOptimistic &&
           addOptimistic({
-            data: pendingOrderItem,
+            data: pendingOrderItem as CompleteOrderItem,
             action: editing ? 'update' : 'create',
           });
 
@@ -263,7 +264,10 @@ const OrderItemForm = ({
             closeModal && closeModal();
             startMutation(async () => {
               addOptimistic &&
-                addOptimistic({ action: 'delete', data: orderItem });
+                addOptimistic({
+                  action: 'delete',
+                  data: orderItem as CompleteOrderItem,
+                });
               const error = await deleteOrderItemAction(orderItem.id);
               setIsDeleting(false);
               const errorFormatted = {

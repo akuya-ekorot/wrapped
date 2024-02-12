@@ -1,18 +1,17 @@
 import { z } from 'zod';
 
+import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
+import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { useFormStatus } from 'react-dom';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 
-import { type Action, cn } from '@/lib/utils';
 import { type TAddOptimistic } from '@/app/(app)/admin/product-tags/useOptimisticProductTags';
+import { cn, type Action } from '@/lib/utils';
 
-import { Input } from '@/components/ui/input';
+import { useBackPath } from '@/components/shared/BackButton';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { useBackPath } from '@/components/shared/BackButton';
 
 import {
   Select,
@@ -23,16 +22,17 @@ import {
 } from '@/components/ui/select';
 
 import {
-  type ProductTag,
-  insertProductTagParams,
-} from '@/lib/db/schema/productTags';
-import {
   createProductTagAction,
   deleteProductTagAction,
   updateProductTagAction,
 } from '@/lib/actions/productTags';
-import { type Tag, type TagId } from '@/lib/db/schema/tags';
+import {
+  CompleteProductTag,
+  insertProductTagParams,
+  type ProductTag,
+} from '@/lib/db/schema/productTags';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
+import { type Tag, type TagId } from '@/lib/db/schema/tags';
 
 const ProductTagForm = ({
   tags,
@@ -98,8 +98,11 @@ const ProductTagForm = ({
     }
 
     closeModal && closeModal();
-    const values = productTagParsed.data;
-    const pendingProductTag: ProductTag = {
+    const values = productTagParsed.data as Omit<
+      CompleteProductTag,
+      'updatedAt' | 'createdAt' | 'id'
+    >;
+    const pendingProductTag: CompleteProductTag = {
       updatedAt: productTag?.updatedAt ?? new Date(),
       createdAt: productTag?.createdAt ?? new Date(),
       id: productTag?.id ?? '',
@@ -156,8 +159,7 @@ const ProductTagForm = ({
             <SelectContent>
               {tags?.map((tag) => (
                 <SelectItem key={tag.id} value={tag.id.toString()}>
-                  {tag.id}
-                  {/* TODO: Replace with a field from the tag model */}
+                  {tag.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -189,8 +191,7 @@ const ProductTagForm = ({
             <SelectContent>
               {products?.map((product) => (
                 <SelectItem key={product.id} value={product.id.toString()}>
-                  {product.id}
-                  {/* TODO: Replace with a field from the product model */}
+                  {product.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -220,7 +221,10 @@ const ProductTagForm = ({
             closeModal && closeModal();
             startMutation(async () => {
               addOptimistic &&
-                addOptimistic({ action: 'delete', data: productTag });
+                addOptimistic({
+                  action: 'delete',
+                  data: productTag as CompleteProductTag,
+                });
               const error = await deleteProductTagAction(productTag.id);
               setIsDeleting(false);
               const errorFormatted = {

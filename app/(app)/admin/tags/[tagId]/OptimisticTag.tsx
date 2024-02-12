@@ -3,11 +3,11 @@
 import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/tags/useOptimisticTags';
 import { type Tag } from '@/lib/db/schema/tags';
-import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import TagForm from '@/components/tags/TagForm';
+import InfoListItem from '@/components/shared/InfoListItem';
 
 export default function OptimisticTag({ tag }: { tag: Tag }) {
   const [open, setOpen] = useState(false);
@@ -35,14 +35,14 @@ export default function OptimisticTag({ tag }: { tag: Tag }) {
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticTag.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticTag, null, 2)}
-      </pre>
+
+      <div className="grid grid-cols-2 gap-2">
+        {Object.entries(optimisticTag)
+          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
+          .map(([key, value]) => (
+            <InfoListItem key={key} title={key} value={value} />
+          ))}
+      </div>
     </div>
   );
 }

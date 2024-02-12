@@ -20,6 +20,7 @@ import { useOptimisticVariantOptions } from '@/app/(app)/admin/variant-options/u
 import { Button } from '@/components/ui/button';
 import VariantOptionForm from './VariantOptionForm';
 import { PlusIcon } from 'lucide-react';
+import { Badge } from '../ui/badge';
 
 type TOpenModal = (variantOption?: VariantOption) => void;
 
@@ -125,8 +126,9 @@ const VariantOption = ({
         deleting ? 'text-destructive' : '',
       )}
     >
-      <div className="w-full">
-        <div>{variantOption.optionId}</div>
+      <div className="w-full flex items-center gap-4">
+        <p>{variantOption.option?.name}</p>
+        <Badge>{variantOption.optionValue?.name}</Badge>
       </div>
       <Button variant={'link'} asChild>
         <Link href={basePath + '/' + variantOption.id}>Edit</Link>

@@ -19,7 +19,7 @@ import { Payment } from '@/lib/db/schema/payments';
 import { DataTable } from '../shared/data-table';
 import { columns } from './columns';
 
-type TOpenModal = (order?: Order) => void;
+type TOpenModal = (order?: CompleteOrder) => void;
 
 export default function OrderList({
   payments,
@@ -38,8 +38,8 @@ export default function OrderList({
     payments,
   );
   const [open, setOpen] = useState(false);
-  const [activeOrder, setActiveOrder] = useState<Order | null>(null);
-  const openModal = (order?: Order) => {
+  const [activeOrder, setActiveOrder] = useState<CompleteOrder | null>(null);
+  const openModal = (order?: CompleteOrder) => {
     setOpen(true);
     order ? setActiveOrder(order) : setActiveOrder(null);
   };
