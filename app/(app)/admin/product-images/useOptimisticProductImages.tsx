@@ -1,4 +1,4 @@
-import { type Image } from '@/lib/db/schema/images';
+import { type TImage } from '@/lib/db/schema/images';
 import { type Product } from '@/lib/db/schema/products';
 import {
   type ProductImage,
@@ -7,11 +7,13 @@ import {
 import { OptimisticAction } from '@/lib/utils';
 import { useOptimistic } from 'react';
 
-export type TAddOptimistic = (action: OptimisticAction<ProductImage>) => void;
+export type TAddOptimistic = (
+  action: OptimisticAction<CompleteProductImage>,
+) => void;
 
 export const useOptimisticProductImages = (
   productImages: CompleteProductImage[],
-  images: Image[],
+  images: TImage[],
   products: Product[],
 ) => {
   const [optimisticProductImages, addOptimisticProductImage] = useOptimistic(

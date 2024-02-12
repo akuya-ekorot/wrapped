@@ -25,13 +25,14 @@ import {
 import {
   type CollectionImage,
   insertCollectionImageParams,
+  CompleteCollectionImage,
 } from '@/lib/db/schema/collectionImages';
 import {
   createCollectionImageAction,
   deleteCollectionImageAction,
   updateCollectionImageAction,
 } from '@/lib/actions/collectionImages';
-import { type Image as TImage, type ImageId } from '@/lib/db/schema/images';
+import { type TImage as TImage, type ImageId } from '@/lib/db/schema/images';
 import {
   type Collection,
   type CollectionId,
@@ -110,8 +111,11 @@ const CollectionImageForm = ({
     }
 
     closeModal && closeModal();
-    const values = collectionImageParsed.data;
-    const pendingCollectionImage: CollectionImage = {
+    const values = collectionImageParsed.data as Omit<
+      CompleteCollectionImage,
+      'updatedAt' | 'createdAt' | 'id'
+    >;
+    const pendingCollectionImage: CompleteCollectionImage = {
       updatedAt: collectionImage?.updatedAt ?? new Date(),
       createdAt: collectionImage?.createdAt ?? new Date(),
       id: collectionImage?.id ?? '',
@@ -287,7 +291,10 @@ const CollectionImageForm = ({
             closeModal && closeModal();
             startMutation(async () => {
               addOptimistic &&
-                addOptimistic({ action: 'delete', data: collectionImage });
+                addOptimistic({
+                  action: 'delete',
+                  data: collectionImage as CompleteCollectionImage,
+                });
               const error = await deleteCollectionImageAction(
                 collectionImage.id,
               );

@@ -1,4 +1,4 @@
-import { type Image } from '@/lib/db/schema/images';
+import { type TImage } from '@/lib/db/schema/images';
 import { type Collection } from '@/lib/db/schema/collections';
 import {
   type CollectionImage,
@@ -8,12 +8,12 @@ import { OptimisticAction } from '@/lib/utils';
 import { useOptimistic } from 'react';
 
 export type TAddOptimistic = (
-  action: OptimisticAction<CollectionImage>,
+  action: OptimisticAction<CompleteCollectionImage>,
 ) => void;
 
 export const useOptimisticCollectionImages = (
   collectionImages: CompleteCollectionImage[],
-  images: Image[],
+  images: TImage[],
   collections: Collection[],
 ) => {
   const [optimisticCollectionImages, addOptimisticCollectionImage] =
