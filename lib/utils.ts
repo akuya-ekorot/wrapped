@@ -14,13 +14,6 @@ export const timestamps: { createdAt: true; updatedAt: true } = {
   updatedAt: true,
 };
 
-export type Action = 'create' | 'update' | 'delete';
-
-export type OptimisticAction<T> = {
-  action: Action;
-  data: T;
-};
-
 export const uploadImageAction = async (file: File) => {
   if (!file) {
     throw new Error('No file provided');

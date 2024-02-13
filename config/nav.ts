@@ -3,6 +3,7 @@ import {
   Banknote,
   Cog,
   Globe,
+  Home,
   HomeIcon,
   Library,
   Link,
@@ -57,6 +58,11 @@ export const additionalLinks: AdditionalLinks[] = [
   {
     title: 'Pages management',
     links: [
+      {
+        href: '/admin/home-page',
+        title: 'Home Page',
+        icon: Home,
+      },
       {
         href: '/admin/page-links',
         title: 'Links',
