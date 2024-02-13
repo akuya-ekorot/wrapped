@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button';
 import LinkToCollectionForm from './LinkToCollectionForm';
 import { PlusIcon } from 'lucide-react';
 
-type TOpenModal = (linkToCollection?: LinkToCollection) => void;
+type TOpenModal = (linkToCollection?: CompleteLinkToCollection) => void;
 
 export default function LinkToCollectionList({
   linkToCollections,
@@ -39,8 +39,8 @@ export default function LinkToCollectionList({
     useOptimisticLinkToCollections(linkToCollections, collections, pageLinks);
   const [open, setOpen] = useState(false);
   const [activeLinkToCollection, setActiveLinkToCollection] =
-    useState<LinkToCollection | null>(null);
-  const openModal = (linkToCollection?: LinkToCollection) => {
+    useState<CompleteLinkToCollection | null>(null);
+  const openModal = (linkToCollection?: CompleteLinkToCollection) => {
     setOpen(true);
     linkToCollection
       ? setActiveLinkToCollection(linkToCollection)

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { getReferredProductById } from '@/lib/api/referredProducts/queries';
 import { getProducts } from '@/lib/api/products/queries';
-import { getFeaturedProductsSection } from '@/lib/api/featuredProductsSection/queries';
+import { getFeaturedProductsSections } from '@/lib/api/featuredProductsSection/queries';
 import OptimisticReferredProduct from '@/app/(app)/admin/referred-products/[referredProductId]/OptimisticReferredProduct';
 
 import { BackButton } from '@/components/shared/BackButton';
@@ -26,7 +26,7 @@ export default async function ReferredProductPage({
 const ReferredProduct = async ({ id }: { id: string }) => {
   const { referredProduct } = await getReferredProductById(id);
   const { products } = await getProducts();
-  const { featuredProductsSection } = await getFeaturedProductsSection();
+  const { featuredProductsSection } = await getFeaturedProductsSections();
 
   if (!referredProduct) notFound();
   return (

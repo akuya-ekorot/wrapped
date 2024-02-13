@@ -11,10 +11,10 @@ import {
 } from '@/lib/db/schema/featuredProductsSection';
 
 export const createFeaturedProductsSection = async (
-  featuredProductsSection: NewFeaturedProductsSectionParams,
+  featuredProductsSectionParams: NewFeaturedProductsSectionParams,
 ) => {
   const newFeaturedProductsSection = insertFeaturedProductsSectionSchema.parse(
-    featuredProductsSection,
+    featuredProductsSectionParams,
   );
   try {
     const [f] = await db
@@ -31,12 +31,12 @@ export const createFeaturedProductsSection = async (
 
 export const updateFeaturedProductsSection = async (
   id: FeaturedProductsSectionId,
-  featuredProductsSection: UpdateFeaturedProductsSectionParams,
+  featuredProductsSectionParams: UpdateFeaturedProductsSectionParams,
 ) => {
   const { id: featuredProductsSectionId } =
     featuredProductsSectionIdSchema.parse({ id });
   const newFeaturedProductsSection = updateFeaturedProductsSectionSchema.parse(
-    featuredProductsSection,
+    featuredProductsSectionParams,
   );
   try {
     const [f] = await db

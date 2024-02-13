@@ -9,6 +9,8 @@ import HeroProductList from '@/components/heroProducts/HeroProductList';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
+import { getCollections } from '@/lib/api/collections/queries';
+import { getProducts } from '@/lib/api/products/queries';
 
 export const revalidate = 0;
 
@@ -28,6 +30,8 @@ const HeroLink = async ({ id }: { id: string }) => {
   const { heroLink, heroCollections, heroProducts } =
     await getHeroLinkByIdWithHeroCollectionsAndHeroProducts(id);
   const { heroSections } = await getHeroSections();
+  const { collections } = await getCollections();
+  const { products } = await getProducts();
 
   if (!heroLink) notFound();
   return (
@@ -45,6 +49,7 @@ const HeroLink = async ({ id }: { id: string }) => {
           {heroLink.type}&apos;s Hero Collections
         </h3>
         <HeroCollectionList
+          collections={collections}
           heroLinks={[]}
           heroLinkId={heroLink.id}
           heroCollections={heroCollections}
@@ -55,6 +60,7 @@ const HeroLink = async ({ id }: { id: string }) => {
           {heroLink.type}&apos;s Hero Products
         </h3>
         <HeroProductList
+          products={products}
           heroLinks={[]}
           heroLinkId={heroLink.id}
           heroProducts={heroProducts}

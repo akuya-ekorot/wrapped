@@ -31,7 +31,7 @@ import {
   deleteHeroSectionAction,
   updateHeroSectionAction,
 } from '@/lib/actions/heroSections';
-import { type Image, type ImageId } from '@/lib/db/schema/images';
+import { type TImage, type ImageId } from '@/lib/db/schema/images';
 import { type HomePage, type HomePageId } from '@/lib/db/schema/homePages';
 
 const HeroSectionForm = ({
@@ -46,7 +46,7 @@ const HeroSectionForm = ({
   postSuccess,
 }: {
   heroSection?: HeroSection | null;
-  images: Image[];
+  images: TImage[];
   imageId?: ImageId;
   homePages: HomePage[];
   homePageId?: HomePageId;

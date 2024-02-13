@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 
 import { type Action, cn } from '@/lib/utils';
-import { type TAddOptimistic } from '@/app/(app)/featured-products-section/useOptimisticFeaturedProductsSections';
+import { type TAddOptimistic } from '@/app/(app)/admin/featured-products-section/useOptimisticFeaturedProductsSection';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';

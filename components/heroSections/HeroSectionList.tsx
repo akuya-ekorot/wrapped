@@ -10,7 +10,7 @@ import {
   CompleteHeroSection,
 } from '@/lib/db/schema/heroSections';
 import Modal from '@/components/shared/Modal';
-import { type Image, type ImageId } from '@/lib/db/schema/images';
+import { type TImage, type ImageId } from '@/lib/db/schema/images';
 import { type HomePage, type HomePageId } from '@/lib/db/schema/homePages';
 import { useOptimisticHeroSections } from '@/app/(app)/admin/hero-sections/useOptimisticHeroSections';
 import { Button } from '@/components/ui/button';
@@ -27,7 +27,7 @@ export default function HeroSectionList({
   homePageId,
 }: {
   heroSections: CompleteHeroSection[];
-  images: Image[];
+  images: TImage[];
   imageId?: ImageId;
   homePages: HomePage[];
   homePageId?: HomePageId;

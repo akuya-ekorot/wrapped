@@ -8,6 +8,7 @@ import ReferredProductList from '@/components/referredProducts/ReferredProductLi
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
+import { getProducts } from '@/lib/api/products/queries';
 
 export const revalidate = 0;
 
@@ -27,6 +28,7 @@ const FeaturedProductsSection = async ({ id }: { id: string }) => {
   const { featuredProductsSection, referredProducts } =
     await getFeaturedProductsSectionByIdWithReferredProducts(id);
   const { homePages } = await getHomePages();
+  const { products } = await getProducts();
 
   if (!featuredProductsSection) notFound();
   return (
@@ -44,6 +46,7 @@ const FeaturedProductsSection = async ({ id }: { id: string }) => {
           {featuredProductsSection.title}&apos;s Referred Products
         </h3>
         <ReferredProductList
+          products={products}
           featuredProductsSection={[]}
           featuredProductsSectionId={featuredProductsSection.id}
           referredProducts={referredProducts}

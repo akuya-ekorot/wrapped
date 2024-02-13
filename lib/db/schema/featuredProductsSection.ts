@@ -2,7 +2,7 @@ import { text, varchar, pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { homePages } from './homePages';
-import { type getFeaturedProductsSection } from '@/lib/api/featuredProductsSection/queries';
+import { type getFeaturedProductsSections } from '@/lib/api/featuredProductsSection/queries';
 
 import { nanoid } from '@/lib/utils';
 
@@ -54,5 +54,5 @@ export type FeaturedProductsSectionId = z.infer<
 
 // this type infers the return from getFeaturedProductsSection() - meaning it will include any joins
 export type CompleteFeaturedProductsSection = Awaited<
-  ReturnType<typeof getFeaturedProductsSection>
+  ReturnType<typeof getFeaturedProductsSections>
 >['featuredProductsSection'][number];

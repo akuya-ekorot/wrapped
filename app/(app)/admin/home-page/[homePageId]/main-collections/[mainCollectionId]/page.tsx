@@ -8,6 +8,7 @@ import ReferredCollectionList from '@/components/referredCollections/ReferredCol
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
+import { getCollections } from '@/lib/api/collections/queries';
 
 export const revalidate = 0;
 
@@ -27,6 +28,7 @@ const MainCollection = async ({ id }: { id: string }) => {
   const { mainCollection, referredCollections } =
     await getMainCollectionByIdWithReferredCollections(id);
   const { homePages } = await getHomePages();
+  const { collections } = await getCollections();
 
   if (!mainCollection) notFound();
   return (
@@ -44,6 +46,7 @@ const MainCollection = async ({ id }: { id: string }) => {
           {mainCollection.title}&apos;s Referred Collections
         </h3>
         <ReferredCollectionList
+          collections={collections}
           mainCollections={[]}
           mainCollectionId={mainCollection.id}
           referredCollections={referredCollections}

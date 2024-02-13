@@ -31,7 +31,7 @@ import {
   deleteFeaturedCollectionSectionAction,
   updateFeaturedCollectionSectionAction,
 } from '@/lib/actions/featuredCollectionSections';
-import { type Image, type ImageId } from '@/lib/db/schema/images';
+import { type TImage, type ImageId } from '@/lib/db/schema/images';
 import {
   type Collection,
   type CollectionId,
@@ -52,7 +52,7 @@ const FeaturedCollectionSectionForm = ({
   postSuccess,
 }: {
   featuredCollectionSection?: FeaturedCollectionSection | null;
-  images: Image[];
+  images: TImage[];
   imageId?: ImageId;
   collections: Collection[];
   collectionId?: CollectionId;

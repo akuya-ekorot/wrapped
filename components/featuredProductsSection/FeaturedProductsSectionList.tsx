@@ -11,7 +11,7 @@ import {
 } from '@/lib/db/schema/featuredProductsSection';
 import Modal from '@/components/shared/Modal';
 import { type HomePage, type HomePageId } from '@/lib/db/schema/homePages';
-import { useOptimisticFeaturedProductsSections } from '@/app/(app)/featured-products-section/useOptimisticFeaturedProductsSections';
+import { useOptimisticFeaturedProductsSections } from '@/app/(app)/admin/featured-products-section/useOptimisticFeaturedProductsSection';
 import { Button } from '@/components/ui/button';
 import FeaturedProductsSectionForm from './FeaturedProductsSectionForm';
 import { PlusIcon } from 'lucide-react';

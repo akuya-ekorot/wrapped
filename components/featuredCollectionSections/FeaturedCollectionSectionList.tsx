@@ -10,7 +10,7 @@ import {
   CompleteFeaturedCollectionSection,
 } from '@/lib/db/schema/featuredCollectionSections';
 import Modal from '@/components/shared/Modal';
-import { type Image, type ImageId } from '@/lib/db/schema/images';
+import { type TImage, type ImageId } from '@/lib/db/schema/images';
 import {
   type Collection,
   type CollectionId,
@@ -35,7 +35,7 @@ export default function FeaturedCollectionSectionList({
   homePageId,
 }: {
   featuredCollectionSections: CompleteFeaturedCollectionSection[];
-  images: Image[];
+  images: TImage[];
   imageId?: ImageId;
   collections: Collection[];
   collectionId?: CollectionId;
