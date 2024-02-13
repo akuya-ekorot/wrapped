@@ -60,11 +60,6 @@ export default function MainCollectionList({
           homePageId={homePageId}
         />
       </Modal>
-      <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={'outline'}>
-          +
-        </Button>
-      </div>
       {optimisticMainCollections.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (

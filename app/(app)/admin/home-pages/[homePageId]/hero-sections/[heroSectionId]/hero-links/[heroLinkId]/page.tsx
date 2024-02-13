@@ -44,28 +44,29 @@ const HeroLink = async ({ id }: { id: string }) => {
           heroSectionId={heroLink.heroSectionId}
         />
       </div>
-      <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">
-          {heroLink.type}&apos;s Hero Collections
-        </h3>
-        <HeroCollectionList
-          collections={collections}
-          heroLinks={[]}
-          heroLinkId={heroLink.id}
-          heroCollections={heroCollections}
-        />
-      </div>
-      <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">
-          {heroLink.type}&apos;s Hero Products
-        </h3>
-        <HeroProductList
-          products={products}
-          heroLinks={[]}
-          heroLinkId={heroLink.id}
-          heroProducts={heroProducts}
-        />
-      </div>
+      {heroLink.type === 'collection' && (
+        <div className="relative mt-8 mx-4">
+          <h3 className="text-xl font-medium mb-4">Hero Collection</h3>
+          <HeroCollectionList
+            collections={collections}
+            heroLinks={[]}
+            heroLinkId={heroLink.id}
+            heroCollections={heroCollections}
+          />
+        </div>
+      )}
+
+      {heroLink.type === 'product' && (
+        <div className="relative mt-8 mx-4">
+          <h3 className="text-xl font-medium mb-4">Hero Product</h3>
+          <HeroProductList
+            products={products}
+            heroLinks={[]}
+            heroLinkId={heroLink.id}
+            heroProducts={heroProducts}
+          />
+        </div>
+      )}
     </Suspense>
   );
 };

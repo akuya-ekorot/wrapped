@@ -15,6 +15,7 @@ import {
   type CompleteHeroProduct,
 } from '@/lib/db/schema/heroProducts';
 import { products } from '@/lib/db/schema/products';
+import { collections } from '@/lib/db/schema/collections';
 
 export const getHeroLinks = async () => {
   const rows = await db
@@ -47,18 +48,25 @@ export const getHeroLinkByIdWithHeroCollectionsAndHeroProducts = async (
       heroCollection: heroCollections,
       heroProduct: heroProducts,
       product: products,
+      collection: collections,
     })
     .from(heroLinks)
     .where(eq(heroLinks.id, heroLinkId))
     .leftJoin(heroCollections, eq(heroLinks.id, heroCollections.heroLinkId))
     .leftJoin(heroProducts, eq(heroLinks.id, heroProducts.heroLinkId))
-    .leftJoin(products, eq(heroProducts.productId, products.id));
+    .leftJoin(products, eq(heroProducts.productId, products.id))
+    .leftJoin(collections, eq(heroCollections.collectionId, collections.id));
 
   if (rows.length === 0) return {};
   const h = rows[0].heroLink;
   const hc = rows
     .filter((r) => r.heroCollection !== null)
-    .map((h) => h.heroCollection) as CompleteHeroCollection[];
+    .map((h) => ({
+      ...h.heroCollection,
+      collection: h.collection,
+      heroLink: h.heroLink,
+    })) as CompleteHeroCollection[];
+
   const hp = rows
     .filter((r) => r.heroProduct !== null)
     .map((h) => ({

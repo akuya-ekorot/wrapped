@@ -12,7 +12,7 @@ export default function StoreFrontTheme({
 
   useEffect(() => {
     setTheme('wrapped');
-  }, []);
+  }, [setTheme]);
 
   return <div>{children}</div>;
 }

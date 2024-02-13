@@ -42,9 +42,7 @@ const FeaturedProductsSection = async ({ id }: { id: string }) => {
         />
       </div>
       <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">
-          {featuredProductsSection.title}&apos;s Referred Products
-        </h3>
+        <h3 className="text-xl font-medium mb-4">Referred Products</h3>
         <ReferredProductList
           products={products}
           featuredProductsSection={[]}

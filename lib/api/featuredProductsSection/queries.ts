@@ -10,6 +10,7 @@ import {
   referredProducts,
   type CompleteReferredProduct,
 } from '@/lib/db/schema/referredProducts';
+import { products } from '@/lib/db/schema/products';
 
 export const getFeaturedProductsSections = async () => {
   const rows = await db
@@ -53,6 +54,7 @@ export const getFeaturedProductsSectionByIdWithReferredProducts = async (
     .select({
       featuredProductsSection: featuredProductsSection,
       referredProduct: referredProducts,
+      product: products,
     })
     .from(featuredProductsSection)
     .where(eq(featuredProductsSection.id, featuredProductsSectionId))
@@ -62,12 +64,17 @@ export const getFeaturedProductsSectionByIdWithReferredProducts = async (
         featuredProductsSection.id,
         referredProducts.featuredProductsSectionId,
       ),
-    );
+    )
+    .leftJoin(products, eq(referredProducts.productId, products.id));
+
   if (rows.length === 0) return {};
   const f = rows[0].featuredProductsSection;
   const fr = rows
     .filter((r) => r.referredProduct !== null)
-    .map((r) => r.referredProduct) as CompleteReferredProduct[];
+    .map((r) => ({
+      ...r.referredProduct,
+      product: r.product,
+    })) as CompleteReferredProduct[];
 
   return { featuredProductsSection: f, referredProducts: fr };
 };

@@ -77,11 +77,6 @@ export default function ReferredCollectionList({
           mainCollectionId={mainCollectionId}
         />
       </Modal>
-      <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={'outline'}>
-          +
-        </Button>
-      </div>
       {optimisticReferredCollections.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
@@ -123,7 +118,7 @@ const ReferredCollection = ({
       )}
     >
       <div className="w-full">
-        <div>{referredCollection.collectionId}</div>
+        <div>{referredCollection.collection?.name}</div>
       </div>
       <Button variant={'link'} asChild>
         <Link href={basePath + '/' + referredCollection.id}>Edit</Link>
@@ -136,14 +131,14 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
   return (
     <div className="text-center">
       <h3 className="mt-2 text-sm font-semibold text-secondary-foreground">
-        No referred collections
+        No referred collection
       </h3>
       <p className="mt-1 text-sm text-muted-foreground">
         Get started by creating a new referred collection.
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Referred Collections{' '}
+          <PlusIcon className="h-4" /> New Referred Collection{' '}
         </Button>
       </div>
     </div>

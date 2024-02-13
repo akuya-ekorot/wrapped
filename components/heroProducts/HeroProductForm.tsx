@@ -154,8 +154,7 @@ const HeroProductForm = ({
             <SelectContent>
               {products?.map((product) => (
                 <SelectItem key={product.id} value={product.id.toString()}>
-                  {product.id}
-                  {/* TODO: Replace with a field from the product model */}
+                  {product.name}
                 </SelectItem>
               ))}
             </SelectContent>

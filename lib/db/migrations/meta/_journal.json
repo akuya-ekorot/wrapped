@@ -71,6 +71,13 @@
       "when": 1707778292707,
       "tag": "0009_common_grim_reaper",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1707812914290,
+      "tag": "0010_breezy_madripoor",
+      "breakpoints": true
     }
   ]
 }

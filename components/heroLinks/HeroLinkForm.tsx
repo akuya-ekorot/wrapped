@@ -22,7 +22,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { type HeroLink, insertHeroLinkParams } from '@/lib/db/schema/heroLinks';
+import {
+  type HeroLink,
+  insertHeroLinkParams,
+  HeroLinkType,
+} from '@/lib/db/schema/heroLinks';
 import {
   createHeroLinkAction,
   deleteHeroLinkAction,
@@ -137,12 +141,22 @@ const HeroLinkForm = ({
         >
           Type
         </Label>
-        <Input
-          type="text"
-          name="type"
-          className={cn(errors?.type ? 'ring ring-destructive' : '')}
-          defaultValue={heroLink?.type ?? ''}
-        />
+
+        <Select defaultValue={heroLink?.type} name="type">
+          <SelectTrigger
+            className={cn(errors?.type ? 'ring ring-destructive' : '')}
+          >
+            <SelectValue placeholder="Select type of resource..." />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(HeroLinkType).map(([key, value]) => (
+              <SelectItem key={value} value={value}>
+                {key}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
         {errors?.type ? (
           <p className="text-xs text-destructive mt-2">{errors.type[0]}</p>
         ) : (

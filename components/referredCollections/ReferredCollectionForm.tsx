@@ -172,8 +172,7 @@ const ReferredCollectionForm = ({
                   key={collection.id}
                   value={collection.id.toString()}
                 >
-                  {collection.id}
-                  {/* TODO: Replace with a field from the collection model */}
+                  {collection.name}
                 </SelectItem>
               ))}
             </SelectContent>

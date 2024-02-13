@@ -120,7 +120,7 @@ const ReferredProduct = ({
       )}
     >
       <div className="w-full">
-        <div>{referredProduct.productId}</div>
+        <div>{referredProduct.product?.name}</div>
       </div>
       <Button variant={'link'} asChild>
         <Link href={basePath + '/' + referredProduct.id}>Edit</Link>

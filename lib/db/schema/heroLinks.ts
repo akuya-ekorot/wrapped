@@ -1,4 +1,4 @@
-import { text, varchar, pgTable } from 'drizzle-orm/pg-core';
+import { text, varchar, pgTable, pgEnum } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { heroSections } from './heroSections';
@@ -6,11 +6,21 @@ import { type getHeroLinks } from '@/lib/api/heroLinks/queries';
 
 import { nanoid } from '@/lib/utils';
 
+export const heroLinkTypes = pgEnum('hero_link_types', [
+  'collection',
+  'product',
+]);
+
+export enum HeroLinkType {
+  Collection = 'collection',
+  Product = 'product',
+}
+
 export const heroLinks = pgTable('hero_links', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),
-  type: text('type').notNull(),
+  type: heroLinkTypes('type').notNull(),
   heroSectionId: varchar('hero_section_id', { length: 256 })
     .references(() => heroSections.id, { onDelete: 'cascade' })
     .notNull(),

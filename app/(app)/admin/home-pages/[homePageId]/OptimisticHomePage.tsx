@@ -1,7 +1,7 @@
 'use client';
 
 import { useOptimistic, useState } from 'react';
-import { TAddOptimistic } from '@/app/(app)/admin/home-page/useOptimisticHomePages';
+import { TAddOptimistic } from '@/app/(app)/admin/home-pages/useOptimisticHomePages';
 import { type HomePage } from '@/lib/db/schema/homePages';
 import { cn } from '@/lib/utils';
 

@@ -11,8 +11,8 @@ export default function DashboardTheme({
   const { setTheme } = useTheme();
 
   useEffect(() => {
-    setTheme('dark');
-  }, []);
+    setTheme('wrapped');
+  }, [setTheme]);
 
   return <div>{children}</div>;
 }

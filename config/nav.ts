@@ -59,7 +59,7 @@ export const additionalLinks: AdditionalLinks[] = [
     title: 'Pages management',
     links: [
       {
-        href: '/admin/home-page',
+        href: '/admin/home-pages',
         title: 'Home Page',
         icon: Home,
       },

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import MainCollectionForm from '@/components/mainCollections/MainCollectionForm';
 import { type HomePage, type HomePageId } from '@/lib/db/schema/homePages';
+import InfoListItem from '@/components/shared/InfoListItem';
 
 export default function OptimisticMainCollection({
   mainCollection,
@@ -48,14 +49,16 @@ export default function OptimisticMainCollection({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticMainCollection.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticMainCollection, null, 2)}
-      </pre>
+      <div className="grid grid-cols-2 gap-2">
+        {Object.entries(optimisticMainCollection)
+          .filter(
+            ([key]) =>
+              !['id', 'createdAt', 'updatedAt', 'homePageId'].includes(key),
+          )
+          .map(([key, value]) => (
+            <InfoListItem key={key} title={key} value={value} />
+          ))}
+      </div>
     </div>
   );
 }

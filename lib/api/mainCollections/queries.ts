@@ -10,6 +10,7 @@ import {
   referredCollections,
   type CompleteReferredCollection,
 } from '@/lib/db/schema/referredCollections';
+import { collections } from '@/lib/db/schema/collections';
 
 export const getMainCollections = async () => {
   const rows = await db
@@ -40,18 +41,28 @@ export const getMainCollectionByIdWithReferredCollections = async (
     .select({
       mainCollection: mainCollections,
       referredCollection: referredCollections,
+      collection: collections,
     })
     .from(mainCollections)
     .where(eq(mainCollections.id, mainCollectionId))
     .leftJoin(
       referredCollections,
       eq(mainCollections.id, referredCollections.mainCollectionId),
+    )
+    .leftJoin(
+      collections,
+      eq(referredCollections.collectionId, collections.id),
     );
+
   if (rows.length === 0) return {};
+
   const m = rows[0].mainCollection;
   const mr = rows
     .filter((r) => r.referredCollection !== null)
-    .map((r) => r.referredCollection) as CompleteReferredCollection[];
+    .map((r) => ({
+      ...r.referredCollection,
+      collection: r.collection,
+    })) as CompleteReferredCollection[];
 
   return { mainCollection: m, referredCollections: mr };
 };

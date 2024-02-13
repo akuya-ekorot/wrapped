@@ -49,9 +49,7 @@ const HomePage = async ({ id }: { id: string }) => {
         <OptimisticHomePage homePage={homePage} />
       </div>
       <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">
-          {homePage.title}&apos;s Hero Sections
-        </h3>
+        <h3 className="text-xl font-medium mb-4">Hero Section</h3>
         <HeroSectionList
           images={images}
           homePages={[]}
@@ -60,9 +58,7 @@ const HomePage = async ({ id }: { id: string }) => {
         />
       </div>
       <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">
-          {homePage.title}&apos;s Main Collections
-        </h3>
+        <h3 className="text-xl font-medium mb-4">Main Collections</h3>
         <MainCollectionList
           homePages={[]}
           homePageId={homePage.id}
@@ -71,7 +67,7 @@ const HomePage = async ({ id }: { id: string }) => {
       </div>
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
-          {homePage.title}&apos;s Featured Collection Sections
+          Featured Collection Section
         </h3>
         <FeaturedCollectionSectionList
           collections={collections}
@@ -82,9 +78,7 @@ const HomePage = async ({ id }: { id: string }) => {
         />
       </div>
       <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">
-          {homePage.title}&apos;s Featured Products Section
-        </h3>
+        <h3 className="text-xl font-medium mb-4">Featured Products Section</h3>
         <FeaturedProductsSectionList
           homePages={[]}
           homePageId={homePage.id}

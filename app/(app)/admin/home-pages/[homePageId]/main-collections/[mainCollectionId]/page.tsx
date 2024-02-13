@@ -42,9 +42,7 @@ const MainCollection = async ({ id }: { id: string }) => {
         />
       </div>
       <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">
-          {mainCollection.title}&apos;s Referred Collections
-        </h3>
+        <h3 className="text-xl font-medium mb-4">Referred Collection</h3>
         <ReferredCollectionList
           collections={collections}
           mainCollections={[]}

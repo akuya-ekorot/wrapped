@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { type HomePage, CompleteHomePage } from '@/lib/db/schema/homePages';
 import Modal from '@/components/shared/Modal';
 
-import { useOptimisticHomePages } from '@/app/(app)/admin/home-page/useOptimisticHomePages';
+import { useOptimisticHomePages } from '@/app/(app)/admin/home-pages/useOptimisticHomePages';
 import { Button } from '@/components/ui/button';
 import HomePageForm from './HomePageForm';
 import { PlusIcon } from 'lucide-react';
@@ -44,11 +44,6 @@ export default function HomePageList({
           closeModal={closeModal}
         />
       </Modal>
-      <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={'outline'}>
-          +
-        </Button>
-      </div>
       {optimisticHomePages.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (

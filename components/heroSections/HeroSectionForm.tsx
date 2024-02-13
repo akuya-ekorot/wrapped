@@ -33,6 +33,10 @@ import {
 } from '@/lib/actions/heroSections';
 import { type TImage, type ImageId } from '@/lib/db/schema/images';
 import { type HomePage, type HomePageId } from '@/lib/db/schema/homePages';
+import { useOptimisticImages } from '@/app/(app)/admin/images/useOptimisticImages';
+import Modal from '../shared/Modal';
+import ImageForm from '../images/ImageForm';
+import Image from 'next/image';
 
 const HeroSectionForm = ({
   images,
@@ -83,7 +87,10 @@ const HeroSectionForm = ({
     }
   };
 
-  const handleSubmit = async (data: FormData) => {
+  const handleSubmit = async (
+    { imageId }: { imageId: string | undefined },
+    data: FormData,
+  ) => {
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
@@ -131,8 +138,25 @@ const HeroSectionForm = ({
     }
   };
 
+  const { addOptimisticImage } = useOptimisticImages(images);
+  const [activeImage, setActiveImage] = useState<TImage | null>(null);
+  const [open, setOpen] = useState(false);
+  const openImageModal = (image?: TImage) => {
+    setOpen(true);
+    image ? setActiveImage(image) : setActiveImage(null);
+  };
+  const closeImageModal = () => setOpen(false);
+
+  const handleSubmitWrapper = handleSubmit.bind(null, {
+    imageId: activeImage?.id,
+  });
+
   return (
-    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
+    <form
+      action={handleSubmitWrapper}
+      onChange={handleChange}
+      className={'space-y-8'}
+    >
       {/* Schema fields start */}
       <div>
         <Label
@@ -189,21 +213,48 @@ const HeroSectionForm = ({
           >
             Image
           </Label>
-          <Select defaultValue={heroSection?.imageId} name="imageId">
-            <SelectTrigger
-              className={cn(errors?.imageId ? 'ring ring-destructive' : '')}
-            >
-              <SelectValue placeholder="Select a image" />
-            </SelectTrigger>
-            <SelectContent>
-              {images?.map((image) => (
-                <SelectItem key={image.id} value={image.id.toString()}>
-                  {image.id}
-                  {/* TODO: Replace with a field from the image model */}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+
+          {activeImage && (
+            <div className="w-full h-40">
+              <Image
+                src={activeImage.url}
+                alt=""
+                height={240 / 2}
+                width={240 / 2}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
+          {heroSection?.imageId ? null : (
+            <>
+              <Modal
+                open={open}
+                setOpen={setOpen}
+                title={activeImage ? 'Edit Image' : 'Create Image'}
+              >
+                <ImageForm
+                  image={activeImage}
+                  addOptimistic={addOptimisticImage}
+                  openModal={openImageModal}
+                  closeModal={closeImageModal}
+                  setActiveImage={setActiveImage}
+                />
+              </Modal>
+              {!activeImage && (
+                <div className="w-full">
+                  <Button
+                    className="w-full"
+                    type="button"
+                    onClick={() => openImageModal()}
+                  >
+                    Upload Image
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
+
           {errors?.imageId ? (
             <p className="text-xs text-destructive mt-2">{errors.imageId[0]}</p>
           ) : (

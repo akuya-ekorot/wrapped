@@ -63,11 +63,6 @@ export default function HeroSectionList({
           homePageId={homePageId}
         />
       </Modal>
-      <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={'outline'}>
-          +
-        </Button>
-      </div>
       {optimisticHeroSections.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (

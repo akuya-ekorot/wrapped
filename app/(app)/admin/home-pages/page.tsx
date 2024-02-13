@@ -11,7 +11,7 @@ export default async function HomePagesPage() {
     <main>
       <div className="relative">
         <div className="flex justify-between">
-          <h1 className="font-semibold text-2xl my-2">Home Pages</h1>
+          <h1 className="font-semibold text-2xl my-2">Home Page</h1>
         </div>
         <HomePages />
       </div>
