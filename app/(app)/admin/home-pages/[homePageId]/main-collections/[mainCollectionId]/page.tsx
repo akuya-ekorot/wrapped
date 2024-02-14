@@ -31,6 +31,7 @@ const MainCollection = async ({ id }: { id: string }) => {
   const { collections } = await getCollections();
 
   if (!mainCollection) notFound();
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
@@ -42,7 +43,7 @@ const MainCollection = async ({ id }: { id: string }) => {
         />
       </div>
       <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">Referred Collection</h3>
+        <h3 className="text-xl font-medium mb-4">Referred Collections</h3>
         <ReferredCollectionList
           collections={collections}
           mainCollections={[]}

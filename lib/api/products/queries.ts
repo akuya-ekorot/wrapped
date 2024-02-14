@@ -15,6 +15,7 @@ import {
   productTags,
   type CompleteProductTag,
 } from '@/lib/db/schema/productTags';
+import { CompleteImage, images } from '@/lib/db/schema/images';
 
 export const getProducts = async () => {
   const rows = await db
@@ -47,10 +48,12 @@ export const getProductByIdWithProductImagesAndOptionsAndProductTags = async (
       productImage: productImages,
       option: options,
       productTag: productTags,
+      image: images,
     })
     .from(products)
     .where(eq(products.id, productId))
     .leftJoin(productImages, eq(products.id, productImages.productId))
+    .leftJoin(images, eq(productImages.imageId, images.id))
     .leftJoin(options, eq(products.id, options.productId))
     .leftJoin(productTags, eq(products.id, productTags.productId));
 
@@ -65,6 +68,13 @@ export const getProductByIdWithProductImagesAndOptionsAndProductTags = async (
         self.findIndex((s) => s.productImage!.id === r.productImage!.id) === i,
     )
     .map((p) => p.productImage) as CompleteProductImage[];
+
+  const p_i = rows
+    .filter((r) => r.image !== null)
+    .filter(
+      (r, i, self) => self.findIndex((s) => s.image!.id === r.image!.id) === i,
+    )
+    .map((p) => p.image) as CompleteImage[];
 
   const po = rows
     .filter((r) => r.option !== null)
@@ -85,6 +95,7 @@ export const getProductByIdWithProductImagesAndOptionsAndProductTags = async (
   return {
     product: p,
     productImages: p_images,
+    images: p_i,
     options: po,
     productTags: p_tags,
   };
