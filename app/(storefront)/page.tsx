@@ -18,10 +18,7 @@ import {
   getFeaturedProductsSectionByIdWithReferredProducts,
   getFeaturedProductsSections,
 } from '@/lib/api/featuredProductsSection/queries';
-import {
-  CompleteReferredProduct,
-  ReferredProduct,
-} from '@/lib/db/schema/referredProducts';
+import { CompleteReferredProduct } from '@/lib/db/schema/referredProducts';
 import { getProductByIdWithProductImagesAndOptionsAndProductTags } from '@/lib/api/products/queries';
 
 export async function generateMetadata(): Promise<Metadata> {
