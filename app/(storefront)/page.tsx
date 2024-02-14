@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { getHomePages } from '@/lib/api/homePages/queries';
-import { Menu, Search, ShoppingCart, UserCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -34,7 +33,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function Page() {
   return (
     <main>
-      <StorefrontNavBar />
       <HomeHero />
       <MainCollections />
       <FeaturedCollection />
@@ -256,48 +254,5 @@ async function HomeHero() {
         </div>
       )}
     </section>
-  );
-}
-
-function StorefrontNavBar() {
-  return (
-    <nav className="z-10 bg-background flex items-center justify-center sticky top-0 border-b">
-      <div className="relative w-full max-w-6xl flex items-center justify-between">
-        <Button variant={'link'}>
-          <Menu />
-        </Button>
-        <Link
-          className="hover:underline absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2"
-          href={'/'}
-        >
-          <span className="uppercase font-semibold">wrapped nation</span>
-        </Link>
-        <div className="flex items-stretch gap-4">
-          <NavBarLink href="/search">
-            <Search />
-          </NavBarLink>
-          <NavBarLink href="/cart">
-            <ShoppingCart />
-          </NavBarLink>
-          <NavBarLink href="/account">
-            <UserCircle />
-          </NavBarLink>
-        </div>
-      </div>
-    </nav>
-  );
-}
-
-function NavBarLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link className="h-12 w-12 flex items-center justify-center" href={href}>
-      {children}
-    </Link>
   );
 }

@@ -40,3 +40,11 @@ export type OptimisticAction<T> = {
   action: Action;
   data: T;
 };
+
+
+export type Action = "create" | "update" | "delete";
+
+export type OptimisticAction<T> = {
+  action: Action;
+  data: T;
+};
