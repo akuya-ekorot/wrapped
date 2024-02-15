@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, Search, ShoppingCart, UserCircle } from 'lucide-react';
 import Link from 'next/link';
 import { NavBarLink } from './NavBarLink';
+import CartLink from './CartLink';
 
 export function StorefrontNavBar() {
   return (
@@ -21,7 +22,7 @@ export function StorefrontNavBar() {
             <Search />
           </NavBarLink>
           <NavBarLink href="/cart">
-            <ShoppingCart />
+            <CartLink />
           </NavBarLink>
           <NavBarLink href="/account">
             <UserCircle />

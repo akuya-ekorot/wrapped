@@ -8,10 +8,12 @@ export default function CustomLink({
   name,
   value,
   children,
+  disabled,
 }: {
   name: string;
   value: string;
   children: React.ReactNode;
+  disabled?: boolean;
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -21,6 +23,10 @@ export default function CustomLink({
     params.set(name, value);
     return params.toString();
   }, [searchParams]);
+
+  if (disabled) {
+    return <>{children}</>;
+  }
 
   return <Link href={`${pathname}?${createQueryString()}`}>{children}</Link>;
 }

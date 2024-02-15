@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import CustomLink from './CustomLink';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
+import AddToCartButton from './AddToCartButton';
 
 export default async function Page({
   params: { productId },
@@ -52,18 +53,22 @@ export default async function Page({
 
   return (
     <main className="space-y-4 p-8">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-12">
         <ImageGrid activeImage={activeImage} images={product.images} />
-        <section className="divide-y">
-          <header className="py-4">
+        <section className="divide-y px-8">
+          <header className="space-y-2">
             <h1 className="text-3xl">{product.name}</h1>
-            {variant?.name && (
+            {variant?.name ? (
               <h2 className="text-2xl text-primary/80">{variant.name}</h2>
+            ) : (
+              <h2 className="text-lg text-destructive/80">
+                Product with selected options unavailable
+              </h2>
             )}
             <h3 className="text-2xl text-primary font-semibold">
               {variant?.price
                 ? formatter.format(variant.price)
-                : formatter.format(product.price)}
+                : `${formatter.format(product.price)}`}
             </h3>
           </header>
           <div className="space-y-4 py-4">
@@ -94,9 +99,9 @@ export default async function Page({
             ))}
           </div>
           <div className="py-4">
-            <Button className="w-full">Add to cart</Button>
+            <AddToCartButton variant={variant} />
           </div>
-          <div className="py-4">
+          <div className="py-4 text-primary/90 text-sm space-y-2">
             <p>{product.description}</p>
             {variant?.description && <p>{variant.description}</p>}
           </div>
@@ -116,7 +121,7 @@ function ImageGrid({
   return (
     <section className="grid grid-cols-10 gap-4">
       <ScrollArea className="col-span-2 h-[600px]">
-        <div className="flex flex-col h-[600px] justify-center gap-2">
+        <div className="flex flex-col h-[600px] gap-2">
           {images.map((image) => (
             <CustomLink key={image.id} name="activeImageId" value={image.id}>
               <Image
@@ -134,7 +139,7 @@ function ImageGrid({
       <div className="col-span-8">
         {activeImage && (
           <Image
-            className="object-contain w-[600px] h-[600px]"
+            className="object-contain object-top w-[600px] h-[600px]"
             src={activeImage.url}
             alt=""
             height={600}

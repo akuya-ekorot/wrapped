@@ -16,13 +16,13 @@ const productHasDuplicateVariantOptions = async (
   newVariantOption: z.infer<typeof insertVariantOptionSchema>,
 ) => {
   // get all variant options of the current variant.
-  const variantOptionsForVariant = await db
+  const variantOptionsForCurrentVariant = await db
     .select()
     .from(variantOptions)
     .where(eq(variantOptions.variantId, newVariantOption.variantId));
 
   // merge the new variant option with the existing ones.
-  const currentOptions = [...variantOptionsForVariant, newVariantOption];
+  const currentOptions = [...variantOptionsForCurrentVariant, newVariantOption];
 
   // get all the variant options for all variants of the current product.
   const allOtherVariantOptionsForProduct = await db
@@ -37,18 +37,19 @@ const productHasDuplicateVariantOptions = async (
     )
     .leftJoin(variants, eq(variants.id, variantOptions.variantId));
 
+  // generate a key for the option and optionValue.
   const generateOptionKey = (optionId: string, optionValueId: string) =>
     `${optionId}-${optionValueId}`;
 
   const hasDuplicate = ({
     allOtherVariantOptionsForProduct,
-    variantOptionsForVariant,
+    currentOptions,
   }: {
     allOtherVariantOptionsForProduct: any[];
-    variantOptionsForVariant: any[];
+    currentOptions: any[];
   }) => {
     const currentOptionsSet = new Set(
-      variantOptionsForVariant.map((vo) =>
+      currentOptions.map((vo) =>
         generateOptionKey(vo.optionId, vo.optionValueId),
       ),
     );
@@ -65,7 +66,7 @@ const productHasDuplicateVariantOptions = async (
 
   return hasDuplicate({
     allOtherVariantOptionsForProduct,
-    variantOptionsForVariant: currentOptions,
+    currentOptions,
   });
 };
 
