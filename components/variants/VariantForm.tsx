@@ -85,6 +85,7 @@ const VariantForm = ({
     const payload = Object.fromEntries(data.entries());
     const variantParsed = await insertVariantParams.safeParseAsync({
       productId,
+      isComplete: variant?.isComplete ?? false,
       ...payload,
     });
     if (!variantParsed.success) {

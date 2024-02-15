@@ -32,6 +32,7 @@ export default function VariantOptionList({
   optionValueId,
   variants,
   variantId,
+  productId,
 }: {
   variantOptions: CompleteVariantOption[];
   options: Option[];
@@ -40,6 +41,7 @@ export default function VariantOptionList({
   optionValueId?: OptionValueId;
   variants: Variant[];
   variantId?: VariantId;
+  productId: string;
 }) {
   const { optimisticVariantOptions, addOptimisticVariantOption } =
     useOptimisticVariantOptions(
@@ -79,12 +81,15 @@ export default function VariantOptionList({
           optionValueId={optionValueId}
           variants={variants}
           variantId={variantId}
+          productId={productId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={'outline'}>
-          +
-        </Button>
+        {!variants?.find((v) => v.id === variantId)?.isComplete && (
+          <Button onClick={() => openModal()} variant={'outline'}>
+            +
+          </Button>
+        )}
       </div>
       {optimisticVariantOptions.length === 0 ? (
         <EmptyState openModal={openModal} />

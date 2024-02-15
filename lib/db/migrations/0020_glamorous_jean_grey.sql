@@ -1,0 +1,1 @@
+ALTER TABLE "variants" ADD COLUMN "is_complete" boolean;

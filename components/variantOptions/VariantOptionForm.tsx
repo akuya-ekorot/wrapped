@@ -50,6 +50,7 @@ const VariantOptionForm = ({
   closeModal,
   addOptimistic,
   postSuccess,
+  productId,
 }: {
   variantOption?: VariantOption | null;
   options: Option[];
@@ -62,6 +63,7 @@ const VariantOptionForm = ({
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
   postSuccess?: () => void;
+  productId: string;
 }) => {
   const { errors, hasErrors, setErrors, handleChange } =
     useValidatedForm<VariantOption>(insertVariantOptionParams);
@@ -91,7 +93,10 @@ const VariantOptionForm = ({
     }
   };
 
-  const handleSubmit = async (data: FormData) => {
+  const handleSubmit = async (
+    { productId }: { productId: string },
+    data: FormData,
+  ) => {
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
@@ -99,6 +104,7 @@ const VariantOptionForm = ({
       optionId,
       optionValueId,
       variantId,
+      productId,
       ...payload,
     });
     if (!variantOptionParsed.success) {
@@ -144,8 +150,14 @@ const VariantOptionForm = ({
 
   const [activeOptionId, setActiveOptionId] = useState<OptionId | null>(null);
 
+  const handleSubmitWrapper = handleSubmit.bind(null, { productId });
+
   return (
-    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
+    <form
+      action={handleSubmitWrapper}
+      onChange={handleChange}
+      className={'space-y-8'}
+    >
       {/* Schema fields start */}
 
       {optionId ? null : (

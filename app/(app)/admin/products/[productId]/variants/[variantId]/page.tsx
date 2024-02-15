@@ -12,7 +12,10 @@ import { getOptions } from '@/lib/api/options/queries';
 import { getOptionValues } from '@/lib/api/optionValues/queries';
 import VariantImageList from '@/components/variantImages/VariantImageList';
 import { getProductImages } from '@/lib/api/productImages/queries';
-import { getVariantImages } from '@/lib/api/variantImages/queries';
+import {
+  getVariantImages,
+  getVariantImagesByVariantId,
+} from '@/lib/api/variantImages/queries';
 import { getImages } from '@/lib/api/images/queries';
 
 export const revalidate = 0;
@@ -42,7 +45,7 @@ const Variant = async ({
   const { options } = await getOptions();
   const { optionValues } = await getOptionValues();
   const { productImages } = await getProductImages();
-  const { variantImages } = await getVariantImages();
+  const { variantImages } = await getVariantImagesByVariantId(id);
   const { images } = await getImages();
 
   if (!variant) notFound();
@@ -80,6 +83,7 @@ const Variant = async ({
           variants={[]}
           variantId={variant.id}
           variantOptions={variantOptions}
+          productId={productId}
         />
       </div>
     </Suspense>

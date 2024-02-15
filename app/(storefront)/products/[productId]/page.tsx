@@ -36,11 +36,14 @@ export default async function Page({
 
   const { activeImageId } = searchParams;
 
-  const activeImage = product.images.find((image) =>
-    Array.isArray(activeImageId)
-      ? image.id === activeImageId[0]
-      : image.id === activeImageId,
-  );
+  const activeImage =
+    product.images.find((image) =>
+      Array.isArray(activeImageId)
+        ? image.id === activeImageId[0]
+        : image.id === activeImageId,
+    ) ??
+    variant?.images[0] ??
+    product.images[0];
 
   const formatter = new Intl.NumberFormat('en-KE', {
     style: 'currency',
@@ -50,10 +53,7 @@ export default async function Page({
   return (
     <main className="space-y-4 p-8">
       <div className="grid grid-cols-2 gap-4">
-        <ImageGrid
-          activeImage={activeImage ?? product.images[0]}
-          images={variant ? variant.images : product.images}
-        />
+        <ImageGrid activeImage={activeImage} images={product.images} />
         <section className="divide-y">
           <header className="py-4">
             <h1 className="text-3xl">{product.name}</h1>

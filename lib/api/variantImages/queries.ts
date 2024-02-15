@@ -6,8 +6,33 @@ import {
   variantImages,
 } from '@/lib/db/schema/variantImages';
 import { productImages } from '@/lib/db/schema/productImages';
-import { variants } from '@/lib/db/schema/variants';
+import { VariantId, variantIdSchema, variants } from '@/lib/db/schema/variants';
 import { images } from '@/lib/db/schema/images';
+
+export const getVariantImagesByVariantId = async (id: VariantId) => {
+  const { id: variantId } = variantIdSchema.parse({ id });
+
+  const rows = await db
+    .select({
+      variantImage: variantImages,
+      productImage: productImages,
+      variant: variants,
+      image: images,
+    })
+    .from(variantImages)
+    .where(eq(variantImages.variantId, variantId))
+    .leftJoin(productImages, eq(variantImages.productImageId, productImages.id))
+    .leftJoin(images, eq(productImages.imageId, images.id))
+    .leftJoin(variants, eq(variantImages.variantId, variants.id));
+
+  const v = rows.map((r) => ({
+    ...r.variantImage,
+    image: r.image,
+    productImage: r.productImage,
+    variant: r.variant,
+  }));
+  return { variantImages: v };
+};
 
 export const getVariantImages = async () => {
   const rows = await db

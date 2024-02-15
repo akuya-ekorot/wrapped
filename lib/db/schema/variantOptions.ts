@@ -8,6 +8,7 @@ import { variants } from './variants';
 import { type getVariantOptions } from '@/lib/api/variantOptions/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
+import { products } from './products';
 
 export const variantOptions = pgTable(
   'variant_options',
@@ -24,7 +25,9 @@ export const variantOptions = pgTable(
     variantId: varchar('variant_id', { length: 256 })
       .references(() => variants.id, { onDelete: 'cascade' })
       .notNull(),
-
+    productId: varchar('product_id', { length: 256 })
+      .references(() => products.id, { onDelete: 'cascade' })
+      .notNull(),
     createdAt: timestamp('created_at')
       .notNull()
       .default(sql`now()`),
@@ -36,6 +39,7 @@ export const variantOptions = pgTable(
     return {
       optionIdIndex: uniqueIndex('variant_option_id_idx').on(
         variantOptions.optionId,
+        variantOptions.variantId,
       ),
     };
   },
