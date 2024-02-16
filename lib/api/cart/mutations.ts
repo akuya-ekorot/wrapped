@@ -16,6 +16,7 @@ export type CartItem = {
 
 export type Cart = {
   items: CartItem[];
+  totalPrice: number;
 };
 
 const setCart = async (cartId: string, cart: Cart) => {
@@ -35,16 +36,22 @@ export const addToCart = async ({
     const existingItem = cart.items.find(
       (item) => item.variant.id === cartItem.variant.id,
     );
+
     if (existingItem) {
       existingItem.quantity += cartItem.quantity;
+      cart.totalPrice += (cartItem.variant.price ?? 0) * cartItem.quantity;
     } else {
       cart.items.push(cartItem);
+      cart.totalPrice = cart.items.reduce(
+        (acc, item) => acc + (item.variant.price ?? 0) * item.quantity,
+        0,
+      );
     }
   } else {
-    cart = { items: [cartItem] };
+    cart = { items: [cartItem], totalPrice: cartItem.variant.price ?? 0 };
   }
-  await setCart(cartId, cart);
 
+  await setCart(cartId, cart);
   return cart;
 };
 
@@ -58,9 +65,13 @@ export const removeFromCart = async ({
   let cart = getCart(cartId);
 
   if (cart) {
-    cart.items = cart.items.filter(
-      (item) => item.variant.id !== cartItem.variant.id,
-    );
+    cart = {
+      totalPrice:
+        cart.totalPrice - (cartItem.variant.price ?? 0) * cartItem.quantity,
+      items: cart.items.filter(
+        (item) => item.variant.id !== cartItem.variant.id,
+      ),
+    };
   }
 
   await setCart(cartId, cart);
@@ -77,11 +88,14 @@ export const incrementCartItem = async ({
   let cart = getCart(cartId);
 
   if (cart) {
-    cart.items = cart.items.map((item) =>
-      item.variant.id === cartItem.variant.id
-        ? { ...item, quantity: item.quantity + 1 }
-        : item,
-    );
+    cart = {
+      totalPrice: cart.totalPrice + (cartItem.variant.price ?? 0),
+      items: cart.items.map((item) =>
+        item.variant.id === cartItem.variant.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      ),
+    };
   }
 
   await setCart(cartId, cart);
@@ -98,11 +112,14 @@ export const decrementCartItem = async ({
   let cart = getCart(cartId);
 
   if (cart) {
-    cart.items = cart.items.map((item) =>
-      item.variant.id === cartItem.variant.id
-        ? { ...item, quantity: item.quantity - 1 }
-        : item,
-    );
+    cart = {
+      totalPrice: cart.totalPrice - (cartItem.variant.price ?? 0),
+      items: cart.items.map((item) =>
+        item.variant.id === cartItem.variant.id
+          ? { ...item, quantity: item.quantity - 1 }
+          : item,
+      ),
+    };
   }
 
   await setCart(cartId, cart);
@@ -111,5 +128,5 @@ export const decrementCartItem = async ({
 
 export const clearCart = async (cartId: string) => {
   localStorage.removeItem(cartId);
-  return { items: [] };
+  return { items: [], totalPrice: 0 };
 };

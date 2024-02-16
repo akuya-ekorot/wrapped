@@ -1,6 +1,6 @@
 'use client';
+
 import { Cart } from '@/lib/api/cart/mutations';
-import { getCart } from '@/lib/api/cart/queries';
 import { useState, createContext, useContext, useEffect } from 'react';
 import { create } from 'zustand';
 
@@ -24,7 +24,23 @@ export const useCart = () => {
 };
 
 const CartProvider = ({ children }: { children: React.ReactNode }) => {
-  const [store] = useState(() => createStore(getCart('cart')));
+  const [cart, setCart] = useState<Cart>({ items: [] });
+  const [store, setStore] = useState(() => createStore(cart));
+
+  useEffect(() => {
+    const getCart = (cartId: string) => {
+      if (localStorage === undefined) {
+        return { items: [] };
+      }
+
+      const cart = localStorage.getItem(cartId);
+      return cart ? (JSON.parse(cart) as Cart) : { items: [] };
+    };
+    const cart = getCart('cart');
+    setCart(cart);
+    setStore(() => createStore(cart));
+  }, [setCart, setStore]);
+
   return <CartContext.Provider value={store}>{children}</CartContext.Provider>;
 };
 

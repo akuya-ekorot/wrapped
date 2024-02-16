@@ -1,7 +1,10 @@
 import { Cart } from './mutations';
 
 export const getCart = (cartId: string) => {
-  const cart = localStorage.getItem(cartId);
+  if (localStorage === undefined) {
+    return { items: [], totalPrice: 0 };
+  }
 
-  return cart ? (JSON.parse(cart) as Cart) : { items: [] };
+  const cart = localStorage.getItem(cartId);
+  return cart ? (JSON.parse(cart) as Cart) : { items: [], totalPrice: 0 };
 };

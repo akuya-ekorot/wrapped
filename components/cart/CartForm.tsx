@@ -14,9 +14,11 @@ import { Input } from '../ui/input';
 import { Minus, Plus } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { ScrollArea } from '../ui/scroll-area';
+import { useRouter } from 'next/navigation';
 
 export default function CartForm() {
   const { cart, setCart } = useCart()();
+  const router = useRouter();
 
   return (
     <div className="space-y-8">
@@ -28,7 +30,11 @@ export default function CartForm() {
         </ul>
       </ScrollArea>
       <div className="flex flex-col items-center justify-between">
-        <Button className="w-full" variant={'default'}>
+        <Button
+          onClick={() => router.push('/checkout')}
+          className="w-full"
+          variant={'default'}
+        >
           Checkout
         </Button>
         <Button

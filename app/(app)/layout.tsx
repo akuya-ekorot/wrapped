@@ -20,7 +20,6 @@ export default async function AppLayout({
           {children}
         </main>
       </div>
-      <Toaster richColors />
     </DashboardTheme>
   );
 }

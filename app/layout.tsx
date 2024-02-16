@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import NextAuthProvider from '@/lib/auth/Provider';
 import CartProvider from '@/components/CartProvider';
+import { Toaster } from '@/components/ui/sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
           <NextAuthProvider>
             <CartProvider>{children}</CartProvider>
           </NextAuthProvider>
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>
