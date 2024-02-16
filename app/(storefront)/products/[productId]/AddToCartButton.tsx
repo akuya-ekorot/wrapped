@@ -1,21 +1,21 @@
 'use client';
 
 import { useCart } from '@/components/CartProvider';
+import CartForm from '@/components/cart/CartForm';
+import Modal from '@/components/shared/Modal';
 import { Button } from '@/components/ui/button';
-import { getProductPageDetailsByProductId } from '@/lib/api/products/queries';
+import { type CartItem, addToCart } from '@/lib/api/cart/mutations';
+import { useState } from 'react';
 
 export default function AddToCartButton({
-  variant,
+  cartItem,
 }: {
-  variant:
-    | NonNullable<
-        Awaited<ReturnType<typeof getProductPageDetailsByProductId>>
-      >['variants'][number]
-    | undefined;
+  cartItem: CartItem | undefined;
 }) {
   const setCart = useCart()((store) => store.setCart);
+  const [open, setOpen] = useState(false);
 
-  if (!variant) {
+  if (!cartItem) {
     return (
       <Button disabled className="w-full">
         Product with selected options unavailable
@@ -24,14 +24,19 @@ export default function AddToCartButton({
   }
 
   return (
-    <Button
-      onClick={async () => {
-        setCart([{ variant, quantity: 1 }]);
-      }}
-      disabled={!variant}
-      className="w-full"
-    >
-      Add to cart
-    </Button>
+    <div>
+      <Modal title="Cart" open={open} setOpen={setOpen}>
+        <CartForm />
+      </Modal>
+      <Button
+        onClick={async () => {
+          setCart(await addToCart({ cartId: 'cart', cartItem }));
+          setOpen(true);
+        }}
+        className="w-full"
+      >
+        Add to cart
+      </Button>
+    </div>
   );
 }

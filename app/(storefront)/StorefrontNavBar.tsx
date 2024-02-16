@@ -21,9 +21,7 @@ export function StorefrontNavBar() {
           <NavBarLink href="/search">
             <Search />
           </NavBarLink>
-          <NavBarLink href="/cart">
-            <CartLink />
-          </NavBarLink>
+          <CartLink />
           <NavBarLink href="/account">
             <UserCircle />
           </NavBarLink>

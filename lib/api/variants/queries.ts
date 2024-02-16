@@ -12,6 +12,33 @@ import {
 } from '@/lib/db/schema/variantOptions';
 import { options } from '@/lib/db/schema/options';
 import { optionValues } from '@/lib/db/schema/optionValues';
+import { variantImages } from '@/lib/db/schema/variantImages';
+import { productImages } from '@/lib/db/schema/productImages';
+import { images } from '@/lib/db/schema/images';
+
+export const getCartVariants = async () => {
+  const rows = await db
+    .select({
+      variant: variants,
+      product: products,
+      image: images,
+      option: options,
+    })
+    .from(variants)
+    .leftJoin(products, eq(variants.productId, products.id))
+    .leftJoin(variantOptions, eq(variants.id, variantOptions.variantId))
+    .leftJoin(options, eq(variantOptions.optionId, options.id))
+    .leftJoin(variantImages, eq(variants.id, variantImages.variantId))
+    .leftJoin(productImages, eq(productImages.id, variantImages.productImageId))
+    .leftJoin(images, eq(productImages.imageId, images.id));
+
+  const v = rows.map((r) => ({
+    ...r.variant,
+    product: r.product,
+  }));
+
+  return { variants: v };
+};
 
 export const getVariants = async () => {
   const rows = await db

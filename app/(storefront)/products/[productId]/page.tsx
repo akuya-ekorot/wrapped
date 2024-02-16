@@ -6,6 +6,8 @@ import CustomLink from './CustomLink';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import AddToCartButton from './AddToCartButton';
+import { getCartVariants } from '@/lib/api/variants/queries';
+import { CartItem } from '@/lib/api/cart/mutations';
 
 export default async function Page({
   params: { productId },
@@ -15,6 +17,7 @@ export default async function Page({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const product = await getProductPageDetailsByProductId(productId);
+  const { variants } = await getCartVariants();
 
   if (!product) {
     return notFound();
@@ -34,6 +37,28 @@ export default async function Page({
       ),
     );
   });
+
+  let cartItem: CartItem | undefined;
+
+  if (!variant) {
+    cartItem = undefined;
+  } else {
+    const { images, options, ...rest } = variant;
+    cartItem = {
+      quantity: 1,
+      variant: {
+        ...rest,
+        //@ts-ignore
+        options: product.options.map((option) => ({
+          ...option,
+          value: option.values.find(
+            (o) => o.id === searchParams[option.name!],
+          )!,
+        })),
+        image: variant.images[0] ?? product.images[0],
+      },
+    };
+  }
 
   const { activeImageId } = searchParams;
 
@@ -99,7 +124,7 @@ export default async function Page({
             ))}
           </div>
           <div className="py-4">
-            <AddToCartButton variant={variant} />
+            <AddToCartButton cartItem={cartItem} />
           </div>
           <div className="py-4 text-primary/90 text-sm space-y-2">
             <p>{product.description}</p>
