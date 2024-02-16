@@ -7,39 +7,36 @@ import { toast } from 'sonner';
 import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 
 import { type Action, cn } from '@/lib/utils';
-import { type TAddOptimistic } from '@/app/(app)/customer-addresses/useOptimisticCustomerAddresses';
+import { type TAddOptimistic } from '@/app/(app)/admin/customers/useOptimisticCustomers';
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useBackPath } from '@/components/shared/BackButton';
 
+import { type Customer, insertCustomerParams } from '@/lib/db/schema/customers';
 import {
-  type CustomerAddress,
-  insertCustomerAddressParams,
-} from '@/lib/db/schema/customerAddresses';
-import {
-  createCustomerAddressAction,
-  updateCustomerAddressAction,
-} from '@/lib/actions/customerAddresses';
+  createCustomerAction,
+  updateCustomerAction,
+} from '@/lib/actions/customers';
 
-const CustomerAddressForm = ({
-  customerAddress,
+const CustomerForm = ({
+  customer,
   openModal,
   closeModal,
   addOptimistic,
   postSuccess,
 }: {
-  customerAddress?: CustomerAddress | null;
-  openModal?: (customerAddress?: CustomerAddress) => void;
+  customer?: Customer | null;
+  openModal?: (customerAddress?: Customer) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
   postSuccess?: () => void;
 }) => {
   const { errors, hasErrors, setErrors, handleChange } = useValidatedForm<
-    CustomerAddress & { name: string | undefined; email: string }
-  >(insertCustomerAddressParams);
-  const editing = !!customerAddress?.id;
+    Customer & { name: string | undefined; email: string }
+  >(insertCustomerParams);
+  const editing = !!customer?.id;
 
   const [pending, startMutation] = useTransition();
 
@@ -48,7 +45,7 @@ const CustomerAddressForm = ({
 
   const onSuccess = (
     action: Action,
-    data?: { error: string; values: CustomerAddress },
+    data?: { error: string; values: Customer },
   ) => {
     const failed = Boolean(data?.error);
     if (failed) {
@@ -59,7 +56,7 @@ const CustomerAddressForm = ({
     } else {
       router.refresh();
       postSuccess && postSuccess();
-      toast.success(`CustomerAddress ${action}d!`);
+      toast.success(`Customer ${action}d!`);
       if (action === 'delete') router.push(backpath);
     }
   };
@@ -68,43 +65,42 @@ const CustomerAddressForm = ({
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
-    const customerAddressParsed =
-      await insertCustomerAddressParams.safeParseAsync({
-        ...payload,
-      });
-    if (!customerAddressParsed.success) {
-      setErrors(customerAddressParsed?.error.flatten().fieldErrors);
+    const customerParsed = await insertCustomerParams.safeParseAsync({
+      ...payload,
+    });
+    if (!customerParsed.success) {
+      setErrors(customerParsed?.error.flatten().fieldErrors);
       return;
     }
 
     closeModal && closeModal();
 
-    const values = customerAddressParsed.data;
-    const pendingCustomerAddress: CustomerAddress = {
-      updatedAt: customerAddress?.updatedAt ?? new Date(),
-      createdAt: customerAddress?.createdAt ?? new Date(),
-      id: customerAddress?.id ?? '',
-      userId: customerAddress?.userId ?? '',
+    const values = customerParsed.data;
+    const pendingCustomer: Customer = {
+      updatedAt: customer?.updatedAt ?? new Date(),
+      createdAt: customer?.createdAt ?? new Date(),
+      id: customer?.id ?? '',
+      userId: customer?.userId ?? '',
       ...values,
     };
     try {
       startMutation(async () => {
         addOptimistic &&
           addOptimistic({
-            data: pendingCustomerAddress,
+            data: pendingCustomer,
             action: editing ? 'update' : 'create',
           });
 
         const error = editing
-          ? await updateCustomerAddressAction({
+          ? await updateCustomerAction({
               ...values,
-              id: customerAddress.id,
+              id: customer.id,
             })
-          : await createCustomerAddressAction(values);
+          : await createCustomerAction(values);
 
         const errorFormatted = {
           error: error ?? 'Error',
-          values: pendingCustomerAddress,
+          values: pendingCustomer,
         };
         onSuccess(
           editing ? 'update' : 'create',
@@ -150,7 +146,7 @@ const CustomerAddressForm = ({
             name="country"
             placeholder="Country"
             className={cn(errors?.country ? 'ring ring-destructive' : '')}
-            defaultValue={customerAddress?.country ?? ''}
+            defaultValue={customer?.country ?? ''}
           />
           {errors?.country && (
             <p className="text-xs text-destructive mt-2">{errors.country[0]}</p>
@@ -162,7 +158,7 @@ const CustomerAddressForm = ({
             name="city"
             placeholder="City"
             className={cn(errors?.city ? 'ring ring-destructive' : '')}
-            defaultValue={customerAddress?.city ?? ''}
+            defaultValue={customer?.city ?? ''}
           />
           {errors?.city && (
             <p className="text-xs text-destructive mt-2">{errors.city[0]}</p>
@@ -175,7 +171,7 @@ const CustomerAddressForm = ({
           name="address"
           placeholder="Address"
           className={cn(errors?.address ? 'ring ring-destructive' : '')}
-          defaultValue={customerAddress?.address ?? ''}
+          defaultValue={customer?.address ?? ''}
         />
         {errors?.address && (
           <p className="text-xs text-destructive mt-2">{errors.address[0]}</p>
@@ -187,7 +183,7 @@ const CustomerAddressForm = ({
           name="extraDetails"
           placeholder="Extra address details. eg Apt 3, 2nd floor, etc."
           className={cn(errors?.extraDetails ? 'ring ring-destructive' : '')}
-          defaultValue={customerAddress?.extraDetails ?? ''}
+          defaultValue={customer?.extraDetails ?? ''}
         />
         {errors?.extraDetails && (
           <p className="text-xs text-destructive mt-2">
@@ -202,7 +198,7 @@ const CustomerAddressForm = ({
             name="phone"
             placeholder="Phone Number"
             className={cn(errors?.phone ? 'ring ring-destructive' : '')}
-            defaultValue={customerAddress?.phone ?? ''}
+            defaultValue={customer?.phone ?? ''}
           />
           {errors?.phone && (
             <p className="text-xs text-destructive mt-2">{errors.phone[0]}</p>
@@ -214,7 +210,7 @@ const CustomerAddressForm = ({
             name="postalCode"
             placeholder="Postal Code"
             className={cn(errors?.postalCode ? 'ring ring-destructive' : '')}
-            defaultValue={customerAddress?.postalCode ?? ''}
+            defaultValue={customer?.postalCode ?? ''}
           />
           {errors?.postalCode && (
             <p className="text-xs text-destructive mt-2">
@@ -233,7 +229,7 @@ const CustomerAddressForm = ({
   );
 };
 
-export default CustomerAddressForm;
+export default CustomerForm;
 
 const SaveButton = ({ errors }: { errors: boolean }) => {
   const { pending } = useFormStatus();

@@ -14,6 +14,7 @@ import {
   insertDeliveryZoneParams,
   updateDeliveryZoneParams,
 } from '@/lib/db/schema/deliveryZones';
+import { getDeliveryZones } from '../api/deliveryZones/queries';
 
 const handleErrors = (e: unknown) => {
   const errMsg = 'Error, please try again.';
@@ -26,6 +27,11 @@ const handleErrors = (e: unknown) => {
 };
 
 const revalidateDeliveryZones = () => revalidatePath('/delivery-zones');
+
+export const getDeliveryZonesAction = async () => {
+  const { deliveryZones } = await getDeliveryZones();
+  return deliveryZones;
+};
 
 export const createDeliveryZoneAction = async (
   input: NewDeliveryZoneParams,

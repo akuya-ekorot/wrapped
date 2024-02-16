@@ -155,6 +155,13 @@
       "when": 1708084767909,
       "tag": "0021_large_karnak",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "5",
+      "when": 1708091303995,
+      "tag": "0022_eager_nemesis",
+      "breakpoints": true
     }
   ]
 }

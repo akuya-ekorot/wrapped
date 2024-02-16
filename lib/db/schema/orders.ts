@@ -27,6 +27,7 @@ export const orderStatus = pgEnum('order_status', [
   'delivered',
   'cancelled',
 ]);
+
 export enum OrderStatus {
   'Payment Pending' = 'payment_pending',
   'Payment Paid' = 'payment_paid',

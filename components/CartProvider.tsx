@@ -24,17 +24,17 @@ export const useCart = () => {
 };
 
 const CartProvider = ({ children }: { children: React.ReactNode }) => {
-  const [cart, setCart] = useState<Cart>({ items: [] });
+  const [cart, setCart] = useState<Cart>({ items: [], totalPrice: 0 });
   const [store, setStore] = useState(() => createStore(cart));
 
   useEffect(() => {
     const getCart = (cartId: string) => {
       if (localStorage === undefined) {
-        return { items: [] };
+        return { items: [], totalPrice: 0 };
       }
 
       const cart = localStorage.getItem(cartId);
-      return cart ? (JSON.parse(cart) as Cart) : { items: [] };
+      return cart ? (JSON.parse(cart) as Cart) : { items: [], totalPrice: 0 };
     };
     const cart = getCart('cart');
     setCart(cart);

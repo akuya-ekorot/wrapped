@@ -16,7 +16,7 @@ export default function CheckoutProducts() {
     <div className="divide-y">
       <div>
         {cart.items.map((item) => (
-          <div className="flex gap-4 text-sm">
+          <div key={item.variant.id} className="flex gap-4 text-sm">
             <div className="h-24 w-24 rounded relative">
               <Image
                 src={item.variant.image.url}
@@ -38,7 +38,9 @@ export default function CheckoutProducts() {
               </div>
               <div className="flex gap-2 items-center flex-wrap">
                 {item.variant.options.map((option) => (
-                  <Badge className="text-xs">{option.value.name}</Badge>
+                  <Badge key={option.id} className="text-xs">
+                    {option.value.name}
+                  </Badge>
                 ))}
               </div>
             </div>

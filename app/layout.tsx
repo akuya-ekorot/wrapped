@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import NextAuthProvider from '@/lib/auth/Provider';
 import CartProvider from '@/components/CartProvider';
 import { Toaster } from '@/components/ui/sonner';
+import CustomerProvider from '@/components/CustomerProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,7 +29,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NextAuthProvider>
-            <CartProvider>{children}</CartProvider>
+            <CustomerProvider>
+              <CartProvider>{children}</CartProvider>
+            </CustomerProvider>
           </NextAuthProvider>
           <Toaster richColors />
         </ThemeProvider>
