@@ -1,4 +1,5 @@
-import { text, varchar, pgTable, pgEnum } from 'drizzle-orm/pg-core';
+import { customPgTable } from '../utils';
+import { text, varchar, pgEnum } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { heroSections } from './heroSections';
@@ -16,7 +17,7 @@ export enum HeroLinkType {
   Product = 'product',
 }
 
-export const heroLinks = pgTable('hero_links', {
+export const heroLinks = customPgTable('hero_links', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

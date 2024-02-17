@@ -1,11 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import {
-  integer,
-  real,
-  varchar,
-  timestamp,
-  pgTable,
-} from 'drizzle-orm/pg-core';
+import { integer, real, varchar, timestamp } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { variants } from './variants';
@@ -15,7 +10,7 @@ import { type getOrderItems } from '@/lib/api/orderItems/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const orderItems = pgTable('order_items', {
+export const orderItems = customPgTable('order_items', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

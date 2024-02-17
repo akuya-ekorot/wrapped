@@ -1,11 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import {
-  text,
-  varchar,
-  timestamp,
-  pgTable,
-  uniqueIndex,
-} from 'drizzle-orm/pg-core';
+import { text, varchar, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
@@ -13,7 +8,7 @@ import { type getTags } from '@/lib/api/tags/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const tags = pgTable(
+export const tags = customPgTable(
   'tags',
   {
     id: varchar('id', { length: 191 })

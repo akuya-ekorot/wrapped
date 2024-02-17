@@ -1,4 +1,5 @@
-import { text, varchar, pgTable } from 'drizzle-orm/pg-core';
+import { customPgTable } from '../utils';
+import { text, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { homePages } from './homePages';
@@ -6,7 +7,7 @@ import { type getMainCollections } from '@/lib/api/mainCollections/queries';
 
 import { nanoid } from '@/lib/utils';
 
-export const mainCollections = pgTable('main_collections', {
+export const mainCollections = customPgTable('main_collections', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

@@ -1,5 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import { varchar, timestamp, pgTable, uniqueIndex } from 'drizzle-orm/pg-core';
+import { varchar, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { collections } from './collections';
@@ -8,7 +9,7 @@ import { type getProductCollections } from '@/lib/api/productCollections/queries
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const productCollections = pgTable(
+export const productCollections = customPgTable(
   'product_collections',
   {
     id: varchar('id', { length: 191 })

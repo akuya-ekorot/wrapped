@@ -1,10 +1,10 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
 import {
   text,
   real,
   varchar,
   timestamp,
-  pgTable,
   uniqueIndex,
   pgEnum,
 } from 'drizzle-orm/pg-core';
@@ -20,7 +20,7 @@ export enum ProductStatus {
   Draft = 'draft',
 }
 
-export const products = pgTable(
+export const products = customPgTable(
   'products',
   {
     id: varchar('id', { length: 191 })

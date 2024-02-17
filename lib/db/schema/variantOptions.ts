@@ -1,5 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import { varchar, timestamp, pgTable, uniqueIndex } from 'drizzle-orm/pg-core';
+import { varchar, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { options } from './options';
@@ -10,7 +11,7 @@ import { type getVariantOptions } from '@/lib/api/variantOptions/queries';
 import { nanoid, timestamps } from '@/lib/utils';
 import { products } from './products';
 
-export const variantOptions = pgTable(
+export const variantOptions = customPgTable(
   'variant_options',
   {
     id: varchar('id', { length: 191 })

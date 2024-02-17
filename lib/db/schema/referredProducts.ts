@@ -1,4 +1,5 @@
-import { varchar, pgTable } from 'drizzle-orm/pg-core';
+import { customPgTable } from '../utils';
+import { varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { products } from './products';
@@ -7,7 +8,7 @@ import { type getReferredProducts } from '@/lib/api/referredProducts/queries';
 
 import { nanoid } from '@/lib/utils';
 
-export const referredProducts = pgTable('referred_products', {
+export const referredProducts = customPgTable('referred_products', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

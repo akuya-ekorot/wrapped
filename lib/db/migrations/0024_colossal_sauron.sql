@@ -1,1 +1,0 @@
-ALTER TABLE "orders" ALTER COLUMN "payment_id" SET NOT NULL;

@@ -1,5 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import { varchar, timestamp, pgTable } from 'drizzle-orm/pg-core';
+import { varchar, timestamp } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { collections } from './collections';
@@ -8,7 +9,7 @@ import { type getLinkToCollections } from '@/lib/api/linkToCollections/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const linkToCollections = pgTable('link_to_collections', {
+export const linkToCollections = customPgTable('link_to_collections', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

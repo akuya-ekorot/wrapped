@@ -1,5 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import { varchar, timestamp, pgTable } from 'drizzle-orm/pg-core';
+import { varchar, timestamp } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { tags } from './tags';
@@ -8,7 +9,7 @@ import { type getProductTags } from '@/lib/api/productTags/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const productTags = pgTable('product_tags', {
+export const productTags = customPgTable('product_tags', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

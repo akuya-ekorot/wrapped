@@ -1,4 +1,5 @@
-import { text, varchar, pgTable } from 'drizzle-orm/pg-core';
+import { customPgTable } from '../utils';
+import { text, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { images } from './images';
@@ -7,7 +8,7 @@ import { type getHeroSections } from '@/lib/api/heroSections/queries';
 
 import { nanoid } from '@/lib/utils';
 
-export const heroSections = pgTable('hero_sections', {
+export const heroSections = customPgTable('hero_sections', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

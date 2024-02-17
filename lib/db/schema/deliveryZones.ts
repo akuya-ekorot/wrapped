@@ -1,5 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import { text, real, varchar, timestamp, pgTable } from 'drizzle-orm/pg-core';
+import { text, real, varchar, timestamp } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
@@ -7,7 +8,7 @@ import { type getDeliveryZones } from '@/lib/api/deliveryZones/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const deliveryZones = pgTable('delivery_zones', {
+export const deliveryZones = customPgTable('delivery_zones', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

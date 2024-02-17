@@ -1,9 +1,9 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
 import {
   text,
   varchar,
   timestamp,
-  pgTable,
   uniqueIndex,
   pgEnum,
 } from 'drizzle-orm/pg-core';
@@ -23,7 +23,7 @@ export enum CollectionStatus {
   Draft = 'draft',
 }
 
-export const collections = pgTable(
+export const collections = customPgTable(
   'collections',
   {
     id: varchar('id', { length: 191 })

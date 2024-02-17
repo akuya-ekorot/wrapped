@@ -1,5 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import { text, varchar, timestamp, pgTable } from 'drizzle-orm/pg-core';
+import { text, varchar, timestamp } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { products } from './products';
@@ -7,7 +8,7 @@ import { type getOptions } from '@/lib/api/options/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const options = pgTable('options', {
+export const options = customPgTable('options', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

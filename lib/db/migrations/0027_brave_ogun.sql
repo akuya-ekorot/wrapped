@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX IF NOT EXISTS "product_collection_unique_idx" ON "product_collections" ("collection_id","product_id");

@@ -1,5 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import { varchar, timestamp, pgTable } from 'drizzle-orm/pg-core';
+import { varchar, timestamp } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { images } from './images';
@@ -8,7 +9,7 @@ import { type getCollectionImages } from '@/lib/api/collectionImages/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const collectionImages = pgTable('collection_images', {
+export const collectionImages = customPgTable('collection_images', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

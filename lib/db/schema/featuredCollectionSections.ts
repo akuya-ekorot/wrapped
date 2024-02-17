@@ -1,4 +1,5 @@
-import { text, varchar, pgTable } from 'drizzle-orm/pg-core';
+import { customPgTable } from '../utils';
+import { text, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { images } from './images';
@@ -8,7 +9,7 @@ import { type getFeaturedCollectionSections } from '@/lib/api/featuredCollection
 
 import { nanoid } from '@/lib/utils';
 
-export const featuredCollectionSections = pgTable(
+export const featuredCollectionSections = customPgTable(
   'featured_collection_sections',
   {
     id: varchar('id', { length: 191 })

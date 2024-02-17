@@ -1,11 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import {
-  text,
-  varchar,
-  timestamp,
-  pgTable,
-  uniqueIndex,
-} from 'drizzle-orm/pg-core';
+import { text, varchar, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
@@ -13,7 +8,7 @@ import { type getImages } from '@/lib/api/images/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const images = pgTable(
+export const images = customPgTable(
   'images',
   {
     id: varchar('id', { length: 191 })

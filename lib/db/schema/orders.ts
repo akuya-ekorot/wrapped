@@ -1,12 +1,6 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
-import {
-  text,
-  varchar,
-  real,
-  timestamp,
-  pgTable,
-  pgEnum,
-} from 'drizzle-orm/pg-core';
+import { text, varchar, real, timestamp, pgEnum } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { deliveryZones } from './deliveryZones';
@@ -46,7 +40,7 @@ export enum OrderType {
   Delivery = 'delivery',
 }
 
-export const orders = pgTable('orders', {
+export const orders = customPgTable('orders', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

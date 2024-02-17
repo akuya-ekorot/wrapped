@@ -1,11 +1,11 @@
 {
-  "id": "b890b848-8403-4441-8d0b-5b764d034148",
+  "id": "babb28f8-8d78-424c-85a7-2144eeb9ed3b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
-    "account": {
-      "name": "account",
+    "WRAPPED_account": {
+      "name": "WRAPPED_account",
       "schema": "",
       "columns": {
         "userId": {
@@ -77,26 +77,33 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "account_userId_user_id_fk": {
-          "name": "account_userId_user_id_fk",
-          "tableFrom": "account",
-          "tableTo": "user",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+        "WRAPPED_account_userId_WRAPPED_user_id_fk": {
+          "name": "WRAPPED_account_userId_WRAPPED_user_id_fk",
+          "tableFrom": "WRAPPED_account",
+          "tableTo": "WRAPPED_user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "account_provider_providerAccountId_pk": {
-          "name": "account_provider_providerAccountId_pk",
-          "columns": ["provider", "providerAccountId"]
+        "WRAPPED_account_provider_providerAccountId_pk": {
+          "name": "WRAPPED_account_provider_providerAccountId_pk",
+          "columns": [
+            "provider",
+            "providerAccountId"
+          ]
         }
       },
       "uniqueConstraints": {}
     },
-    "session": {
-      "name": "session",
+    "WRAPPED_session": {
+      "name": "WRAPPED_session",
       "schema": "",
       "columns": {
         "sessionToken": {
@@ -120,12 +127,16 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "session_userId_user_id_fk": {
-          "name": "session_userId_user_id_fk",
-          "tableFrom": "session",
-          "tableTo": "user",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+        "WRAPPED_session_userId_WRAPPED_user_id_fk": {
+          "name": "WRAPPED_session_userId_WRAPPED_user_id_fk",
+          "tableFrom": "WRAPPED_session",
+          "tableTo": "WRAPPED_user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -133,8 +144,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
-      "name": "user",
+    "WRAPPED_user": {
+      "name": "WRAPPED_user",
       "schema": "",
       "columns": {
         "id": {
@@ -173,8 +184,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "verificationToken": {
-      "name": "verificationToken",
+    "WRAPPED_verificationToken": {
+      "name": "WRAPPED_verificationToken",
       "schema": "",
       "columns": {
         "identifier": {
@@ -199,15 +210,2064 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "verificationToken_identifier_token_pk": {
-          "name": "verificationToken_identifier_token_pk",
-          "columns": ["identifier", "token"]
+        "WRAPPED_verificationToken_identifier_token_pk": {
+          "name": "WRAPPED_verificationToken_identifier_token_pk",
+          "columns": [
+            "identifier",
+            "token"
+          ]
         }
       },
       "uniqueConstraints": {}
+    },
+    "WRAPPED_collection_images": {
+      "name": "WRAPPED_collection_images",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "collection_id": {
+          "name": "collection_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_collection_images_image_id_WRAPPED_images_id_fk": {
+          "name": "WRAPPED_collection_images_image_id_WRAPPED_images_id_fk",
+          "tableFrom": "WRAPPED_collection_images",
+          "tableTo": "WRAPPED_images",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_collection_images_collection_id_WRAPPED_collections_id_fk": {
+          "name": "WRAPPED_collection_images_collection_id_WRAPPED_collections_id_fk",
+          "tableFrom": "WRAPPED_collection_images",
+          "tableTo": "WRAPPED_collections",
+          "columnsFrom": [
+            "collection_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_collections": {
+      "name": "WRAPPED_collections",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "collection_status",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "collection_slug_idx": {
+          "name": "collection_slug_idx",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_customers": {
+      "name": "WRAPPED_customers",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "country": {
+          "name": "country",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "city": {
+          "name": "city",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "extra_details": {
+          "name": "extra_details",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone": {
+          "name": "phone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "postal_code": {
+          "name": "postal_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_customers_user_id_WRAPPED_user_id_fk": {
+          "name": "WRAPPED_customers_user_id_WRAPPED_user_id_fk",
+          "tableFrom": "WRAPPED_customers",
+          "tableTo": "WRAPPED_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_delivery_zones": {
+      "name": "WRAPPED_delivery_zones",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "delivery_cost": {
+          "name": "delivery_cost",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_featured_collection_sections": {
+      "name": "WRAPPED_featured_collection_sections",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "call_to_action": {
+          "name": "call_to_action",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "collection_id": {
+          "name": "collection_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "home_page_id": {
+          "name": "home_page_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_featured_collection_sections_image_id_WRAPPED_images_id_fk": {
+          "name": "WRAPPED_featured_collection_sections_image_id_WRAPPED_images_id_fk",
+          "tableFrom": "WRAPPED_featured_collection_sections",
+          "tableTo": "WRAPPED_images",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_featured_collection_sections_collection_id_WRAPPED_collections_id_fk": {
+          "name": "WRAPPED_featured_collection_sections_collection_id_WRAPPED_collections_id_fk",
+          "tableFrom": "WRAPPED_featured_collection_sections",
+          "tableTo": "WRAPPED_collections",
+          "columnsFrom": [
+            "collection_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_featured_collection_sections_home_page_id_WRAPPED_home_pages_id_fk": {
+          "name": "WRAPPED_featured_collection_sections_home_page_id_WRAPPED_home_pages_id_fk",
+          "tableFrom": "WRAPPED_featured_collection_sections",
+          "tableTo": "WRAPPED_home_pages",
+          "columnsFrom": [
+            "home_page_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_featured_products_section": {
+      "name": "WRAPPED_featured_products_section",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "home_page_id": {
+          "name": "home_page_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_featured_products_section_home_page_id_WRAPPED_home_pages_id_fk": {
+          "name": "WRAPPED_featured_products_section_home_page_id_WRAPPED_home_pages_id_fk",
+          "tableFrom": "WRAPPED_featured_products_section",
+          "tableTo": "WRAPPED_home_pages",
+          "columnsFrom": [
+            "home_page_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_hero_collections": {
+      "name": "WRAPPED_hero_collections",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "collection_id": {
+          "name": "collection_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hero_link_id": {
+          "name": "hero_link_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_hero_collections_collection_id_WRAPPED_collections_id_fk": {
+          "name": "WRAPPED_hero_collections_collection_id_WRAPPED_collections_id_fk",
+          "tableFrom": "WRAPPED_hero_collections",
+          "tableTo": "WRAPPED_collections",
+          "columnsFrom": [
+            "collection_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_hero_collections_hero_link_id_WRAPPED_hero_links_id_fk": {
+          "name": "WRAPPED_hero_collections_hero_link_id_WRAPPED_hero_links_id_fk",
+          "tableFrom": "WRAPPED_hero_collections",
+          "tableTo": "WRAPPED_hero_links",
+          "columnsFrom": [
+            "hero_link_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_hero_links": {
+      "name": "WRAPPED_hero_links",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "hero_link_types",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hero_section_id": {
+          "name": "hero_section_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_hero_links_hero_section_id_WRAPPED_hero_sections_id_fk": {
+          "name": "WRAPPED_hero_links_hero_section_id_WRAPPED_hero_sections_id_fk",
+          "tableFrom": "WRAPPED_hero_links",
+          "tableTo": "WRAPPED_hero_sections",
+          "columnsFrom": [
+            "hero_section_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_hero_products": {
+      "name": "WRAPPED_hero_products",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hero_link_id": {
+          "name": "hero_link_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_hero_products_product_id_WRAPPED_products_id_fk": {
+          "name": "WRAPPED_hero_products_product_id_WRAPPED_products_id_fk",
+          "tableFrom": "WRAPPED_hero_products",
+          "tableTo": "WRAPPED_products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_hero_products_hero_link_id_WRAPPED_hero_links_id_fk": {
+          "name": "WRAPPED_hero_products_hero_link_id_WRAPPED_hero_links_id_fk",
+          "tableFrom": "WRAPPED_hero_products",
+          "tableTo": "WRAPPED_hero_links",
+          "columnsFrom": [
+            "hero_link_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_hero_sections": {
+      "name": "WRAPPED_hero_sections",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "call_to_action": {
+          "name": "call_to_action",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "home_page_id": {
+          "name": "home_page_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_hero_sections_image_id_WRAPPED_images_id_fk": {
+          "name": "WRAPPED_hero_sections_image_id_WRAPPED_images_id_fk",
+          "tableFrom": "WRAPPED_hero_sections",
+          "tableTo": "WRAPPED_images",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_hero_sections_home_page_id_WRAPPED_home_pages_id_fk": {
+          "name": "WRAPPED_hero_sections_home_page_id_WRAPPED_home_pages_id_fk",
+          "tableFrom": "WRAPPED_hero_sections",
+          "tableTo": "WRAPPED_home_pages",
+          "columnsFrom": [
+            "home_page_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_home_pages": {
+      "name": "WRAPPED_home_pages",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_images": {
+      "name": "WRAPPED_images",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "image_url_idx": {
+          "name": "image_url_idx",
+          "columns": [
+            "url"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_link_to_collections": {
+      "name": "WRAPPED_link_to_collections",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "collection_id": {
+          "name": "collection_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "page_link_id": {
+          "name": "page_link_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_link_to_collections_collection_id_WRAPPED_collections_id_fk": {
+          "name": "WRAPPED_link_to_collections_collection_id_WRAPPED_collections_id_fk",
+          "tableFrom": "WRAPPED_link_to_collections",
+          "tableTo": "WRAPPED_collections",
+          "columnsFrom": [
+            "collection_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_link_to_collections_page_link_id_WRAPPED_page_links_id_fk": {
+          "name": "WRAPPED_link_to_collections_page_link_id_WRAPPED_page_links_id_fk",
+          "tableFrom": "WRAPPED_link_to_collections",
+          "tableTo": "WRAPPED_page_links",
+          "columnsFrom": [
+            "page_link_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_link_to_products": {
+      "name": "WRAPPED_link_to_products",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "page_link_id": {
+          "name": "page_link_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_link_to_products_product_id_WRAPPED_products_id_fk": {
+          "name": "WRAPPED_link_to_products_product_id_WRAPPED_products_id_fk",
+          "tableFrom": "WRAPPED_link_to_products",
+          "tableTo": "WRAPPED_products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_link_to_products_page_link_id_WRAPPED_page_links_id_fk": {
+          "name": "WRAPPED_link_to_products_page_link_id_WRAPPED_page_links_id_fk",
+          "tableFrom": "WRAPPED_link_to_products",
+          "tableTo": "WRAPPED_page_links",
+          "columnsFrom": [
+            "page_link_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_main_collections": {
+      "name": "WRAPPED_main_collections",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "home_page_id": {
+          "name": "home_page_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_main_collections_home_page_id_WRAPPED_home_pages_id_fk": {
+          "name": "WRAPPED_main_collections_home_page_id_WRAPPED_home_pages_id_fk",
+          "tableFrom": "WRAPPED_main_collections",
+          "tableTo": "WRAPPED_home_pages",
+          "columnsFrom": [
+            "home_page_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_option_values": {
+      "name": "WRAPPED_option_values",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "option_id": {
+          "name": "option_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_option_values_option_id_WRAPPED_options_id_fk": {
+          "name": "WRAPPED_option_values_option_id_WRAPPED_options_id_fk",
+          "tableFrom": "WRAPPED_option_values",
+          "tableTo": "WRAPPED_options",
+          "columnsFrom": [
+            "option_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_options": {
+      "name": "WRAPPED_options",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_options_product_id_WRAPPED_products_id_fk": {
+          "name": "WRAPPED_options_product_id_WRAPPED_products_id_fk",
+          "tableFrom": "WRAPPED_options",
+          "tableTo": "WRAPPED_products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_order_items": {
+      "name": "WRAPPED_order_items",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount": {
+          "name": "amount",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "variant_id": {
+          "name": "variant_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order_id": {
+          "name": "order_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_order_items_variant_id_WRAPPED_variants_id_fk": {
+          "name": "WRAPPED_order_items_variant_id_WRAPPED_variants_id_fk",
+          "tableFrom": "WRAPPED_order_items",
+          "tableTo": "WRAPPED_variants",
+          "columnsFrom": [
+            "variant_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_order_items_order_id_WRAPPED_orders_id_fk": {
+          "name": "WRAPPED_order_items_order_id_WRAPPED_orders_id_fk",
+          "tableFrom": "WRAPPED_order_items",
+          "tableTo": "WRAPPED_orders",
+          "columnsFrom": [
+            "order_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_order_items_user_id_WRAPPED_user_id_fk": {
+          "name": "WRAPPED_order_items_user_id_WRAPPED_user_id_fk",
+          "tableFrom": "WRAPPED_order_items",
+          "tableTo": "WRAPPED_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_orders": {
+      "name": "WRAPPED_orders",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "order_status",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "order_type",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "delivery_zone_id": {
+          "name": "delivery_zone_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "payment_id": {
+          "name": "payment_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "amount": {
+          "name": "amount",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_orders_delivery_zone_id_WRAPPED_delivery_zones_id_fk": {
+          "name": "WRAPPED_orders_delivery_zone_id_WRAPPED_delivery_zones_id_fk",
+          "tableFrom": "WRAPPED_orders",
+          "tableTo": "WRAPPED_delivery_zones",
+          "columnsFrom": [
+            "delivery_zone_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_orders_payment_id_WRAPPED_payments_id_fk": {
+          "name": "WRAPPED_orders_payment_id_WRAPPED_payments_id_fk",
+          "tableFrom": "WRAPPED_orders",
+          "tableTo": "WRAPPED_payments",
+          "columnsFrom": [
+            "payment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_orders_user_id_WRAPPED_user_id_fk": {
+          "name": "WRAPPED_orders_user_id_WRAPPED_user_id_fk",
+          "tableFrom": "WRAPPED_orders",
+          "tableTo": "WRAPPED_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_page_links": {
+      "name": "WRAPPED_page_links",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_payments": {
+      "name": "WRAPPED_payments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "reference": {
+          "name": "reference",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount": {
+          "name": "amount",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "payment_reference_idx": {
+          "name": "payment_reference_idx",
+          "columns": [
+            "reference"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_product_collections": {
+      "name": "WRAPPED_product_collections",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "collection_id": {
+          "name": "collection_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "product_collection_unique_idx": {
+          "name": "product_collection_unique_idx",
+          "columns": [
+            "collection_id",
+            "product_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "WRAPPED_product_collections_collection_id_WRAPPED_collections_id_fk": {
+          "name": "WRAPPED_product_collections_collection_id_WRAPPED_collections_id_fk",
+          "tableFrom": "WRAPPED_product_collections",
+          "tableTo": "WRAPPED_collections",
+          "columnsFrom": [
+            "collection_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_product_collections_product_id_WRAPPED_products_id_fk": {
+          "name": "WRAPPED_product_collections_product_id_WRAPPED_products_id_fk",
+          "tableFrom": "WRAPPED_product_collections",
+          "tableTo": "WRAPPED_products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_product_images": {
+      "name": "WRAPPED_product_images",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_product_images_image_id_WRAPPED_images_id_fk": {
+          "name": "WRAPPED_product_images_image_id_WRAPPED_images_id_fk",
+          "tableFrom": "WRAPPED_product_images",
+          "tableTo": "WRAPPED_images",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_product_images_product_id_WRAPPED_products_id_fk": {
+          "name": "WRAPPED_product_images_product_id_WRAPPED_products_id_fk",
+          "tableFrom": "WRAPPED_product_images",
+          "tableTo": "WRAPPED_products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_product_tags": {
+      "name": "WRAPPED_product_tags",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "tag_id": {
+          "name": "tag_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_product_tags_tag_id_WRAPPED_tags_id_fk": {
+          "name": "WRAPPED_product_tags_tag_id_WRAPPED_tags_id_fk",
+          "tableFrom": "WRAPPED_product_tags",
+          "tableTo": "WRAPPED_tags",
+          "columnsFrom": [
+            "tag_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_product_tags_product_id_WRAPPED_products_id_fk": {
+          "name": "WRAPPED_product_tags_product_id_WRAPPED_products_id_fk",
+          "tableFrom": "WRAPPED_product_tags",
+          "tableTo": "WRAPPED_products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_products": {
+      "name": "WRAPPED_products",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "price": {
+          "name": "price",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "product_status",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "product_slug_idx": {
+          "name": "product_slug_idx",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_referred_collections": {
+      "name": "WRAPPED_referred_collections",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "collection_id": {
+          "name": "collection_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "main_collection_id": {
+          "name": "main_collection_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_referred_collections_collection_id_WRAPPED_collections_id_fk": {
+          "name": "WRAPPED_referred_collections_collection_id_WRAPPED_collections_id_fk",
+          "tableFrom": "WRAPPED_referred_collections",
+          "tableTo": "WRAPPED_collections",
+          "columnsFrom": [
+            "collection_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_referred_collections_main_collection_id_WRAPPED_main_collections_id_fk": {
+          "name": "WRAPPED_referred_collections_main_collection_id_WRAPPED_main_collections_id_fk",
+          "tableFrom": "WRAPPED_referred_collections",
+          "tableTo": "WRAPPED_main_collections",
+          "columnsFrom": [
+            "main_collection_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_referred_products": {
+      "name": "WRAPPED_referred_products",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "featured_products_section_id": {
+          "name": "featured_products_section_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_referred_products_product_id_WRAPPED_products_id_fk": {
+          "name": "WRAPPED_referred_products_product_id_WRAPPED_products_id_fk",
+          "tableFrom": "WRAPPED_referred_products",
+          "tableTo": "WRAPPED_products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_referred_products_featured_products_section_id_WRAPPED_featured_products_section_id_fk": {
+          "name": "WRAPPED_referred_products_featured_products_section_id_WRAPPED_featured_products_section_id_fk",
+          "tableFrom": "WRAPPED_referred_products",
+          "tableTo": "WRAPPED_featured_products_section",
+          "columnsFrom": [
+            "featured_products_section_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_tags": {
+      "name": "WRAPPED_tags",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "tag_name_idx": {
+          "name": "tag_name_idx",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_variant_images": {
+      "name": "WRAPPED_variant_images",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "product_image_id": {
+          "name": "product_image_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "variant_id": {
+          "name": "variant_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_variant_images_product_image_id_WRAPPED_product_images_id_fk": {
+          "name": "WRAPPED_variant_images_product_image_id_WRAPPED_product_images_id_fk",
+          "tableFrom": "WRAPPED_variant_images",
+          "tableTo": "WRAPPED_product_images",
+          "columnsFrom": [
+            "product_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_variant_images_variant_id_WRAPPED_variants_id_fk": {
+          "name": "WRAPPED_variant_images_variant_id_WRAPPED_variants_id_fk",
+          "tableFrom": "WRAPPED_variant_images",
+          "tableTo": "WRAPPED_variants",
+          "columnsFrom": [
+            "variant_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_variant_options": {
+      "name": "WRAPPED_variant_options",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "option_id": {
+          "name": "option_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "option_value_id": {
+          "name": "option_value_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "variant_id": {
+          "name": "variant_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "variant_option_id_idx": {
+          "name": "variant_option_id_idx",
+          "columns": [
+            "option_id",
+            "variant_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "WRAPPED_variant_options_option_id_WRAPPED_options_id_fk": {
+          "name": "WRAPPED_variant_options_option_id_WRAPPED_options_id_fk",
+          "tableFrom": "WRAPPED_variant_options",
+          "tableTo": "WRAPPED_options",
+          "columnsFrom": [
+            "option_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_variant_options_option_value_id_WRAPPED_option_values_id_fk": {
+          "name": "WRAPPED_variant_options_option_value_id_WRAPPED_option_values_id_fk",
+          "tableFrom": "WRAPPED_variant_options",
+          "tableTo": "WRAPPED_option_values",
+          "columnsFrom": [
+            "option_value_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_variant_options_variant_id_WRAPPED_variants_id_fk": {
+          "name": "WRAPPED_variant_options_variant_id_WRAPPED_variants_id_fk",
+          "tableFrom": "WRAPPED_variant_options",
+          "tableTo": "WRAPPED_variants",
+          "columnsFrom": [
+            "variant_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "WRAPPED_variant_options_product_id_WRAPPED_products_id_fk": {
+          "name": "WRAPPED_variant_options_product_id_WRAPPED_products_id_fk",
+          "tableFrom": "WRAPPED_variant_options",
+          "tableTo": "WRAPPED_products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "WRAPPED_variants": {
+      "name": "WRAPPED_variants",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "price": {
+          "name": "price",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "variant_status",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "is_complete": {
+          "name": "is_complete",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "WRAPPED_variants_product_id_WRAPPED_products_id_fk": {
+          "name": "WRAPPED_variants_product_id_WRAPPED_products_id_fk",
+          "tableFrom": "WRAPPED_variants",
+          "tableTo": "WRAPPED_products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     }
   },
-  "enums": {},
+  "enums": {
+    "collection_status": {
+      "name": "collection_status",
+      "values": {
+        "active": "active",
+        "draft": "draft"
+      }
+    },
+    "hero_link_types": {
+      "name": "hero_link_types",
+      "values": {
+        "collection": "collection",
+        "product": "product"
+      }
+    },
+    "order_status": {
+      "name": "order_status",
+      "values": {
+        "payment_pending": "payment_pending",
+        "payment_paid": "payment_paid",
+        "payment_failed": "payment_failed",
+        "processing": "processing",
+        "ready_for_pickup": "ready_for_pickup",
+        "picked_up": "picked_up",
+        "shipped": "shipped",
+        "delivered": "delivered",
+        "cancelled": "cancelled"
+      }
+    },
+    "order_type": {
+      "name": "order_type",
+      "values": {
+        "pickup": "pickup",
+        "delivery": "delivery"
+      }
+    },
+    "product_status": {
+      "name": "product_status",
+      "values": {
+        "active": "active",
+        "draft": "draft"
+      }
+    },
+    "variant_status": {
+      "name": "variant_status",
+      "values": {
+        "active": "active",
+        "draft": "draft"
+      }
+    }
+  },
   "schemas": {},
   "_meta": {
     "columns": {},

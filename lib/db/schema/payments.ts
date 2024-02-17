@@ -1,10 +1,10 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
 import {
   text,
   real,
   varchar,
   timestamp,
-  pgTable,
   uniqueIndex,
 } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
@@ -14,7 +14,7 @@ import { type getPayments } from '@/lib/api/payments/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const payments = pgTable(
+export const payments = customPgTable(
   'payments',
   {
     id: varchar('id', { length: 191 })

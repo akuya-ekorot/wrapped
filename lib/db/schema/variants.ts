@@ -1,10 +1,10 @@
+import { customPgTable } from '../utils';
 import { sql } from 'drizzle-orm';
 import {
   varchar,
   text,
   real,
   timestamp,
-  pgTable,
   pgEnum,
   boolean,
 } from 'drizzle-orm/pg-core';
@@ -21,7 +21,7 @@ export enum VariantStatus {
   Draft = 'draft',
 }
 
-export const variants = pgTable('variants', {
+export const variants = customPgTable('variants', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

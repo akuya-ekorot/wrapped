@@ -1,4 +1,5 @@
-import { text, varchar, pgTable } from 'drizzle-orm/pg-core';
+import { customPgTable } from '../utils';
+import { text, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
@@ -6,7 +7,7 @@ import { type getHomePages } from '@/lib/api/homePages/queries';
 
 import { nanoid } from '@/lib/utils';
 
-export const homePages = pgTable('home_pages', {
+export const homePages = customPgTable('home_pages', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

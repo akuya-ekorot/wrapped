@@ -1,13 +1,8 @@
-import {
-  timestamp,
-  pgTable,
-  text,
-  primaryKey,
-  integer,
-} from 'drizzle-orm/pg-core';
+import { customPgTable } from '../utils';
+import { timestamp, text, primaryKey, integer } from 'drizzle-orm/pg-core';
 import type { AdapterAccount } from '@auth/core/adapters';
 
-export const users = pgTable('user', {
+export const users = customPgTable('user', {
   id: text('id').notNull().primaryKey(),
   name: text('name'),
   email: text('email').notNull(),
@@ -17,7 +12,7 @@ export const users = pgTable('user', {
 
 export type User = typeof users.$inferSelect;
 
-export const accounts = pgTable(
+export const accounts = customPgTable(
   'account',
   {
     userId: text('userId')
@@ -39,7 +34,7 @@ export const accounts = pgTable(
   }),
 );
 
-export const sessions = pgTable('session', {
+export const sessions = customPgTable('session', {
   sessionToken: text('sessionToken').notNull().primaryKey(),
   userId: text('userId')
     .notNull()
@@ -47,7 +42,7 @@ export const sessions = pgTable('session', {
   expires: timestamp('expires', { mode: 'date' }).notNull(),
 });
 
-export const verificationTokens = pgTable(
+export const verificationTokens = customPgTable(
   'verificationToken',
   {
     identifier: text('identifier').notNull(),

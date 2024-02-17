@@ -1,4 +1,5 @@
-import { text, varchar, pgTable } from 'drizzle-orm/pg-core';
+import { customPgTable } from '../utils';
+import { text, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { homePages } from './homePages';
@@ -6,15 +7,18 @@ import { type getFeaturedProductsSections } from '@/lib/api/featuredProductsSect
 
 import { nanoid } from '@/lib/utils';
 
-export const featuredProductsSection = pgTable('featured_products_section', {
-  id: varchar('id', { length: 191 })
-    .primaryKey()
-    .$defaultFn(() => nanoid()),
-  title: text('title').notNull(),
-  homePageId: varchar('home_page_id', { length: 256 })
-    .references(() => homePages.id, { onDelete: 'cascade' })
-    .notNull(),
-});
+export const featuredProductsSection = customPgTable(
+  'featured_products_section',
+  {
+    id: varchar('id', { length: 191 })
+      .primaryKey()
+      .$defaultFn(() => nanoid()),
+    title: text('title').notNull(),
+    homePageId: varchar('home_page_id', { length: 256 })
+      .references(() => homePages.id, { onDelete: 'cascade' })
+      .notNull(),
+  },
+);
 
 // Schema for featuredProductsSection - used to validate API requests
 const baseSchema = createSelectSchema(featuredProductsSection);
