@@ -9,6 +9,7 @@ import OptimisticVariantOption from '@/app/(app)/admin/variant-options/[variantO
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
+import { getProducts } from '@/lib/api/products/queries';
 
 export const revalidate = 0;
 
@@ -31,11 +32,13 @@ const VariantOption = async ({ id }: { id: string }) => {
   const { variants } = await getVariants();
 
   if (!variantOption) notFound();
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
         <BackButton currentResource="variant-options" />
         <OptimisticVariantOption
+          productId={variantOption.productId}
           variantOption={variantOption}
           options={options}
           optionValues={optionValues}

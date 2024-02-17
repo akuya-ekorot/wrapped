@@ -1,7 +1,7 @@
 import {
   type Customer,
   type CompleteCustomer,
-} from '@/lib/db/schema/customerAddresses';
+} from '@/lib/db/schema/customers';
 import { OptimisticAction } from '@/lib/utils';
 import { useOptimistic } from 'react';
 

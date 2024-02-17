@@ -41,7 +41,7 @@ export default function VariantOptionList({
   optionValueId?: OptionValueId;
   variants: Variant[];
   variantId?: VariantId;
-  productId: string;
+  productId?: string;
 }) {
   const { optimisticVariantOptions, addOptimisticVariantOption } =
     useOptimisticVariantOptions(

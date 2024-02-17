@@ -79,7 +79,9 @@ const CartItemComponent = ({ cartItem: cartItem }: { cartItem: CartItem }) => {
           </div>
           <div className="text-xs flex items-center flex-wrap gap-2">
             {cartItem.variant.options.map((option) => (
-              <Badge variant={'outline'}>{option.value.name}</Badge>
+              <Badge key={option.id} variant={'outline'}>
+                {option.value.name}
+              </Badge>
             ))}
           </div>
           <div className="space-y-1">

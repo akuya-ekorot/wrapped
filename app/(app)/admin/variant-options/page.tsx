@@ -27,6 +27,7 @@ const VariantOptions = async () => {
   const { options } = await getOptions();
   const { optionValues } = await getOptionValues();
   const { variants } = await getVariants();
+
   return (
     <Suspense fallback={<Loading />}>
       <VariantOptionList

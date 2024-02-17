@@ -23,11 +23,9 @@ type TOpenModal = (product?: Product) => void;
 export default function ProductList({
   products,
   collections,
-  collectionId,
 }: {
   products: CompleteProduct[];
   collections: Collection[];
-  collectionId?: CollectionId;
 }) {
   const { optimisticProducts, addOptimisticProduct } = useOptimisticProducts(
     products,
@@ -54,7 +52,6 @@ export default function ProductList({
           openModal={openModal}
           closeModal={closeModal}
           collections={collections}
-          collectionId={collectionId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">

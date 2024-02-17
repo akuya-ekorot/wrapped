@@ -91,7 +91,7 @@ const PaymentForm = ({
             action: editing ? 'update' : 'create',
           });
 
-        const error = editing
+        const { data: _, error } = editing
           ? await updatePaymentAction({ ...values, id: payment.id })
           : await createPaymentAction(values);
 

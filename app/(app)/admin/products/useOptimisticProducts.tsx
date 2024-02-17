@@ -17,13 +17,9 @@ export const useOptimisticProducts = (
     ): CompleteProduct[] => {
       const { data } = action;
 
-      const optimisticCollection = collections.find(
-        (collection) => collection.id === data.collectionId,
-      )!;
-
       const optimisticProduct = {
         ...data,
-        collection: optimisticCollection,
+        collections: [],
         id: 'optimistic',
       };
 

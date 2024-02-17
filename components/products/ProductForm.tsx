@@ -39,7 +39,6 @@ import {
 
 const ProductForm = ({
   collections,
-  collectionId,
   product,
   openModal,
   closeModal,
@@ -48,7 +47,6 @@ const ProductForm = ({
 }: {
   product?: Product | null;
   collections: Collection[];
-  collectionId?: CollectionId;
   openModal?: (product?: Product) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
@@ -87,7 +85,6 @@ const ProductForm = ({
 
     const payload = Object.fromEntries(data.entries());
     const productParsed = await insertProductParams.safeParseAsync({
-      collectionId,
       ...payload,
     });
     if (!productParsed.success) {
@@ -245,46 +242,6 @@ const ProductForm = ({
           </SelectContent>
         </Select>
       </div>
-
-      {collectionId ? null : (
-        <div>
-          <Label
-            className={cn(
-              'mb-2 inline-block',
-              errors?.collectionId ? 'text-destructive' : '',
-            )}
-          >
-            Collection
-          </Label>
-          <Select defaultValue={product?.collectionId} name="collectionId">
-            <SelectTrigger
-              className={cn(
-                errors?.collectionId ? 'ring ring-destructive' : '',
-              )}
-            >
-              <SelectValue placeholder="Select a collection" />
-            </SelectTrigger>
-            <SelectContent>
-              {collections?.map((collection) => (
-                <SelectItem
-                  key={collection.id}
-                  value={collection.id.toString()}
-                >
-                  {collection.id}
-                  {/* TODO: Replace with a field from the collection model */}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {errors?.collectionId ? (
-            <p className="text-xs text-destructive mt-2">
-              {errors.collectionId[0]}
-            </p>
-          ) : (
-            <div className="h-6" />
-          )}
-        </div>
-      )}
       {/* Schema fields end */}
 
       {/* Save Button */}

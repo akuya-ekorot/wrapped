@@ -14,6 +14,7 @@ import {
   type OptionValueId,
 } from '@/lib/db/schema/optionValues';
 import { type Variant, type VariantId } from '@/lib/db/schema/variants';
+import { ProductId } from '@/lib/db/schema/products';
 
 export default function OptimisticVariantOption({
   variantOption,
@@ -23,15 +24,16 @@ export default function OptimisticVariantOption({
   optionValueId,
   variants,
   variantId,
+  productId,
 }: {
   variantOption: VariantOption;
-
   options: Option[];
   optionId?: OptionId;
   optionValues: OptionValue[];
   optionValueId?: OptionValueId;
   variants: Variant[];
   variantId?: VariantId;
+  productId: ProductId;
 }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: VariantOption) => {
@@ -47,6 +49,7 @@ export default function OptimisticVariantOption({
     <div className="m-4">
       <Modal open={open} setOpen={setOpen}>
         <VariantOptionForm
+          productId={productId}
           variantOption={variantOption}
           options={options}
           optionId={optionId}

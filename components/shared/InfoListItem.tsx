@@ -4,7 +4,7 @@ export default function InfoListItem({
   secondaryValue,
 }: {
   title: string;
-  value: string | number | Date | null;
+  value: string | number | boolean | Date | null;
   secondaryValue?: string | number | Date | null;
 }) {
   const displayValue = value

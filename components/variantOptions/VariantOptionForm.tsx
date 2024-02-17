@@ -63,7 +63,7 @@ const VariantOptionForm = ({
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
   postSuccess?: () => void;
-  productId: string;
+  productId?: string;
 }) => {
   const { errors, hasErrors, setErrors, handleChange } =
     useValidatedForm<VariantOption>(insertVariantOptionParams);
@@ -150,7 +150,10 @@ const VariantOptionForm = ({
 
   const [activeOptionId, setActiveOptionId] = useState<OptionId | null>(null);
 
-  const handleSubmitWrapper = handleSubmit.bind(null, { productId });
+  const handleSubmitWrapper = handleSubmit.bind(null, {
+    productId:
+      productId ?? variants.find((v) => v.id === variantId)?.productId!,
+  });
 
   return (
     <form

@@ -5,6 +5,7 @@ import VariantImageList from '@/components/variantImages/VariantImageList';
 import { getVariantImages } from '@/lib/api/variantImages/queries';
 import { getProductImages } from '@/lib/api/productImages/queries';
 import { getVariants } from '@/lib/api/variants/queries';
+import { getImages } from '@/lib/api/images/queries';
 
 export const revalidate = 0;
 
@@ -25,9 +26,12 @@ const VariantImages = async () => {
   const { variantImages } = await getVariantImages();
   const { productImages } = await getProductImages();
   const { variants } = await getVariants();
+  const { images } = await getImages();
+
   return (
     <Suspense fallback={<Loading />}>
       <VariantImageList
+        images={images}
         variantImages={variantImages}
         productImages={productImages}
         variants={variants}

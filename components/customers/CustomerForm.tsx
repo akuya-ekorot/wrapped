@@ -91,7 +91,7 @@ const CustomerForm = ({
             action: editing ? 'update' : 'create',
           });
 
-        const error = editing
+        const { data: _, error } = editing
           ? await updateCustomerAction({
               ...values,
               id: customer.id,

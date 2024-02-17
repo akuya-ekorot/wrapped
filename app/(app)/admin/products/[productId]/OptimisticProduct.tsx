@@ -3,26 +3,20 @@
 import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/products/useOptimisticProducts';
 import { type Product } from '@/lib/db/schema/products';
-import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import ProductForm from '@/components/products/ProductForm';
-import {
-  type Collection,
-  type CollectionId,
-} from '@/lib/db/schema/collections';
+import { type Collection } from '@/lib/db/schema/collections';
 import InfoListItem from '@/components/shared/InfoListItem';
 
 export default function OptimisticProduct({
   product,
   collections,
-  collectionId,
 }: {
   product: Product;
 
   collections: Collection[];
-  collectionId?: CollectionId;
 }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: Product) => {
@@ -39,7 +33,6 @@ export default function OptimisticProduct({
         <ProductForm
           product={product}
           collections={collections}
-          collectionId={collectionId}
           closeModal={closeModal}
           openModal={openModal}
           addOptimistic={updateProduct}

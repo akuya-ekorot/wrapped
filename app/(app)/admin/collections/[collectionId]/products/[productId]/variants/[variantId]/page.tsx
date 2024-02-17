@@ -56,6 +56,7 @@ const Variant = async ({
           {variant.name}&apos;s Variant Options
         </h3>
         <VariantOptionList
+          productId={productId}
           options={productOptions}
           optionValues={productOptionValues}
           variants={[]}

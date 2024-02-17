@@ -10,6 +10,7 @@ import {
   type CompleteCollectionImage,
 } from '@/lib/db/schema/collectionImages';
 import { products, type CompleteProduct } from '@/lib/db/schema/products';
+import { productCollections } from '@/lib/db/schema/productCollections';
 
 export const getCollections = async () => {
   const rows = await db.select().from(collections);
@@ -44,7 +45,12 @@ export const getCollectionByIdWithCollectionImagesAndProducts = async (
       collectionImages,
       eq(collections.id, collectionImages.collectionId),
     )
-    .leftJoin(products, eq(collections.id, products.collectionId));
+    .leftJoin(
+      productCollections,
+      eq(collections.id, productCollections.collectionId),
+    )
+    .leftJoin(products, eq(productCollections.productId, products.id));
+
   if (rows.length === 0) return {};
   const c = rows[0].collection;
   const cc = rows

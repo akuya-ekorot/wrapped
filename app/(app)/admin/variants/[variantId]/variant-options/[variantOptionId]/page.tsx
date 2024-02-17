@@ -36,6 +36,7 @@ const VariantOption = async ({ id }: { id: string }) => {
       <div className="relative">
         <BackButton currentResource="variant-options" />
         <OptimisticVariantOption
+          productId={variantOption.productId}
           variantOption={variantOption}
           options={options}
           optionId={variantOption.optionId}

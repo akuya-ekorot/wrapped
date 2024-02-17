@@ -20,16 +20,52 @@ import { OptionValue, optionValues } from '@/lib/db/schema/optionValues';
 import { variants } from '@/lib/db/schema/variants';
 import { VariantOption, variantOptions } from '@/lib/db/schema/variantOptions';
 import { variantImages } from '@/lib/db/schema/variantImages';
-import { productCollections } from '@/lib/db/schema/productCollections';
+import {
+  ProductCollection,
+  productCollections,
+} from '@/lib/db/schema/productCollections';
 
 export const getProducts = async () => {
   const rows = await db
-    .select({ product: products, collection: collections })
+    .select({
+      product: products,
+      collection: collections,
+      productCollection: productCollections,
+    })
     .from(products)
     .leftJoin(productCollections, eq(products.id, productCollections.productId))
     .leftJoin(collections, eq(productCollections.collectionId, collections.id));
 
-  const p = rows.map((r) => ({ ...r.product, collection: r.collection }));
+  const p_pcollections = rows
+    .filter((r) => r.productCollection !== null)
+    .filter(
+      (r, i, self) =>
+        self.findIndex(
+          (s) =>
+            s.productCollection!.collectionId ===
+            r.productCollection!.collectionId,
+        ) === i,
+    )
+    .map((r) => r.productCollection) as ProductCollection[];
+
+  const p_collections = rows
+    .filter((r) => r.collection !== null)
+    .filter(
+      (r, i, self) =>
+        self.findIndex((s) => s.collection!.id === r.collection!.id) === i,
+    )
+    .map((r) => r.collection) as Collection[];
+
+  const p = rows
+    .filter((r) => r.product !== null)
+    .map((r) => ({
+      ...r.product,
+      collections: p_pcollections
+        .filter((pc) => pc.productId === r.product!.id)
+        .map((pc) =>
+          p_collections.find((c) => c.id === pc.collectionId),
+        ) as Collection[],
+    }));
 
   return { products: p };
 };

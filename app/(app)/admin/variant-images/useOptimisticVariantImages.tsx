@@ -6,11 +6,13 @@ import {
 } from '@/lib/db/schema/variantImages';
 import { OptimisticAction } from '@/lib/utils';
 import { useOptimistic } from 'react';
+import { TImage } from '@/lib/db/schema/images';
 
 export type TAddOptimistic = (action: OptimisticAction<VariantImage>) => void;
 
 export const useOptimisticVariantImages = (
   variantImages: CompleteVariantImage[],
+  images: TImage[],
   productImages: ProductImage[],
   variants: Variant[],
 ) => {
@@ -26,6 +28,10 @@ export const useOptimisticVariantImages = (
         (productImage) => productImage.id === data.productImageId,
       )!;
 
+      const optimisticImage = images.find(
+        (image) => image.id === optimisticProductImage.imageId,
+      )!;
+
       const optimisticVariant = variants.find(
         (variant) => variant.id === data.variantId,
       )!;
@@ -34,6 +40,7 @@ export const useOptimisticVariantImages = (
         ...data,
         productImage: optimisticProductImage,
         variant: optimisticVariant,
+        image: optimisticImage,
         id: 'optimistic',
       };
 

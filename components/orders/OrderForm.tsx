@@ -207,7 +207,10 @@ const OrderForm = ({
           >
             DeliveryZone
           </Label>
-          <Select defaultValue={order?.deliveryZoneId} name="deliveryZoneId">
+          <Select
+            defaultValue={order?.deliveryZoneId ?? undefined}
+            name="deliveryZoneId"
+          >
             <SelectTrigger
               className={cn(
                 errors?.deliveryZoneId ? 'ring ring-destructive' : '',

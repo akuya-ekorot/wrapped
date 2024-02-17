@@ -8,6 +8,7 @@ import {
 import { options } from '@/lib/db/schema/options';
 import { optionValues } from '@/lib/db/schema/optionValues';
 import { variants } from '@/lib/db/schema/variants';
+import { products } from '@/lib/db/schema/products';
 
 export const getVariantOptions = async () => {
   const rows = await db
@@ -38,18 +39,22 @@ export const getVariantOptionById = async (id: VariantOptionId) => {
       option: options,
       optionValue: optionValues,
       variant: variants,
+      product: products,
     })
     .from(variantOptions)
     .where(eq(variantOptions.id, variantOptionId))
     .leftJoin(options, eq(variantOptions.optionId, options.id))
     .leftJoin(optionValues, eq(variantOptions.optionValueId, optionValues.id))
-    .leftJoin(variants, eq(variantOptions.variantId, variants.id));
+    .leftJoin(variants, eq(variantOptions.variantId, variants.id))
+    .leftJoin(products, eq(variants.productId, products.id));
+
   if (row === undefined) return {};
   const v = {
     ...row.variantOption,
     option: row.option,
     optionValue: row.optionValue,
     variant: row.variant,
+    product: row.product,
   };
   return { variantOption: v };
 };

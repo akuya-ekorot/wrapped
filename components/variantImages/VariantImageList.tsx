@@ -47,7 +47,7 @@ export default function VariantImageList({
   variantId?: VariantId;
 }) {
   const { optimisticVariantImages, addOptimisticVariantImage } =
-    useOptimisticVariantImages(variantImages, productImages, variants);
+    useOptimisticVariantImages(variantImages, images, productImages, variants);
   const [open, setOpen] = useState(false);
   const [activeVariantImage, setActiveVariantImage] =
     useState<VariantImage | null>(null);

@@ -46,11 +46,7 @@ const Product = async ({ id }: { id: string }) => {
     <Suspense fallback={<Loading />}>
       <div className="relative">
         <BackButton currentResource="products" />
-        <OptimisticProduct
-          product={product}
-          collections={collections}
-          collectionId={product.collectionId}
-        />
+        <OptimisticProduct product={product} collections={collections} />
       </div>
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
