@@ -30,20 +30,22 @@ const revalidatePayments = () => revalidatePath('/payments');
 export const createPaymentAction = async (input: NewPaymentParams) => {
   try {
     const payload = insertPaymentParams.parse(input);
-    await createPayment(payload);
+    const { payment } = await createPayment(payload);
     revalidatePayments();
+    return { data: { payment }, error: null };
   } catch (e) {
-    return handleErrors(e);
+    return { data: null, error: handleErrors(e) };
   }
 };
 
 export const updatePaymentAction = async (input: UpdatePaymentParams) => {
   try {
     const payload = updatePaymentParams.parse(input);
-    await updatePayment(payload.id, payload);
+    const { payment } = await updatePayment(payload.id, payload);
     revalidatePayments();
+    return { data: { payment }, error: null };
   } catch (e) {
-    return handleErrors(e);
+    return { data: null, error: handleErrors(e) };
   }
 };
 

@@ -3,8 +3,10 @@ import {
   Banknote,
   Cog,
   Globe,
+  Home,
   HomeIcon,
   Library,
+  Link,
   ShoppingBasket,
   Tag,
   Tags,
@@ -24,7 +26,7 @@ export const defaultLinks: SidebarLink[] = [
 
 export const additionalLinks: AdditionalLinks[] = [
   {
-    title: 'Entities',
+    title: 'Shop management',
     links: [
       {
         href: '/admin/orders',
@@ -50,6 +52,21 @@ export const additionalLinks: AdditionalLinks[] = [
         href: '/admin/tags',
         title: 'Tags',
         icon: Tags,
+      },
+    ],
+  },
+  {
+    title: 'Pages management',
+    links: [
+      {
+        href: '/admin/home-pages',
+        title: 'Home Page',
+        icon: Home,
+      },
+      {
+        href: '/admin/page-links',
+        title: 'Links',
+        icon: Link,
       },
     ],
   },

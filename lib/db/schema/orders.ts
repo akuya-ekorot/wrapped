@@ -27,6 +27,7 @@ export const orderStatus = pgEnum('order_status', [
   'delivered',
   'cancelled',
 ]);
+
 export enum OrderStatus {
   'Payment Pending' = 'payment_pending',
   'Payment Paid' = 'payment_paid',
@@ -51,17 +52,17 @@ export const orders = pgTable('orders', {
     .$defaultFn(() => nanoid()),
   status: orderStatus('status').notNull(),
   type: orderType('type').notNull(),
-  deliveryZoneId: varchar('delivery_zone_id', { length: 256 })
-    .references(() => deliveryZones.id)
-    .notNull(),
-  paymentId: varchar('payment_id', { length: 256 }).references(
-    () => payments.id,
+  deliveryZoneId: varchar('delivery_zone_id', { length: 256 }).references(
+    () => deliveryZones.id,
   ),
+  paymentId: varchar('payment_id', { length: 256 })
+    .references(() => payments.id)
+    .notNull(),
   notes: text('notes'),
   amount: real('amount').notNull(),
-  userId: varchar('user_id', { length: 256 })
-    .references(() => users.id, { onDelete: 'cascade' })
-    .notNull(),
+  userId: varchar('user_id', { length: 256 }).references(() => users.id, {
+    onDelete: 'cascade',
+  }),
   createdAt: timestamp('created_at')
     .notNull()
     .default(sql`now()`),
@@ -76,7 +77,7 @@ const baseSchema = createSelectSchema(orders).omit(timestamps);
 export const insertOrderSchema = createInsertSchema(orders).omit(timestamps);
 export const insertOrderParams = baseSchema
   .extend({
-    deliveryZoneId: z.coerce.string().min(1),
+    deliveryZoneId: z.coerce.string().min(1).nullable(),
     amount: z.coerce.number(),
   })
   .omit({
@@ -87,7 +88,7 @@ export const insertOrderParams = baseSchema
 export const updateOrderSchema = baseSchema;
 export const updateOrderParams = baseSchema
   .extend({
-    deliveryZoneId: z.coerce.string().min(1),
+    deliveryZoneId: z.coerce.string().min(1).nullable(),
     amount: z.coerce.number(),
   })
   .omit({

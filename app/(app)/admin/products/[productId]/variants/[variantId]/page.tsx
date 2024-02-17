@@ -10,6 +10,13 @@ import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
 import { getOptions } from '@/lib/api/options/queries';
 import { getOptionValues } from '@/lib/api/optionValues/queries';
+import VariantImageList from '@/components/variantImages/VariantImageList';
+import { getProductImages } from '@/lib/api/productImages/queries';
+import {
+  getVariantImages,
+  getVariantImagesByVariantId,
+} from '@/lib/api/variantImages/queries';
+import { getImages } from '@/lib/api/images/queries';
 
 export const revalidate = 0;
 
@@ -37,6 +44,9 @@ const Variant = async ({
   const { products } = await getProducts();
   const { options } = await getOptions();
   const { optionValues } = await getOptionValues();
+  const { productImages } = await getProductImages();
+  const { variantImages } = await getVariantImagesByVariantId(id);
+  const { images } = await getImages();
 
   if (!variant) notFound();
 
@@ -53,6 +63,18 @@ const Variant = async ({
       </div>
       <div className="relative mt-8 mx-4">
         <h3 className="text-xl font-medium mb-4">
+          {variant.name}&apos;s Variant Images
+        </h3>
+        <VariantImageList
+          images={images}
+          variantImages={variantImages}
+          productImages={productImages}
+          variants={[]}
+          variantId={variant.id}
+        />
+      </div>
+      <div className="relative mt-8 mx-4">
+        <h3 className="text-xl font-medium mb-4">
           {variant.name}&apos;s Variant Options
         </h3>
         <VariantOptionList
@@ -61,6 +83,7 @@ const Variant = async ({
           variants={[]}
           variantId={variant.id}
           variantOptions={variantOptions}
+          productId={productId}
         />
       </div>
     </Suspense>

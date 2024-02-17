@@ -23,7 +23,6 @@ export const payments = pgTable(
     reference: text('reference').notNull(),
     status: text('status').notNull(),
     amount: real('amount'),
-
     createdAt: timestamp('created_at')
       .notNull()
       .default(sql`now()`),
@@ -43,8 +42,9 @@ export const payments = pgTable(
 // Schema for payments - used to validate API requests
 const baseSchema = createSelectSchema(payments).omit(timestamps);
 
-export const insertPaymentSchema =
-  createInsertSchema(payments).omit(timestamps);
+export const insertPaymentSchema = createInsertSchema(payments)
+  .extend({ amount: z.coerce.number() })
+  .omit(timestamps);
 export const insertPaymentParams = baseSchema
   .extend({
     amount: z.coerce.number(),

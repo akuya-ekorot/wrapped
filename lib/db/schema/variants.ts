@@ -6,6 +6,7 @@ import {
   timestamp,
   pgTable,
   pgEnum,
+  boolean,
 } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -31,6 +32,7 @@ export const variants = pgTable('variants', {
   description: text('description'),
   price: real('price'),
   status: variantStatus('status').notNull().default('active'),
+  isComplete: boolean('is_complete'),
   createdAt: timestamp('created_at')
     .notNull()
     .default(sql`now()`),

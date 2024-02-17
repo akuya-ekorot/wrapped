@@ -2,6 +2,10 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import NextAuthProvider from '@/lib/auth/Provider';
+import CartProvider from '@/components/CartProvider';
+import { Toaster } from '@/components/ui/sonner';
+import CustomerProvider from '@/components/CustomerProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,7 +28,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <NextAuthProvider>
+            <CustomerProvider>
+              <CartProvider>{children}</CartProvider>
+            </CustomerProvider>
+          </NextAuthProvider>
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>

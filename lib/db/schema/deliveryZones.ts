@@ -14,7 +14,6 @@ export const deliveryZones = pgTable('delivery_zones', {
   name: text('name').notNull(),
   description: text('description'),
   deliveryCost: real('delivery_cost').notNull(),
-
   createdAt: timestamp('created_at')
     .notNull()
     .default(sql`now()`),
