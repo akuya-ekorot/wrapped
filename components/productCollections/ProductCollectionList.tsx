@@ -117,17 +117,6 @@ const ProductCollection = ({
         ? pathname + '/products/'
         : '/product-collections/';
 
-  console.log({ basePath });
-  console.log({
-    finalPath:
-      basePath +
-      (productId
-        ? productCollection.collectionId
-        : collectionId
-          ? productCollection.productId
-          : productCollection.id),
-  });
-
   return (
     <li
       className={cn(
