@@ -1,18 +1,18 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { useState, useTransition } from "react";
-import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useValidatedForm } from "@/lib/hooks/useValidatedForm";
+import { useState, useTransition } from 'react';
+import { useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 
-import { type Action, cn } from "@/lib/utils";
-import { type TAddOptimistic } from "@/app/(app)/product-collections/useOptimisticProductCollections";
+import { type Action, cn } from '@/lib/utils';
+import { type TAddOptimistic } from '@/app/(app)/admin/product-collections/useOptimisticProductCollections';
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useBackPath } from "@/components/shared/BackButton";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { useBackPath } from '@/components/shared/BackButton';
 
 import {
   Select,
@@ -20,16 +20,22 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
-import { type ProductCollection, insertProductCollectionParams } from "@/lib/db/schema/productCollections";
+import {
+  type ProductCollection,
+  insertProductCollectionParams,
+} from '@/lib/db/schema/productCollections';
 import {
   createProductCollectionAction,
   deleteProductCollectionAction,
   updateProductCollectionAction,
-} from "@/lib/actions/productCollections";
-import { type Collection, type CollectionId } from "@/lib/db/schema/collections";
-import { type Product, type ProductId } from "@/lib/db/schema/products";
+} from '@/lib/actions/productCollections';
+import {
+  type Collection,
+  type CollectionId,
+} from '@/lib/db/schema/collections';
+import { type Product, type ProductId } from '@/lib/db/schema/products';
 
 const ProductCollectionForm = ({
   collections,
@@ -44,9 +50,9 @@ const ProductCollectionForm = ({
 }: {
   productCollection?: ProductCollection | null;
   collections: Collection[];
-  collectionId?: CollectionId
+  collectionId?: CollectionId;
   products: Product[];
-  productId?: ProductId
+  productId?: ProductId;
   openModal?: (productCollection?: ProductCollection) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
@@ -55,13 +61,12 @@ const ProductCollectionForm = ({
   const { errors, hasErrors, setErrors, handleChange } =
     useValidatedForm<ProductCollection>(insertProductCollectionParams);
   const editing = !!productCollection?.id;
-  
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [pending, startMutation] = useTransition();
 
   const router = useRouter();
-  const backpath = useBackPath("product-collections");
-
+  const backpath = useBackPath('product-collections');
 
   const onSuccess = (
     action: Action,
@@ -71,13 +76,13 @@ const ProductCollectionForm = ({
     if (failed) {
       openModal && openModal(data?.values);
       toast.error(`Failed to ${action}`, {
-        description: data?.error ?? "Error",
+        description: data?.error ?? 'Error',
       });
     } else {
       router.refresh();
       postSuccess && postSuccess();
       toast.success(`ProductCollection ${action}d!`);
-      if (action === "delete") router.push(backpath);
+      if (action === 'delete') router.push(backpath);
     }
   };
 
@@ -85,8 +90,12 @@ const ProductCollectionForm = ({
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
-    const productCollectionParsed = await insertProductCollectionParams.safeParseAsync({ collectionId,
-  productId, ...payload });
+    const productCollectionParsed =
+      await insertProductCollectionParams.safeParseAsync({
+        collectionId,
+        productId,
+        ...payload,
+      });
     if (!productCollectionParsed.success) {
       setErrors(productCollectionParsed?.error.flatten().fieldErrors);
       return;
@@ -97,26 +106,30 @@ const ProductCollectionForm = ({
     const pendingProductCollection: ProductCollection = {
       updatedAt: productCollection?.updatedAt ?? new Date(),
       createdAt: productCollection?.createdAt ?? new Date(),
-      id: productCollection?.id ?? "",
+      id: productCollection?.id ?? '',
       ...values,
     };
     try {
       startMutation(async () => {
-        addOptimistic && addOptimistic({
-          data: pendingProductCollection,
-          action: editing ? "update" : "create",
-        });
+        addOptimistic &&
+          addOptimistic({
+            data: pendingProductCollection,
+            action: editing ? 'update' : 'create',
+          });
 
         const error = editing
-          ? await updateProductCollectionAction({ ...values, id: productCollection.id })
+          ? await updateProductCollectionAction({
+              ...values,
+              id: productCollection.id,
+            })
           : await createProductCollectionAction(values);
 
         const errorFormatted = {
-          error: error ?? "Error",
-          values: pendingProductCollection 
+          error: error ?? 'Error',
+          values: pendingProductCollection,
         };
         onSuccess(
-          editing ? "update" : "create",
+          editing ? 'update' : 'create',
           error ? errorFormatted : undefined,
         );
       });
@@ -128,68 +141,86 @@ const ProductCollectionForm = ({
   };
 
   return (
-    <form action={handleSubmit} onChange={handleChange} className={"space-y-8"}>
+    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
       {/* Schema fields start */}
-      
-      {collectionId ? null : <div>
-        <Label
-          className={cn(
-            "mb-2 inline-block",
-            errors?.collectionId ? "text-destructive" : "",
-          )}
-        >
-          Collection
-        </Label>
-        <Select defaultValue={productCollection?.collectionId} name="collectionId">
-          <SelectTrigger
-            className={cn(errors?.collectionId ? "ring ring-destructive" : "")}
-          >
-            <SelectValue placeholder="Select a collection" />
-          </SelectTrigger>
-          <SelectContent>
-          {collections?.map((collection) => (
-            <SelectItem key={collection.id} value={collection.id.toString()}>
-              {collection.id}{/* TODO: Replace with a field from the collection model */}
-            </SelectItem>
-           ))}
-          </SelectContent>
-        </Select>
-        {errors?.collectionId ? (
-          <p className="text-xs text-destructive mt-2">{errors.collectionId[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div> }
 
-      {productId ? null : <div>
-        <Label
-          className={cn(
-            "mb-2 inline-block",
-            errors?.productId ? "text-destructive" : "",
-          )}
-        >
-          Product
-        </Label>
-        <Select defaultValue={productCollection?.productId} name="productId">
-          <SelectTrigger
-            className={cn(errors?.productId ? "ring ring-destructive" : "")}
+      {collectionId ? null : (
+        <div>
+          <Label
+            className={cn(
+              'mb-2 inline-block',
+              errors?.collectionId ? 'text-destructive' : '',
+            )}
           >
-            <SelectValue placeholder="Select a product" />
-          </SelectTrigger>
-          <SelectContent>
-          {products?.map((product) => (
-            <SelectItem key={product.id} value={product.id.toString()}>
-              {product.id}{/* TODO: Replace with a field from the product model */}
-            </SelectItem>
-           ))}
-          </SelectContent>
-        </Select>
-        {errors?.productId ? (
-          <p className="text-xs text-destructive mt-2">{errors.productId[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div> }
+            Collection
+          </Label>
+          <Select
+            defaultValue={productCollection?.collectionId}
+            name="collectionId"
+          >
+            <SelectTrigger
+              className={cn(
+                errors?.collectionId ? 'ring ring-destructive' : '',
+              )}
+            >
+              <SelectValue placeholder="Select a collection" />
+            </SelectTrigger>
+            <SelectContent>
+              {collections?.map((collection) => (
+                <SelectItem
+                  key={collection.id}
+                  value={collection.id.toString()}
+                >
+                  {collection.id}
+                  {/* TODO: Replace with a field from the collection model */}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.collectionId ? (
+            <p className="text-xs text-destructive mt-2">
+              {errors.collectionId[0]}
+            </p>
+          ) : (
+            <div className="h-6" />
+          )}
+        </div>
+      )}
+
+      {productId ? null : (
+        <div>
+          <Label
+            className={cn(
+              'mb-2 inline-block',
+              errors?.productId ? 'text-destructive' : '',
+            )}
+          >
+            Product
+          </Label>
+          <Select defaultValue={productCollection?.productId} name="productId">
+            <SelectTrigger
+              className={cn(errors?.productId ? 'ring ring-destructive' : '')}
+            >
+              <SelectValue placeholder="Select a product" />
+            </SelectTrigger>
+            <SelectContent>
+              {products?.map((product) => (
+                <SelectItem key={product.id} value={product.id.toString()}>
+                  {product.id}
+                  {/* TODO: Replace with a field from the product model */}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.productId ? (
+            <p className="text-xs text-destructive mt-2">
+              {errors.productId[0]}
+            </p>
+          ) : (
+            <div className="h-6" />
+          )}
+        </div>
+      )}
       {/* Schema fields end */}
 
       {/* Save Button */}
@@ -200,24 +231,27 @@ const ProductCollectionForm = ({
         <Button
           type="button"
           disabled={isDeleting || pending || hasErrors}
-          variant={"destructive"}
+          variant={'destructive'}
           onClick={() => {
             setIsDeleting(true);
             closeModal && closeModal();
             startMutation(async () => {
-              addOptimistic && addOptimistic({ action: "delete", data: productCollection });
-              const error = await deleteProductCollectionAction(productCollection.id);
+              addOptimistic &&
+                addOptimistic({ action: 'delete', data: productCollection });
+              const error = await deleteProductCollectionAction(
+                productCollection.id,
+              );
               setIsDeleting(false);
               const errorFormatted = {
-                error: error ?? "Error",
+                error: error ?? 'Error',
                 values: productCollection,
               };
 
-              onSuccess("delete", error ? errorFormatted : undefined);
+              onSuccess('delete', error ? errorFormatted : undefined);
             });
           }}
         >
-          Delet{isDeleting ? "ing..." : "e"}
+          Delet{isDeleting ? 'ing...' : 'e'}
         </Button>
       ) : null}
     </form>
@@ -244,8 +278,8 @@ const SaveButton = ({
       aria-disabled={isCreating || isUpdating || errors}
     >
       {editing
-        ? `Sav${isUpdating ? "ing..." : "e"}`
-        : `Creat${isCreating ? "ing..." : "e"}`}
+        ? `Sav${isUpdating ? 'ing...' : 'e'}`
+        : `Creat${isCreating ? 'ing...' : 'e'}`}
     </Button>
   );
 };

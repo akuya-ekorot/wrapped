@@ -1,18 +1,24 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type ProductCollection, CompleteProductCollection } from "@/lib/db/schema/productCollections";
-import Modal from "@/components/shared/Modal";
-import { type Collection, type CollectionId } from "@/lib/db/schema/collections";
-import { type Product, type ProductId } from "@/lib/db/schema/products";
-import { useOptimisticProductCollections } from "@/app/(app)/product-collections/useOptimisticProductCollections";
-import { Button } from "@/components/ui/button";
-import ProductCollectionForm from "./ProductCollectionForm";
-import { PlusIcon } from "lucide-react";
+import { cn } from '@/lib/utils';
+import {
+  type ProductCollection,
+  CompleteProductCollection,
+} from '@/lib/db/schema/productCollections';
+import Modal from '@/components/shared/Modal';
+import {
+  type Collection,
+  type CollectionId,
+} from '@/lib/db/schema/collections';
+import { type Product, type ProductId } from '@/lib/db/schema/products';
+import { useOptimisticProductCollections } from '@/app/(app)/admin/product-collections/useOptimisticProductCollections';
+import { Button } from '@/components/ui/button';
+import ProductCollectionForm from './ProductCollectionForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (productCollection?: ProductCollection) => void;
 
@@ -21,24 +27,24 @@ export default function ProductCollectionList({
   collections,
   collectionId,
   products,
-  productId 
+  productId,
 }: {
   productCollections: CompleteProductCollection[];
   collections: Collection[];
   collectionId?: CollectionId;
   products: Product[];
-  productId?: ProductId 
+  productId?: ProductId;
 }) {
-  const { optimisticProductCollections, addOptimisticProductCollection } = useOptimisticProductCollections(
-    productCollections,
-    collections,
-  products 
-  );
+  const { optimisticProductCollections, addOptimisticProductCollection } =
+    useOptimisticProductCollections(productCollections, collections, products);
   const [open, setOpen] = useState(false);
-  const [activeProductCollection, setActiveProductCollection] = useState<ProductCollection | null>(null);
+  const [activeProductCollection, setActiveProductCollection] =
+    useState<ProductCollection | null>(null);
   const openModal = (productCollection?: ProductCollection) => {
     setOpen(true);
-    productCollection ? setActiveProductCollection(productCollection) : setActiveProductCollection(null);
+    productCollection
+      ? setActiveProductCollection(productCollection)
+      : setActiveProductCollection(null);
   };
   const closeModal = () => setOpen(false);
 
@@ -47,7 +53,11 @@ export default function ProductCollectionList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activeProductCollection ? "Edit ProductCollection" : "Create Product Collection"}
+        title={
+          activeProductCollection
+            ? 'Edit ProductCollection'
+            : 'Create Product Collection'
+        }
       >
         <ProductCollectionForm
           productCollection={activeProductCollection}
@@ -55,13 +65,13 @@ export default function ProductCollectionList({
           openModal={openModal}
           closeModal={closeModal}
           collections={collections}
-        collectionId={collectionId}
-        products={products}
-        productId={productId}
+          collectionId={collectionId}
+          products={products}
+          productId={productId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -89,30 +99,27 @@ const ProductCollection = ({
   productCollection: CompleteProductCollection;
   openModal: TOpenModal;
 }) => {
-  const optimistic = productCollection.id === "optimistic";
-  const deleting = productCollection.id === "delete";
+  const optimistic = productCollection.id === 'optimistic';
+  const deleting = productCollection.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("product-collections")
+  const basePath = pathname.includes('product-collections')
     ? pathname
-    : pathname + "/product-collections/";
-
+    : pathname + '/product-collections/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{productCollection.collectionId}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + productCollection.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + productCollection.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -129,7 +136,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Product Collections </Button>
+          <PlusIcon className="h-4" /> New Product Collections{' '}
+        </Button>
       </div>
     </div>
   );
