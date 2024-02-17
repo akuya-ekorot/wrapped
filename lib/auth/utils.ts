@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { env } from '@/lib/env.mjs';
 import GoogleProvider from 'next-auth/providers/google';
 import { Adapter } from 'next-auth/adapters';
+import { customPgTable } from '../db/utils';
 
 declare module 'next-auth' {
   interface Session {
@@ -25,7 +26,7 @@ export type AuthSession = {
 };
 
 export const authOptions: NextAuthOptions = {
-  adapter: DrizzleAdapter(db) as Adapter,
+  adapter: DrizzleAdapter(db, customPgTable) as Adapter,
   callbacks: {
     session: ({ session, user }) => {
       session.user.id = user.id;
