@@ -20,6 +20,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
+import { useDeliveryZone } from '@/components/DeliveryProvider';
 
 export default function Page() {
   const customer = useCustomer()((state) => state.customer);
@@ -79,7 +80,7 @@ export default function Page() {
 function Shipping() {
   const [orderType, setOrderType] = useState<string>();
   const [deliveryZones, setDeliveryZones] = useState<DeliveryZone[]>([]);
-  const [deliveryZone, setDeliveryZone] = useState<DeliveryZone['id']>();
+  const { deliveryZone, setDeliveryZone } = useDeliveryZone()();
 
   useEffect(() => {
     getDeliveryZonesAction().then((zones) => {
@@ -91,6 +92,11 @@ function Shipping() {
     style: 'currency',
     currency: 'KES',
   });
+
+  const handleDeliveryZoneChange = (zoneId: string) => {
+    const zone = deliveryZones.find((zone) => zone.id === zoneId);
+    setDeliveryZone(zone ?? null);
+  };
 
   return (
     <div className="space-y-8">
@@ -117,14 +123,13 @@ function Shipping() {
             </p>
           </div>
           <ScrollArea className="h-[240px] border-b">
-            <RadioGroup onValueChange={setDeliveryZone}>
+            <RadioGroup onValueChange={handleDeliveryZoneChange}>
               {deliveryZones.map((zone) => (
-                <div className="flex items-center space-x-4 p-4 border">
-                  <RadioGroupItem
-                    id={zone.name}
-                    key={zone.id}
-                    value={zone.id}
-                  />
+                <div
+                  key={zone.id}
+                  className="flex items-center space-x-4 p-4 border"
+                >
+                  <RadioGroupItem id={zone.name} value={zone.id} />
                   <div className="space-y-1 w-full">
                     <Label htmlFor={zone.name} className={cn('')}>
                       {zone.name}

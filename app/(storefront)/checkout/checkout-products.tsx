@@ -1,11 +1,14 @@
 'use client';
 
 import { useCart } from '@/components/CartProvider';
+import { useDeliveryZone } from '@/components/DeliveryProvider';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 export default function CheckoutProducts() {
-  const cart = useCart()((state) => state.cart);
+  const { cart, setCart } = useCart()();
+  const deliveryZone = useDeliveryZone()((state) => state.deliveryZone);
 
   const formatter = new Intl.NumberFormat('en-KE', {
     style: 'currency',
@@ -54,14 +57,20 @@ export default function CheckoutProducts() {
         </div>
         <div className="flex items-center justify-between py-2 text-sm">
           <p>Shipping</p>
-          <p className="">Calculated at shipping stage</p>
+          {deliveryZone ? (
+            <p className="">{formatter.format(deliveryZone.deliveryCost)}</p>
+          ) : (
+            <p className="">N/A</p>
+          )}
         </div>
       </div>
       <div>
         <div className="flex items-center justify-between py-4 text-primary">
           <p>Total</p>
           <p className="font-semibold text-2xl">
-            {formatter.format(cart.totalPrice)}
+            {formatter.format(
+              cart.totalPrice + (deliveryZone?.deliveryCost ?? 0),
+            )}
           </p>
         </div>
       </div>
