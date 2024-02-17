@@ -10,7 +10,6 @@ import {
 } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
-import { collections } from './collections';
 import { type getProducts } from '@/lib/api/products/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
@@ -32,9 +31,6 @@ export const products = pgTable(
     description: text('description').notNull(),
     price: real('price').notNull(),
     status: productStatus('status').notNull().default('active'),
-    collectionId: varchar('collection_id', { length: 256 })
-      .references(() => collections.id, { onDelete: 'cascade' })
-      .notNull(),
     createdAt: timestamp('created_at')
       .notNull()
       .default(sql`now()`),

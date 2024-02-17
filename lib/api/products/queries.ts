@@ -20,13 +20,17 @@ import { OptionValue, optionValues } from '@/lib/db/schema/optionValues';
 import { variants } from '@/lib/db/schema/variants';
 import { VariantOption, variantOptions } from '@/lib/db/schema/variantOptions';
 import { variantImages } from '@/lib/db/schema/variantImages';
+import { productCollections } from '@/lib/db/schema/productCollections';
 
 export const getProducts = async () => {
   const rows = await db
     .select({ product: products, collection: collections })
     .from(products)
-    .leftJoin(collections, eq(products.collectionId, collections.id));
+    .leftJoin(productCollections, eq(products.id, productCollections.productId))
+    .leftJoin(collections, eq(productCollections.collectionId, collections.id));
+
   const p = rows.map((r) => ({ ...r.product, collection: r.collection }));
+
   return { products: p };
 };
 
@@ -36,7 +40,9 @@ export const getProductById = async (id: ProductId) => {
     .select({ product: products, collection: collections })
     .from(products)
     .where(eq(products.id, productId))
-    .leftJoin(collections, eq(products.collectionId, collections.id));
+    .leftJoin(productCollections, eq(products.id, productCollections.productId))
+    .leftJoin(collections, eq(productCollections.collectionId, collections.id));
+
   if (row === undefined) return {};
   const p = { ...row.product, collection: row.collection };
   return { product: p };
@@ -122,7 +128,8 @@ export const getProductPageDetailsByProductId = async (id: ProductId) => {
     })
     .from(products)
     .where(eq(products.id, productId))
-    .leftJoin(collections, eq(products.collectionId, collections.id))
+    .leftJoin(productCollections, eq(products.id, productCollections.productId))
+    .leftJoin(collections, eq(productCollections.productId, collections.id))
     .leftJoin(options, eq(options.productId, productId))
     .leftJoin(optionValues, eq(options.id, optionValues.optionId))
     .leftJoin(variants, eq(variants.productId, productId))

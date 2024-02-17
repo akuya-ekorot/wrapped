@@ -1,7 +1,10 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 
-import { getProductByIdWithProductImagesAndOptionsAndProductTags } from '@/lib/api/products/queries';
+import {
+  getProductByIdWithProductImagesAndOptionsAndProductTags,
+  getProducts,
+} from '@/lib/api/products/queries';
 import { getCollections } from '@/lib/api/collections/queries';
 import OptimisticProduct from '@/app/(app)/admin/products/[productId]/OptimisticProduct';
 import ProductImageList from '@/components/productImages/ProductImageList';
@@ -14,6 +17,8 @@ import { getImages } from '@/lib/api/images/queries';
 import { getTags } from '@/lib/api/tags/queries';
 import VariantList from '@/components/variants/VariantList';
 import { getVariants } from '@/lib/api/variants/queries';
+import ProductCollectionList from '@/components/productCollections/ProductCollectionList';
+import { getProductCollectionsByProductId } from '@/lib/api/productCollections/queries';
 
 export const revalidate = 0;
 
@@ -36,6 +41,8 @@ const Product = async ({ id }: { id: string }) => {
   const { images } = await getImages();
   const { tags } = await getTags();
   const { variants } = await getVariants();
+  const { products } = await getProducts();
+  const { productCollections } = await getProductCollectionsByProductId(id);
 
   if (!product) notFound();
 
@@ -58,6 +65,18 @@ const Product = async ({ id }: { id: string }) => {
           products={[]}
           productId={product.id}
           productImages={productImages}
+        />
+      </div>
+
+      <div className="relative mt-8 mx-4">
+        <h3 className="text-xl font-medium mb-4">
+          {product.name}&apos;s Collections
+        </h3>
+        <ProductCollectionList
+          products={products}
+          collections={collections}
+          productId={id}
+          productCollections={productCollections}
         />
       </div>
 
