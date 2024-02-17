@@ -4,13 +4,13 @@ import { Customer } from '@/lib/db/schema/customers';
 import { useState, createContext, useContext, useEffect } from 'react';
 import { create } from 'zustand';
 
-const createStore = (customer: Customer) =>
+const createStore = (customer: Customer | null) =>
   create<{
-    customer: Customer;
-    setCustomer: (customer: Customer) => void;
+    customer: Customer | null;
+    setCustomer: (customer: Customer | null) => void;
   }>((set) => ({
     customer: customer,
-    setCustomer(customer: Customer) {
+    setCustomer(customer: Customer | null) {
       set({ customer });
     },
   }));
@@ -26,7 +26,7 @@ export const useCustomer = () => {
 };
 
 const CustomerProvider = ({ children }: { children: React.ReactNode }) => {
-  const [customer, setCustomer] = useState<Customer>({} as Customer);
+  const [customer, setCustomer] = useState<Customer | null>(null);
   const [store, setStore] = useState(() => createStore(customer));
 
   useEffect(() => {
