@@ -176,6 +176,20 @@
       "when": 1708172751275,
       "tag": "0024_colossal_sauron",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "5",
+      "when": 1708178442324,
+      "tag": "0025_violet_chameleon",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1708178542294,
+      "tag": "0026_quiet_lady_ursula",
+      "breakpoints": true
     }
   ]
 }
