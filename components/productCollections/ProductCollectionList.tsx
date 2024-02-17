@@ -84,6 +84,8 @@ export default function ProductCollectionList({
               productCollection={productCollection}
               key={productCollection.id}
               openModal={openModal}
+              productId={productId}
+              collectionId={collectionId}
             />
           ))}
         </ul>
@@ -95,9 +97,13 @@ export default function ProductCollectionList({
 const ProductCollection = ({
   productCollection,
   openModal,
+  productId,
+  collectionId,
 }: {
   productCollection: CompleteProductCollection;
   openModal: TOpenModal;
+  productId?: ProductId;
+  collectionId?: CollectionId;
 }) => {
   const optimistic = productCollection.id === 'optimistic';
   const deleting = productCollection.id === 'delete';
@@ -105,7 +111,22 @@ const ProductCollection = ({
   const pathname = usePathname();
   const basePath = pathname.includes('product-collections')
     ? pathname
-    : pathname + '/product-collections/';
+    : productId
+      ? pathname + '/collections/'
+      : collectionId
+        ? pathname + '/products/'
+        : '/product-collections/';
+
+  console.log({ basePath });
+  console.log({
+    finalPath:
+      basePath +
+      (productId
+        ? productCollection.collectionId
+        : collectionId
+          ? productCollection.productId
+          : productCollection.id),
+  });
 
   return (
     <li
@@ -116,10 +137,28 @@ const ProductCollection = ({
       )}
     >
       <div className="w-full">
-        <div>{productCollection.collectionId}</div>
+        <div>
+          {productId
+            ? productCollection.collection?.name
+            : collectionId
+              ? productCollection.product?.name
+              : productCollection.collectionId}
+        </div>
       </div>
       <Button variant={'link'} asChild>
-        <Link href={basePath + '/' + productCollection.id}>Edit</Link>
+        <Link
+          href={
+            basePath +
+            '/' +
+            (productId
+              ? productCollection.collectionId
+              : collectionId
+                ? productCollection.productId
+                : productCollection.id)
+          }
+        >
+          Edit
+        </Link>
       </Button>
     </li>
   );

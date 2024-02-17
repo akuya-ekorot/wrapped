@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { varchar, timestamp, pgTable } from 'drizzle-orm/pg-core';
+import { varchar, timestamp, pgTable, uniqueIndex } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { collections } from './collections';
@@ -8,23 +8,32 @@ import { type getProductCollections } from '@/lib/api/productCollections/queries
 
 import { nanoid, timestamps } from '@/lib/utils';
 
-export const productCollections = pgTable('product_collections', {
-  id: varchar('id', { length: 191 })
-    .primaryKey()
-    .$defaultFn(() => nanoid()),
-  collectionId: varchar('collection_id', { length: 256 })
-    .references(() => collections.id, { onDelete: 'cascade' })
-    .notNull(),
-  productId: varchar('product_id', { length: 256 })
-    .references(() => products.id, { onDelete: 'cascade' })
-    .notNull(),
-  createdAt: timestamp('created_at')
-    .notNull()
-    .default(sql`now()`),
-  updatedAt: timestamp('updated_at')
-    .notNull()
-    .default(sql`now()`),
-});
+export const productCollections = pgTable(
+  'product_collections',
+  {
+    id: varchar('id', { length: 191 })
+      .primaryKey()
+      .$defaultFn(() => nanoid()),
+    collectionId: varchar('collection_id', { length: 256 })
+      .references(() => collections.id, { onDelete: 'cascade' })
+      .notNull(),
+    productId: varchar('product_id', { length: 256 })
+      .references(() => products.id, { onDelete: 'cascade' })
+      .notNull(),
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`now()`),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .default(sql`now()`),
+  },
+  (t) => ({
+    uniqueIndex: uniqueIndex('product_collection_unique_idx').on(
+      t.collectionId,
+      t.productId,
+    ),
+  }),
+);
 
 // Schema for productCollections - used to validate API requests
 const baseSchema = createSelectSchema(productCollections).omit(timestamps);

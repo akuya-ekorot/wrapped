@@ -9,7 +9,6 @@ import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 import { type Action, cn } from '@/lib/utils';
 import { type TAddOptimistic } from '@/app/(app)/admin/product-collections/useOptimisticProductCollections';
 
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useBackPath } from '@/components/shared/BackButton';
@@ -171,8 +170,7 @@ const ProductCollectionForm = ({
                   key={collection.id}
                   value={collection.id.toString()}
                 >
-                  {collection.id}
-                  {/* TODO: Replace with a field from the collection model */}
+                  {collection.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -206,8 +204,7 @@ const ProductCollectionForm = ({
             <SelectContent>
               {products?.map((product) => (
                 <SelectItem key={product.id} value={product.id.toString()}>
-                  {product.id}
-                  {/* TODO: Replace with a field from the product model */}
+                  {product.name}
                 </SelectItem>
               ))}
             </SelectContent>

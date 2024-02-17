@@ -5,19 +5,15 @@ import {
   getCollectionByIdWithCollectionImagesAndProducts,
   getCollections,
 } from '@/lib/api/collections/queries';
-import OptimisticCollection from './OptimisticCollection';
 import CollectionImageList from '@/components/collectionImages/CollectionImageList';
-import ProductList from '@/components/products/ProductList';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
 import { getImages } from '@/lib/api/images/queries';
 import ProductCollectionList from '@/components/productCollections/ProductCollectionList';
-import {
-  getProductCollections,
-  getProductCollectionsByCollectionId,
-} from '@/lib/api/productCollections/queries';
+import { getProductCollectionsByCollectionId } from '@/lib/api/productCollections/queries';
 import { getProducts } from '@/lib/api/products/queries';
+import OptimisticCollection from '@/app/(app)/admin/collections/[collectionId]/OptimisticCollection';
 
 export const revalidate = 0;
 
