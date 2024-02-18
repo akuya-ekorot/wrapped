@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, Search, ShoppingCart, UserCircle } from 'lucide-react';
 import Link from 'next/link';
 import { NavBarLink } from './NavBarLink';
-import CartLink from './CartLink';
+import CartLink from '../cart/CartLink';
 
 export function StorefrontNavBar() {
   return (

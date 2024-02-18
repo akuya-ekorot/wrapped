@@ -1,5 +1,5 @@
 import StoreFrontTheme from '@/components/themes/storefront-theme';
-import { StorefrontNavBar } from './StorefrontNavBar';
+import { StorefrontNavBar } from '../../components/navbar/StorefrontNavBar';
 
 export default function StoreFrontLayout({
   children,
