@@ -14,6 +14,7 @@ import { getPayments } from '@/lib/api/payments/queries';
 import { getUsers } from '@/lib/api/users/queries';
 import { CompleteOrder } from '@/lib/db/schema/orders';
 import { getProducts } from '@/lib/api/products/queries';
+import { getCustomers } from '@/lib/api/customers/queries';
 
 export const revalidate = 0;
 
@@ -36,18 +37,19 @@ const Order = async ({ id }: { id: string }) => {
   const { deliveryZones } = await getDeliveryZones();
   const { variants } = await getVariants();
   const { payments } = await getPayments();
-  const { users } = await getUsers();
   const { products } = await getProducts();
+  const { customers } = await getCustomers();
 
   if (!order) notFound();
 
-  const customer = users?.find((u) => u.id === order.userId);
+  const customer = customers?.find((u) => u.id === order.customerId);
 
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative">
         <BackButton currentResource="orders" />
         <OptimisticOrder
+          customers={customers}
           payments={payments}
           order={order as CompleteOrder}
           deliveryZones={deliveryZones}

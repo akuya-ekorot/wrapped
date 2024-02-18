@@ -7,15 +7,19 @@ import { getDeliveryZones } from '@/lib/api/deliveryZones/queries';
 import { checkAuth } from '@/lib/auth/utils';
 import { getPayments } from '@/lib/api/payments/queries';
 import { getCustomers } from '@/lib/api/customers/queries';
+import OrdersWidget from '@/components/orders/OrderWidget';
 
 export const revalidate = 0;
 
 export default async function OrdersPage() {
   return (
     <main>
-      <div className="relative">
+      <div className="relative space-y-8">
         <div className="flex justify-between">
           <h1 className="font-semibold text-2xl my-2">Orders</h1>
+        </div>
+        <div className="max-w-md">
+          <OrdersWidget />
         </div>
         <Orders />
       </div>

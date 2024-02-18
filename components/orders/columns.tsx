@@ -16,6 +16,7 @@ import { ViewResourceLink } from '../shared/view-resource-link';
 
 export const columns: ColumnDef<CompleteOrder>[] = [
   {
+    id: 'name',
     accessorKey: 'customer.name',
     header: ({ column }) => {
       return (
@@ -30,14 +31,15 @@ export const columns: ColumnDef<CompleteOrder>[] = [
     },
   },
   {
-    accessorKey: 'user.email',
+    id: 'phone',
+    accessorKey: 'customer.phone',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Email
+          Phone
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );

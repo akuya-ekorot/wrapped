@@ -14,19 +14,23 @@ import {
   type DeliveryZoneId,
 } from '@/lib/db/schema/deliveryZones';
 import { Payment } from '@/lib/db/schema/payments';
+import { Customer } from '@/lib/db/schema/customers';
+import OrderInfoList from '@/components/orders/OrderInfoList';
 
 export default function OptimisticOrder({
   order,
   deliveryZones,
   deliveryZoneId,
   payments,
-  customer: customer,
+  customer,
+  customers,
 }: {
   order: CompleteOrder;
   payments: Payment[];
   deliveryZones: DeliveryZone[];
   deliveryZoneId?: DeliveryZoneId;
-  customer?: User;
+  customer?: Customer;
+  customers: Customer[];
 }) {
   const [open, setOpen] = useState(false);
   const openModal = (_?: Order) => {
@@ -41,6 +45,7 @@ export default function OptimisticOrder({
     <div className="m-4">
       <Modal open={open} setOpen={setOpen}>
         <OrderForm
+          customers={customers}
           payments={payments}
           order={order}
           deliveryZones={deliveryZones}
@@ -56,42 +61,11 @@ export default function OptimisticOrder({
           Edit
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        {Object.entries(optimisticOrder)
-          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
-          .map(([key, value]) =>
-            key === 'deliveryZoneId' ? (
-              <InfoListItem
-                key={key}
-                title={'Delivery Zone'}
-                value={deliveryZones.find((dz) => dz.id === value)?.name!}
-              />
-            ) : key === 'userId' ? (
-              <InfoListItem
-                key={key}
-                title={'Customer'}
-                value={customer?.name!}
-                secondaryValue={customer?.email!}
-              />
-            ) : key === 'paymentId' ? (
-              <InfoListItem
-                key={key}
-                title={'Payment Made'}
-                value={payments.find((p) => p.id === value)?.amount ?? 0}
-              />
-            ) : key === 'amount' ? (
-              <InfoListItem
-                key={key}
-                title={'Total Amount Due'}
-                //@ts-ignore
-                value={value}
-              />
-            ) : (
-              //@ts-ignore
-              <InfoListItem key={key} title={key} value={value} />
-            ),
-          )}
-      </div>
+      <OrderInfoList
+        customer={customer}
+        payment={payments.find((p) => p.id === order.paymentId)?.amount ?? 0}
+        order={optimisticOrder}
+      />
     </div>
   );
 }

@@ -14,6 +14,7 @@ import {
   insertOrderParams,
   updateOrderParams,
 } from '@/lib/db/schema/orders';
+import { getOrdersTotal } from '../api/orders/queries';
 
 const handleErrors = (e: unknown) => {
   const errMsg = 'Error, please try again.';
@@ -26,6 +27,12 @@ const handleErrors = (e: unknown) => {
 };
 
 const revalidateOrders = () => revalidatePath('/orders');
+
+export const getOrdersTotalAction = async () => {
+  const { numOrders } = await getOrdersTotal();
+
+  return numOrders;
+};
 
 export const createOrderAction = async (input: NewOrderParams) => {
   try {

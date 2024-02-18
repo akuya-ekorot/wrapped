@@ -75,7 +75,7 @@ export default function OrderList({
         <EmptyState openModal={openModal} />
       ) : (
         <DataTable
-          searchColumn="customer.name"
+          searchColumn="name"
           resourceName="orders"
           data={optimisticOrders}
           columns={columns}

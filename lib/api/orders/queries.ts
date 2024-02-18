@@ -8,6 +8,18 @@ import { users } from '@/lib/db/schema/auth';
 import { variants } from '@/lib/db/schema/variants';
 import { customers } from '@/lib/db/schema/customers';
 
+export const getOrdersTotal = async () => {
+  const rows = await db
+    .select({ orders: orders })
+    .from(orders)
+    .where(eq(orders.status, 'payment_paid'));
+
+  const total = rows.reduce((acc, row) => acc + row.orders.amount, 0);
+  const numOrders = rows.length;
+
+  return { total, numOrders };
+};
+
 export const getOrders = async () => {
   const rows = await db
     .select({ order: orders, deliveryZone: deliveryZones, customer: customers })

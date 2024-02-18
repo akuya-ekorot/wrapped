@@ -91,7 +91,7 @@ const CustomerComponent = ({
       )}
     >
       <div className="w-full">
-        <div>{customer.country}</div>
+        <div>{customer.name}</div>
       </div>
       <Button variant={'link'} asChild>
         <Link href={basePath + '/' + customer.id}>Edit</Link>

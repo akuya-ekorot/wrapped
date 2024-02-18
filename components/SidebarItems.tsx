@@ -7,12 +7,16 @@ import { LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { defaultLinks, additionalLinks } from '@/config/nav';
+import { useEffect, useState } from 'react';
 
 export interface SidebarLink {
   title: string;
   href: string;
   icon: LucideIcon;
 }
+
+import { getOrdersTotalAction } from '@/lib/actions/orders';
+import { Badge } from './ui/badge';
 
 const SidebarItems = () => {
   return (
@@ -73,6 +77,16 @@ const SidebarLink = ({
   link: SidebarLink;
   active: boolean;
 }) => {
+  const [newOrders, setNewOrders] = useState<number>();
+
+  useEffect(() => {
+    if (link.href.includes('orders')) {
+      getOrdersTotalAction().then((res) => {
+        setNewOrders(res);
+      });
+    }
+  }, []);
+
   return (
     <Link
       href={link.href}
@@ -89,6 +103,9 @@ const SidebarLink = ({
         />
         <link.icon className="h-3.5 mr-1" />
         <span>{link.title}</span>
+        {link.href.includes('orders') && newOrders && (
+          <Badge className="ml-auto">{newOrders}</Badge>
+        )}
       </div>
     </Link>
   );
