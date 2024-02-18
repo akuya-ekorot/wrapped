@@ -81,12 +81,8 @@
           "name": "WRAPPED_account_userId_WRAPPED_user_id_fk",
           "tableFrom": "WRAPPED_account",
           "tableTo": "WRAPPED_user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -94,10 +90,7 @@
       "compositePrimaryKeys": {
         "WRAPPED_account_provider_providerAccountId_pk": {
           "name": "WRAPPED_account_provider_providerAccountId_pk",
-          "columns": [
-            "provider",
-            "providerAccountId"
-          ]
+          "columns": ["provider", "providerAccountId"]
         }
       },
       "uniqueConstraints": {}
@@ -131,12 +124,8 @@
           "name": "WRAPPED_session_userId_WRAPPED_user_id_fk",
           "tableFrom": "WRAPPED_session",
           "tableTo": "WRAPPED_user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -212,10 +201,7 @@
       "compositePrimaryKeys": {
         "WRAPPED_verificationToken_identifier_token_pk": {
           "name": "WRAPPED_verificationToken_identifier_token_pk",
-          "columns": [
-            "identifier",
-            "token"
-          ]
+          "columns": ["identifier", "token"]
         }
       },
       "uniqueConstraints": {}
@@ -263,12 +249,8 @@
           "name": "WRAPPED_collection_images_image_id_WRAPPED_images_id_fk",
           "tableFrom": "WRAPPED_collection_images",
           "tableTo": "WRAPPED_images",
-          "columnsFrom": [
-            "image_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["image_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -276,12 +258,8 @@
           "name": "WRAPPED_collection_images_collection_id_WRAPPED_collections_id_fk",
           "tableFrom": "WRAPPED_collection_images",
           "tableTo": "WRAPPED_collections",
-          "columnsFrom": [
-            "collection_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["collection_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -342,9 +320,7 @@
       "indexes": {
         "collection_slug_idx": {
           "name": "collection_slug_idx",
-          "columns": [
-            "slug"
-          ],
+          "columns": ["slug"],
           "isUnique": true
         }
       },
@@ -401,12 +377,8 @@
           "name": "content_blocks_page_id_pages_id_fk",
           "tableFrom": "content_blocks",
           "tableTo": "pages",
-          "columnsFrom": [
-            "page_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["page_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -499,12 +471,8 @@
           "name": "WRAPPED_customers_user_id_WRAPPED_user_id_fk",
           "tableFrom": "WRAPPED_customers",
           "tableTo": "WRAPPED_user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -607,12 +575,8 @@
           "name": "WRAPPED_featured_collection_sections_image_id_WRAPPED_images_id_fk",
           "tableFrom": "WRAPPED_featured_collection_sections",
           "tableTo": "WRAPPED_images",
-          "columnsFrom": [
-            "image_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["image_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -620,12 +584,8 @@
           "name": "WRAPPED_featured_collection_sections_collection_id_WRAPPED_collections_id_fk",
           "tableFrom": "WRAPPED_featured_collection_sections",
           "tableTo": "WRAPPED_collections",
-          "columnsFrom": [
-            "collection_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["collection_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -633,12 +593,8 @@
           "name": "WRAPPED_featured_collection_sections_home_page_id_WRAPPED_home_pages_id_fk",
           "tableFrom": "WRAPPED_featured_collection_sections",
           "tableTo": "WRAPPED_home_pages",
-          "columnsFrom": [
-            "home_page_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["home_page_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -675,12 +631,8 @@
           "name": "WRAPPED_featured_products_section_home_page_id_WRAPPED_home_pages_id_fk",
           "tableFrom": "WRAPPED_featured_products_section",
           "tableTo": "WRAPPED_home_pages",
-          "columnsFrom": [
-            "home_page_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["home_page_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -717,12 +669,8 @@
           "name": "WRAPPED_hero_collections_collection_id_WRAPPED_collections_id_fk",
           "tableFrom": "WRAPPED_hero_collections",
           "tableTo": "WRAPPED_collections",
-          "columnsFrom": [
-            "collection_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["collection_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -730,12 +678,8 @@
           "name": "WRAPPED_hero_collections_hero_link_id_WRAPPED_hero_links_id_fk",
           "tableFrom": "WRAPPED_hero_collections",
           "tableTo": "WRAPPED_hero_links",
-          "columnsFrom": [
-            "hero_link_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["hero_link_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -772,12 +716,8 @@
           "name": "WRAPPED_hero_links_hero_section_id_WRAPPED_hero_sections_id_fk",
           "tableFrom": "WRAPPED_hero_links",
           "tableTo": "WRAPPED_hero_sections",
-          "columnsFrom": [
-            "hero_section_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["hero_section_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -814,12 +754,8 @@
           "name": "WRAPPED_hero_products_product_id_WRAPPED_products_id_fk",
           "tableFrom": "WRAPPED_hero_products",
           "tableTo": "WRAPPED_products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -827,12 +763,8 @@
           "name": "WRAPPED_hero_products_hero_link_id_WRAPPED_hero_links_id_fk",
           "tableFrom": "WRAPPED_hero_products",
           "tableTo": "WRAPPED_hero_links",
-          "columnsFrom": [
-            "hero_link_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["hero_link_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -881,12 +813,8 @@
           "name": "WRAPPED_hero_sections_image_id_WRAPPED_images_id_fk",
           "tableFrom": "WRAPPED_hero_sections",
           "tableTo": "WRAPPED_images",
-          "columnsFrom": [
-            "image_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["image_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -894,12 +822,8 @@
           "name": "WRAPPED_hero_sections_home_page_id_WRAPPED_home_pages_id_fk",
           "tableFrom": "WRAPPED_hero_sections",
           "tableTo": "WRAPPED_home_pages",
-          "columnsFrom": [
-            "home_page_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["home_page_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -969,9 +893,7 @@
       "indexes": {
         "image_url_idx": {
           "name": "image_url_idx",
-          "columns": [
-            "url"
-          ],
+          "columns": ["url"],
           "isUnique": true
         }
       },
@@ -1022,12 +944,8 @@
           "name": "WRAPPED_link_to_collections_collection_id_WRAPPED_collections_id_fk",
           "tableFrom": "WRAPPED_link_to_collections",
           "tableTo": "WRAPPED_collections",
-          "columnsFrom": [
-            "collection_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["collection_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1035,12 +953,8 @@
           "name": "WRAPPED_link_to_collections_page_link_id_WRAPPED_page_links_id_fk",
           "tableFrom": "WRAPPED_link_to_collections",
           "tableTo": "WRAPPED_page_links",
-          "columnsFrom": [
-            "page_link_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["page_link_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1091,12 +1005,8 @@
           "name": "WRAPPED_link_to_products_product_id_WRAPPED_products_id_fk",
           "tableFrom": "WRAPPED_link_to_products",
           "tableTo": "WRAPPED_products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1104,12 +1014,8 @@
           "name": "WRAPPED_link_to_products_page_link_id_WRAPPED_page_links_id_fk",
           "tableFrom": "WRAPPED_link_to_products",
           "tableTo": "WRAPPED_page_links",
-          "columnsFrom": [
-            "page_link_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["page_link_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1146,12 +1052,8 @@
           "name": "WRAPPED_main_collections_home_page_id_WRAPPED_home_pages_id_fk",
           "tableFrom": "WRAPPED_main_collections",
           "tableTo": "WRAPPED_home_pages",
-          "columnsFrom": [
-            "home_page_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["home_page_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1208,12 +1110,8 @@
           "name": "WRAPPED_option_values_option_id_WRAPPED_options_id_fk",
           "tableFrom": "WRAPPED_option_values",
           "tableTo": "WRAPPED_options",
-          "columnsFrom": [
-            "option_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["option_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1270,12 +1168,8 @@
           "name": "WRAPPED_options_product_id_WRAPPED_products_id_fk",
           "tableFrom": "WRAPPED_options",
           "tableTo": "WRAPPED_products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1350,12 +1244,8 @@
           "name": "WRAPPED_order_items_variant_id_WRAPPED_variants_id_fk",
           "tableFrom": "WRAPPED_order_items",
           "tableTo": "WRAPPED_variants",
-          "columnsFrom": [
-            "variant_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["variant_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1363,12 +1253,8 @@
           "name": "WRAPPED_order_items_product_id_WRAPPED_products_id_fk",
           "tableFrom": "WRAPPED_order_items",
           "tableTo": "WRAPPED_products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1376,12 +1262,8 @@
           "name": "WRAPPED_order_items_order_id_WRAPPED_orders_id_fk",
           "tableFrom": "WRAPPED_order_items",
           "tableTo": "WRAPPED_orders",
-          "columnsFrom": [
-            "order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["order_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1389,12 +1271,8 @@
           "name": "WRAPPED_order_items_user_id_WRAPPED_user_id_fk",
           "tableFrom": "WRAPPED_order_items",
           "tableTo": "WRAPPED_user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1475,12 +1353,8 @@
           "name": "WRAPPED_orders_delivery_zone_id_WRAPPED_delivery_zones_id_fk",
           "tableFrom": "WRAPPED_orders",
           "tableTo": "WRAPPED_delivery_zones",
-          "columnsFrom": [
-            "delivery_zone_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["delivery_zone_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1488,12 +1362,8 @@
           "name": "WRAPPED_orders_payment_id_WRAPPED_payments_id_fk",
           "tableFrom": "WRAPPED_orders",
           "tableTo": "WRAPPED_payments",
-          "columnsFrom": [
-            "payment_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["payment_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -1501,12 +1371,8 @@
           "name": "WRAPPED_orders_customer_id_WRAPPED_customers_id_fk",
           "tableFrom": "WRAPPED_orders",
           "tableTo": "WRAPPED_customers",
-          "columnsFrom": [
-            "customer_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["customer_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1596,9 +1462,7 @@
       "indexes": {
         "pages_slug_idx": {
           "name": "pages_slug_idx",
-          "columns": [
-            "slug"
-          ],
+          "columns": ["slug"],
           "isUnique": true
         }
       },
@@ -1652,9 +1516,7 @@
       "indexes": {
         "payment_reference_idx": {
           "name": "payment_reference_idx",
-          "columns": [
-            "reference"
-          ],
+          "columns": ["reference"],
           "isUnique": true
         }
       },
@@ -1702,10 +1564,7 @@
       "indexes": {
         "product_collection_unique_idx": {
           "name": "product_collection_unique_idx",
-          "columns": [
-            "collection_id",
-            "product_id"
-          ],
+          "columns": ["collection_id", "product_id"],
           "isUnique": true
         }
       },
@@ -1714,12 +1573,8 @@
           "name": "WRAPPED_product_collections_collection_id_WRAPPED_collections_id_fk",
           "tableFrom": "WRAPPED_product_collections",
           "tableTo": "WRAPPED_collections",
-          "columnsFrom": [
-            "collection_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["collection_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1727,12 +1582,8 @@
           "name": "WRAPPED_product_collections_product_id_WRAPPED_products_id_fk",
           "tableFrom": "WRAPPED_product_collections",
           "tableTo": "WRAPPED_products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1783,12 +1634,8 @@
           "name": "WRAPPED_product_images_image_id_WRAPPED_images_id_fk",
           "tableFrom": "WRAPPED_product_images",
           "tableTo": "WRAPPED_images",
-          "columnsFrom": [
-            "image_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["image_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1796,12 +1643,8 @@
           "name": "WRAPPED_product_images_product_id_WRAPPED_products_id_fk",
           "tableFrom": "WRAPPED_product_images",
           "tableTo": "WRAPPED_products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1852,12 +1695,8 @@
           "name": "WRAPPED_product_tags_tag_id_WRAPPED_tags_id_fk",
           "tableFrom": "WRAPPED_product_tags",
           "tableTo": "WRAPPED_tags",
-          "columnsFrom": [
-            "tag_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["tag_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1865,12 +1704,8 @@
           "name": "WRAPPED_product_tags_product_id_WRAPPED_products_id_fk",
           "tableFrom": "WRAPPED_product_tags",
           "tableTo": "WRAPPED_products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1937,9 +1772,7 @@
       "indexes": {
         "product_slug_idx": {
           "name": "product_slug_idx",
-          "columns": [
-            "slug"
-          ],
+          "columns": ["slug"],
           "isUnique": true
         }
       },
@@ -1976,12 +1809,8 @@
           "name": "WRAPPED_referred_collections_collection_id_WRAPPED_collections_id_fk",
           "tableFrom": "WRAPPED_referred_collections",
           "tableTo": "WRAPPED_collections",
-          "columnsFrom": [
-            "collection_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["collection_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1989,12 +1818,8 @@
           "name": "WRAPPED_referred_collections_main_collection_id_WRAPPED_main_collections_id_fk",
           "tableFrom": "WRAPPED_referred_collections",
           "tableTo": "WRAPPED_main_collections",
-          "columnsFrom": [
-            "main_collection_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["main_collection_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -2031,12 +1856,8 @@
           "name": "WRAPPED_referred_products_product_id_WRAPPED_products_id_fk",
           "tableFrom": "WRAPPED_referred_products",
           "tableTo": "WRAPPED_products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2044,12 +1865,8 @@
           "name": "WRAPPED_referred_products_featured_products_section_id_WRAPPED_featured_products_section_id_fk",
           "tableFrom": "WRAPPED_referred_products",
           "tableTo": "WRAPPED_featured_products_section",
-          "columnsFrom": [
-            "featured_products_section_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["featured_products_section_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -2091,9 +1908,7 @@
       "indexes": {
         "tag_name_idx": {
           "name": "tag_name_idx",
-          "columns": [
-            "name"
-          ],
+          "columns": ["name"],
           "isUnique": true
         }
       },
@@ -2130,12 +1945,8 @@
           "name": "WRAPPED_variant_images_product_image_id_WRAPPED_product_images_id_fk",
           "tableFrom": "WRAPPED_variant_images",
           "tableTo": "WRAPPED_product_images",
-          "columnsFrom": [
-            "product_image_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_image_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2143,12 +1954,8 @@
           "name": "WRAPPED_variant_images_variant_id_WRAPPED_variants_id_fk",
           "tableFrom": "WRAPPED_variant_images",
           "tableTo": "WRAPPED_variants",
-          "columnsFrom": [
-            "variant_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["variant_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -2208,10 +2015,7 @@
       "indexes": {
         "variant_option_id_idx": {
           "name": "variant_option_id_idx",
-          "columns": [
-            "option_id",
-            "variant_id"
-          ],
+          "columns": ["option_id", "variant_id"],
           "isUnique": true
         }
       },
@@ -2220,12 +2024,8 @@
           "name": "WRAPPED_variant_options_option_id_WRAPPED_options_id_fk",
           "tableFrom": "WRAPPED_variant_options",
           "tableTo": "WRAPPED_options",
-          "columnsFrom": [
-            "option_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["option_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2233,12 +2033,8 @@
           "name": "WRAPPED_variant_options_option_value_id_WRAPPED_option_values_id_fk",
           "tableFrom": "WRAPPED_variant_options",
           "tableTo": "WRAPPED_option_values",
-          "columnsFrom": [
-            "option_value_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["option_value_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2246,12 +2042,8 @@
           "name": "WRAPPED_variant_options_variant_id_WRAPPED_variants_id_fk",
           "tableFrom": "WRAPPED_variant_options",
           "tableTo": "WRAPPED_variants",
-          "columnsFrom": [
-            "variant_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["variant_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2259,12 +2051,8 @@
           "name": "WRAPPED_variant_options_product_id_WRAPPED_products_id_fk",
           "tableFrom": "WRAPPED_variant_options",
           "tableTo": "WRAPPED_products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -2340,12 +2128,8 @@
           "name": "WRAPPED_variants_product_id_WRAPPED_products_id_fk",
           "tableFrom": "WRAPPED_variants",
           "tableTo": "WRAPPED_products",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["product_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
