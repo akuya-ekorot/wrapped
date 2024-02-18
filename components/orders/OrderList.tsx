@@ -18,6 +18,7 @@ import { PlusIcon } from 'lucide-react';
 import { Payment } from '@/lib/db/schema/payments';
 import { DataTable } from '../shared/data-table';
 import { columns } from './columns';
+import { Customer } from '@/lib/db/schema/customers';
 
 type TOpenModal = (order?: CompleteOrder) => void;
 
@@ -26,7 +27,9 @@ export default function OrderList({
   orders,
   deliveryZones,
   deliveryZoneId,
+  customers,
 }: {
+  customers: Customer[];
   payments: Payment[];
   orders: CompleteOrder[];
   deliveryZones: DeliveryZone[];
@@ -53,6 +56,7 @@ export default function OrderList({
         title={activeOrder ? 'Edit Order' : 'Create Order'}
       >
         <OrderForm
+          customers={customers}
           payments={payments}
           order={activeOrder}
           addOptimistic={addOptimisticOrder}
@@ -71,6 +75,7 @@ export default function OrderList({
         <EmptyState openModal={openModal} />
       ) : (
         <DataTable
+          searchColumn="customer.name"
           resourceName="orders"
           data={optimisticOrders}
           columns={columns}

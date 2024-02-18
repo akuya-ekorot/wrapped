@@ -39,8 +39,11 @@ import {
   type DeliveryZoneId,
 } from '@/lib/db/schema/deliveryZones';
 import { Payment, PaymentId } from '@/lib/db/schema/payments';
+import { Customer, CustomerId } from '@/lib/db/schema/customers';
 
 const OrderForm = ({
+  customerId,
+  customers,
   payments,
   paymentId,
   deliveryZones,
@@ -51,6 +54,8 @@ const OrderForm = ({
   addOptimistic,
   postSuccess,
 }: {
+  customerId?: CustomerId;
+  customers: Customer[];
   payments: Payment[];
   paymentId?: PaymentId;
   order?: CompleteOrder | null;
@@ -94,7 +99,7 @@ const OrderForm = ({
 
     const payload = Object.fromEntries(data.entries());
     const orderParsed = await insertOrderParams.safeParseAsync({
-      deliveryZoneId,
+      deliveryZoneId: deliveryZoneId ?? null,
       ...payload,
     });
 
@@ -112,7 +117,6 @@ const OrderForm = ({
       updatedAt: order?.updatedAt ?? new Date(),
       createdAt: order?.createdAt ?? new Date(),
       id: order?.id ?? '',
-      userId: order?.userId ?? '',
       ...values,
     };
     try {
@@ -240,6 +244,43 @@ const OrderForm = ({
         </div>
       )}
 
+      {customerId ? null : (
+        <div>
+          <Label
+            className={cn(
+              'mb-2 inline-block',
+              errors?.customerId ? 'text-destructive' : '',
+            )}
+          >
+            Customer
+          </Label>
+          <Select
+            defaultValue={order?.customerId ?? undefined}
+            name="customerId"
+          >
+            <SelectTrigger
+              className={cn(errors?.customerId ? 'ring ring-destructive' : '')}
+            >
+              <SelectValue placeholder="Select a payment" />
+            </SelectTrigger>
+            <SelectContent>
+              {customers?.map((customer) => (
+                <SelectItem key={customer.id} value={customer.id.toString()}>
+                  {customer.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.customerId ? (
+            <p className="text-xs text-destructive mt-2">
+              {errors.customerId[0]}
+            </p>
+          ) : (
+            <div className="h-6" />
+          )}
+        </div>
+      )}
+
       {paymentId ? null : (
         <div>
           <Label
@@ -274,6 +315,7 @@ const OrderForm = ({
           )}
         </div>
       )}
+
       <div>
         <Label
           className={cn(

@@ -9,6 +9,7 @@ import { type getOrders } from '@/lib/api/orders/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
 import { payments } from './payments';
+import { customers } from './customers';
 
 export const orderStatus = pgEnum('order_status', [
   'payment_pending',
@@ -54,9 +55,12 @@ export const orders = customPgTable('orders', {
     .notNull(),
   notes: text('notes'),
   amount: real('amount').notNull(),
-  userId: varchar('user_id', { length: 256 }).references(() => users.id, {
-    onDelete: 'cascade',
-  }),
+  customerId: varchar('customer_id', { length: 256 }).references(
+    () => customers.id,
+    {
+      onDelete: 'cascade',
+    },
+  ),
   createdAt: timestamp('created_at')
     .notNull()
     .default(sql`now()`),
@@ -85,9 +89,7 @@ export const updateOrderParams = baseSchema
     deliveryZoneId: z.coerce.string().min(1).nullable(),
     amount: z.coerce.number(),
   })
-  .omit({
-    userId: true,
-  });
+  .omit({});
 export const orderIdSchema = baseSchema.pick({ id: true });
 
 // Types for orders - used to type API request params and within Components

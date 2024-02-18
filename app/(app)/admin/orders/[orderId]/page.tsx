@@ -13,6 +13,7 @@ import { getVariants } from '@/lib/api/variants/queries';
 import { getPayments } from '@/lib/api/payments/queries';
 import { getUsers } from '@/lib/api/users/queries';
 import { CompleteOrder } from '@/lib/db/schema/orders';
+import { getProducts } from '@/lib/api/products/queries';
 
 export const revalidate = 0;
 
@@ -36,7 +37,7 @@ const Order = async ({ id }: { id: string }) => {
   const { variants } = await getVariants();
   const { payments } = await getPayments();
   const { users } = await getUsers();
-  const { products } = await getProdcuts();
+  const { products } = await getProducts();
 
   if (!order) notFound();
 
@@ -68,6 +69,3 @@ const Order = async ({ id }: { id: string }) => {
     </Suspense>
   );
 };
-function getProdcuts(): { products: any } | PromiseLike<{ products: any }> {
-  throw new Error('Function not implemented.');
-}

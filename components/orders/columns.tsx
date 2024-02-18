@@ -12,12 +12,11 @@ import {
 } from '../ui/dropdown-menu';
 import { ArrowUpDown, Eye, MoreHorizontal, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
-import Link from 'next/link';
 import { ViewResourceLink } from '../shared/view-resource-link';
 
 export const columns: ColumnDef<CompleteOrder>[] = [
   {
-    accessorKey: 'user.name',
+    accessorKey: 'customer.name',
     header: ({ column }) => {
       return (
         <Button
@@ -89,7 +88,7 @@ export const columns: ColumnDef<CompleteOrder>[] = [
     },
   },
   {
-    accessorKey: 'deliveryZone.name',
+    accessorKey: 'type',
     header: ({ column }) => {
       return (
         <Button
@@ -97,15 +96,15 @@ export const columns: ColumnDef<CompleteOrder>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
           className=""
         >
-          Delivery Zone
+          Type
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell({ row }) {
-      const deliveryzone = row.original.deliveryZone?.name;
+      const type = row.original.type;
 
-      return <Badge variant={'default'}>{deliveryzone}</Badge>;
+      return <Badge variant={'default'}>{type}</Badge>;
     },
   },
   {

@@ -12,6 +12,7 @@ import {
   Tag,
   Tags,
   Truck,
+  Users,
 } from 'lucide-react';
 
 type AdditionalLinks = {
@@ -33,6 +34,11 @@ export const additionalLinks: AdditionalLinks[] = [
         href: '/admin/orders',
         title: 'Orders',
         icon: ShoppingBasket,
+      },
+      {
+        href: '/admin/customers',
+        title: 'customers',
+        icon: Users,
       },
       {
         href: '/admin/collections',

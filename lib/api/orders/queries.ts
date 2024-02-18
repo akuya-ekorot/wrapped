@@ -6,47 +6,45 @@ import { deliveryZones } from '@/lib/db/schema/deliveryZones';
 import { orderItems, type CompleteOrderItem } from '@/lib/db/schema/orderItems';
 import { users } from '@/lib/db/schema/auth';
 import { variants } from '@/lib/db/schema/variants';
+import { customers } from '@/lib/db/schema/customers';
 
 export const getOrders = async () => {
-  const { session } = await getUserAuth();
-
   const rows = await db
-    .select({ order: orders, deliveryZone: deliveryZones, user: users })
+    .select({ order: orders, deliveryZone: deliveryZones, customer: customers })
     .from(orders)
     .leftJoin(deliveryZones, eq(orders.deliveryZoneId, deliveryZones.id))
-    .leftJoin(users, eq(orders.userId, users.id))
-    .where(eq(orders.userId, session?.user.id!));
+    .leftJoin(customers, eq(orders.customerId, customers.id));
 
   const o = rows.map((r) => ({
     ...r.order,
     deliveryZone: r.deliveryZone,
-    user: r.user,
+    customer: r.customer,
   }));
 
   return { orders: o };
 };
 
 export const getOrderById = async (id: OrderId) => {
-  const { session } = await getUserAuth();
   const { id: orderId } = orderIdSchema.parse({ id });
   const [row] = await db
-    .select({ order: orders, deliveryZone: deliveryZones })
+    .select({ order: orders, deliveryZone: deliveryZones, customer: customers })
     .from(orders)
-    .where(and(eq(orders.id, orderId), eq(orders.userId, session?.user.id!)))
-    .leftJoin(deliveryZones, eq(orders.deliveryZoneId, deliveryZones.id));
+    .where(and(eq(orders.id, orderId)))
+    .leftJoin(deliveryZones, eq(orders.deliveryZoneId, deliveryZones.id))
+    .leftJoin(customers, eq(orders.customerId, customers.id));
+
   if (row === undefined) return {};
   const o = { ...row.order, deliveryZone: row.deliveryZone };
   return { order: o };
 };
 
 export const getOrderByIdWithOrderItems = async (id: OrderId) => {
-  const { session } = await getUserAuth();
   const { id: orderId } = orderIdSchema.parse({ id });
 
   const rows = await db
     .select({ order: orders, orderItem: orderItems, variant: variants })
     .from(orders)
-    .where(and(eq(orders.id, orderId), eq(orders.userId, session?.user.id!)))
+    .where(and(eq(orders.id, orderId)))
     .leftJoin(orderItems, eq(orders.id, orderItems.orderId))
     .leftJoin(variants, eq(orderItems.variantId, variants.id));
 
