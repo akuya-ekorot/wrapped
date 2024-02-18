@@ -1,13 +1,12 @@
-import { Suspense } from "react";
-import { notFound } from "next/navigation";
+import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 
-import { getContentBlockById } from "@/lib/api/contentBlocks/queries";
-import { getPages } from "@/lib/api/pages/queries";import OptimisticContentBlock from "@/app/(app)/content-blocks/[contentBlockId]/OptimisticContentBlock";
+import { getContentBlockById } from '@/lib/api/contentBlocks/queries';
+import { getPages } from '@/lib/api/pages/queries';
+import OptimisticContentBlock from '@/app/(app)/admin/content-blocks/[contentBlockId]/OptimisticContentBlock';
 
-
-import { BackButton } from "@/components/shared/BackButton";
-import Loading from "@/app/loading";
-
+import { BackButton } from '@/components/shared/BackButton';
+import Loading from '@/app/loading';
 
 export const revalidate = 0;
 
@@ -16,7 +15,6 @@ export default async function ContentBlockPage({
 }: {
   params: { contentBlockId: string };
 }) {
-
   return (
     <main className="overflow-auto">
       <ContentBlock id={params.contentBlockId} />
@@ -25,7 +23,6 @@ export default async function ContentBlockPage({
 }
 
 const ContentBlock = async ({ id }: { id: string }) => {
-  
   const { contentBlock } = await getContentBlockById(id);
   const { pages } = await getPages();
 
@@ -34,8 +31,11 @@ const ContentBlock = async ({ id }: { id: string }) => {
     <Suspense fallback={<Loading />}>
       <div className="relative">
         <BackButton currentResource="content-blocks" />
-        <OptimisticContentBlock contentBlock={contentBlock} pages={pages}
-        pageId={contentBlock.pageId} />
+        <OptimisticContentBlock
+          contentBlock={contentBlock}
+          pages={pages}
+          pageId={contentBlock.pageId}
+        />
       </div>
     </Suspense>
   );

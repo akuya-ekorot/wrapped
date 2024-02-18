@@ -1,19 +1,18 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { useState, useTransition } from "react";
-import { useFormStatus } from "react-dom";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { useValidatedForm } from "@/lib/hooks/useValidatedForm";
+import { useState, useTransition } from 'react';
+import { useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 
-import { type Action, cn } from "@/lib/utils";
-import { type TAddOptimistic } from "@/app/(app)/content-blocks/useOptimisticContentBlocks";
+import { type Action, cn } from '@/lib/utils';
+import { type TAddOptimistic } from '@/app/(app)/admin/content-blocks/useOptimisticContentBlocks';
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useBackPath } from "@/components/shared/BackButton";
-
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { useBackPath } from '@/components/shared/BackButton';
 
 import {
   Select,
@@ -21,15 +20,18 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
-import { type ContentBlock, insertContentBlockParams } from "@/lib/db/schema/contentBlocks";
+import {
+  type ContentBlock,
+  insertContentBlockParams,
+} from '@/lib/db/schema/contentBlocks';
 import {
   createContentBlockAction,
   deleteContentBlockAction,
   updateContentBlockAction,
-} from "@/lib/actions/contentBlocks";
-import { type Page, type PageId } from "@/lib/db/schema/pages";
+} from '@/lib/actions/contentBlocks';
+import { type Page, type PageId } from '@/lib/db/schema/pages';
 
 const ContentBlockForm = ({
   pages,
@@ -42,7 +44,7 @@ const ContentBlockForm = ({
 }: {
   contentBlock?: ContentBlock | null;
   pages: Page[];
-  pageId?: PageId
+  pageId?: PageId;
   openModal?: (contentBlock?: ContentBlock) => void;
   closeModal?: () => void;
   addOptimistic?: TAddOptimistic;
@@ -51,13 +53,12 @@ const ContentBlockForm = ({
   const { errors, hasErrors, setErrors, handleChange } =
     useValidatedForm<ContentBlock>(insertContentBlockParams);
   const editing = !!contentBlock?.id;
-  
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [pending, startMutation] = useTransition();
 
   const router = useRouter();
-  const backpath = useBackPath("content-blocks");
-
+  const backpath = useBackPath('content-blocks');
 
   const onSuccess = (
     action: Action,
@@ -67,13 +68,13 @@ const ContentBlockForm = ({
     if (failed) {
       openModal && openModal(data?.values);
       toast.error(`Failed to ${action}`, {
-        description: data?.error ?? "Error",
+        description: data?.error ?? 'Error',
       });
     } else {
       router.refresh();
       postSuccess && postSuccess();
       toast.success(`ContentBlock ${action}d!`);
-      if (action === "delete") router.push(backpath);
+      if (action === 'delete') router.push(backpath);
     }
   };
 
@@ -81,7 +82,10 @@ const ContentBlockForm = ({
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
-    const contentBlockParsed = await insertContentBlockParams.safeParseAsync({ pageId, ...payload });
+    const contentBlockParsed = await insertContentBlockParams.safeParseAsync({
+      pageId,
+      ...payload,
+    });
     if (!contentBlockParsed.success) {
       setErrors(contentBlockParsed?.error.flatten().fieldErrors);
       return;
@@ -92,26 +96,27 @@ const ContentBlockForm = ({
     const pendingContentBlock: ContentBlock = {
       updatedAt: contentBlock?.updatedAt ?? new Date(),
       createdAt: contentBlock?.createdAt ?? new Date(),
-      id: contentBlock?.id ?? "",
+      id: contentBlock?.id ?? '',
       ...values,
     };
     try {
       startMutation(async () => {
-        addOptimistic && addOptimistic({
-          data: pendingContentBlock,
-          action: editing ? "update" : "create",
-        });
+        addOptimistic &&
+          addOptimistic({
+            data: pendingContentBlock,
+            action: editing ? 'update' : 'create',
+          });
 
         const error = editing
           ? await updateContentBlockAction({ ...values, id: contentBlock.id })
           : await createContentBlockAction(values);
 
         const errorFormatted = {
-          error: error ?? "Error",
-          values: pendingContentBlock 
+          error: error ?? 'Error',
+          values: pendingContentBlock,
         };
         onSuccess(
-          editing ? "update" : "create",
+          editing ? 'update' : 'create',
           error ? errorFormatted : undefined,
         );
       });
@@ -123,13 +128,13 @@ const ContentBlockForm = ({
   };
 
   return (
-    <form action={handleSubmit} onChange={handleChange} className={"space-y-8"}>
+    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
       {/* Schema fields start */}
-              <div>
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.title ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.title ? 'text-destructive' : '',
           )}
         >
           Title
@@ -137,8 +142,8 @@ const ContentBlockForm = ({
         <Input
           type="text"
           name="title"
-          className={cn(errors?.title ? "ring ring-destructive" : "")}
-          defaultValue={contentBlock?.title ?? ""}
+          className={cn(errors?.title ? 'ring ring-destructive' : '')}
+          defaultValue={contentBlock?.title ?? ''}
         />
         {errors?.title ? (
           <p className="text-xs text-destructive mt-2">{errors.title[0]}</p>
@@ -146,11 +151,11 @@ const ContentBlockForm = ({
           <div className="h-6" />
         )}
       </div>
-        <div>
+      <div>
         <Label
           className={cn(
-            "mb-2 inline-block",
-            errors?.content ? "text-destructive" : "",
+            'mb-2 inline-block',
+            errors?.content ? 'text-destructive' : '',
           )}
         >
           Content
@@ -158,8 +163,8 @@ const ContentBlockForm = ({
         <Input
           type="text"
           name="content"
-          className={cn(errors?.content ? "ring ring-destructive" : "")}
-          defaultValue={contentBlock?.content ?? ""}
+          className={cn(errors?.content ? 'ring ring-destructive' : '')}
+          defaultValue={contentBlock?.content ?? ''}
         />
         {errors?.content ? (
           <p className="text-xs text-destructive mt-2">{errors.content[0]}</p>
@@ -168,35 +173,38 @@ const ContentBlockForm = ({
         )}
       </div>
 
-      {pageId ? null : <div>
-        <Label
-          className={cn(
-            "mb-2 inline-block",
-            errors?.pageId ? "text-destructive" : "",
-          )}
-        >
-          Page
-        </Label>
-        <Select defaultValue={contentBlock?.pageId} name="pageId">
-          <SelectTrigger
-            className={cn(errors?.pageId ? "ring ring-destructive" : "")}
+      {pageId ? null : (
+        <div>
+          <Label
+            className={cn(
+              'mb-2 inline-block',
+              errors?.pageId ? 'text-destructive' : '',
+            )}
           >
-            <SelectValue placeholder="Select a page" />
-          </SelectTrigger>
-          <SelectContent>
-          {pages?.map((page) => (
-            <SelectItem key={page.id} value={page.id.toString()}>
-              {page.id}{/* TODO: Replace with a field from the page model */}
-            </SelectItem>
-           ))}
-          </SelectContent>
-        </Select>
-        {errors?.pageId ? (
-          <p className="text-xs text-destructive mt-2">{errors.pageId[0]}</p>
-        ) : (
-          <div className="h-6" />
-        )}
-      </div> }
+            Page
+          </Label>
+          <Select defaultValue={contentBlock?.pageId} name="pageId">
+            <SelectTrigger
+              className={cn(errors?.pageId ? 'ring ring-destructive' : '')}
+            >
+              <SelectValue placeholder="Select a page" />
+            </SelectTrigger>
+            <SelectContent>
+              {pages?.map((page) => (
+                <SelectItem key={page.id} value={page.id.toString()}>
+                  {page.id}
+                  {/* TODO: Replace with a field from the page model */}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.pageId ? (
+            <p className="text-xs text-destructive mt-2">{errors.pageId[0]}</p>
+          ) : (
+            <div className="h-6" />
+          )}
+        </div>
+      )}
       {/* Schema fields end */}
 
       {/* Save Button */}
@@ -207,24 +215,25 @@ const ContentBlockForm = ({
         <Button
           type="button"
           disabled={isDeleting || pending || hasErrors}
-          variant={"destructive"}
+          variant={'destructive'}
           onClick={() => {
             setIsDeleting(true);
             closeModal && closeModal();
             startMutation(async () => {
-              addOptimistic && addOptimistic({ action: "delete", data: contentBlock });
+              addOptimistic &&
+                addOptimistic({ action: 'delete', data: contentBlock });
               const error = await deleteContentBlockAction(contentBlock.id);
               setIsDeleting(false);
               const errorFormatted = {
-                error: error ?? "Error",
+                error: error ?? 'Error',
                 values: contentBlock,
               };
 
-              onSuccess("delete", error ? errorFormatted : undefined);
+              onSuccess('delete', error ? errorFormatted : undefined);
             });
           }}
         >
-          Delet{isDeleting ? "ing..." : "e"}
+          Delet{isDeleting ? 'ing...' : 'e'}
         </Button>
       ) : null}
     </form>
@@ -251,8 +260,8 @@ const SaveButton = ({
       aria-disabled={isCreating || isUpdating || errors}
     >
       {editing
-        ? `Sav${isUpdating ? "ing..." : "e"}`
-        : `Creat${isCreating ? "ing..." : "e"}`}
+        ? `Sav${isUpdating ? 'ing...' : 'e'}`
+        : `Creat${isCreating ? 'ing...' : 'e'}`}
     </Button>
   );
 };

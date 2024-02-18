@@ -1,9 +1,9 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import Loading from "@/app/loading";
-import ContentBlockList from "@/components/contentBlocks/ContentBlockList";
-import { getContentBlocks } from "@/lib/api/contentBlocks/queries";
-import { getPages } from "@/lib/api/pages/queries";
+import Loading from '@/app/loading';
+import ContentBlockList from '@/components/contentBlocks/ContentBlockList';
+import { getContentBlocks } from '@/lib/api/contentBlocks/queries';
+import { getPages } from '@/lib/api/pages/queries';
 
 export const revalidate = 0;
 
@@ -21,7 +21,6 @@ export default async function ContentBlocksPage() {
 }
 
 const ContentBlocks = async () => {
-  
   const { contentBlocks } = await getContentBlocks();
   const { pages } = await getPages();
   return (

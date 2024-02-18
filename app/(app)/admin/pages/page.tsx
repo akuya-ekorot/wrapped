@@ -1,9 +1,8 @@
-import { Suspense } from "react";
+import { Suspense } from 'react';
 
-import Loading from "@/app/loading";
-import PageList from "@/components/pages/PageList";
-import { getPages } from "@/lib/api/pages/queries";
-
+import Loading from '@/app/loading';
+import PageList from '@/components/pages/PageList';
+import { getPages } from '@/lib/api/pages/queries';
 
 export const revalidate = 0;
 
@@ -21,12 +20,11 @@ export default async function PagesPage() {
 }
 
 const Pages = async () => {
-  
   const { pages } = await getPages();
-  
+
   return (
     <Suspense fallback={<Loading />}>
-      <PageList pages={pages}  />
+      <PageList pages={pages} />
     </Suspense>
   );
 };

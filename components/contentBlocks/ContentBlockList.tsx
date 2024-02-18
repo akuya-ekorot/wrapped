@@ -1,38 +1,42 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { type ContentBlock, CompleteContentBlock } from "@/lib/db/schema/contentBlocks";
-import Modal from "@/components/shared/Modal";
-import { type Page, type PageId } from "@/lib/db/schema/pages";
-import { useOptimisticContentBlocks } from "@/app/(app)/content-blocks/useOptimisticContentBlocks";
-import { Button } from "@/components/ui/button";
-import ContentBlockForm from "./ContentBlockForm";
-import { PlusIcon } from "lucide-react";
+import { cn } from '@/lib/utils';
+import {
+  type ContentBlock,
+  CompleteContentBlock,
+} from '@/lib/db/schema/contentBlocks';
+import Modal from '@/components/shared/Modal';
+import { type Page, type PageId } from '@/lib/db/schema/pages';
+import { useOptimisticContentBlocks } from '@/app/(app)/admin/content-blocks/useOptimisticContentBlocks';
+import { Button } from '@/components/ui/button';
+import ContentBlockForm from './ContentBlockForm';
+import { PlusIcon } from 'lucide-react';
 
 type TOpenModal = (contentBlock?: ContentBlock) => void;
 
 export default function ContentBlockList({
   contentBlocks,
   pages,
-  pageId 
+  pageId,
 }: {
   contentBlocks: CompleteContentBlock[];
   pages: Page[];
-  pageId?: PageId 
+  pageId?: PageId;
 }) {
-  const { optimisticContentBlocks, addOptimisticContentBlock } = useOptimisticContentBlocks(
-    contentBlocks,
-    pages 
-  );
+  const { optimisticContentBlocks, addOptimisticContentBlock } =
+    useOptimisticContentBlocks(contentBlocks, pages);
   const [open, setOpen] = useState(false);
-  const [activeContentBlock, setActiveContentBlock] = useState<ContentBlock | null>(null);
+  const [activeContentBlock, setActiveContentBlock] =
+    useState<ContentBlock | null>(null);
   const openModal = (contentBlock?: ContentBlock) => {
     setOpen(true);
-    contentBlock ? setActiveContentBlock(contentBlock) : setActiveContentBlock(null);
+    contentBlock
+      ? setActiveContentBlock(contentBlock)
+      : setActiveContentBlock(null);
   };
   const closeModal = () => setOpen(false);
 
@@ -41,7 +45,9 @@ export default function ContentBlockList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={activeContentBlock ? "Edit ContentBlock" : "Create Content Block"}
+        title={
+          activeContentBlock ? 'Edit ContentBlock' : 'Create Content Block'
+        }
       >
         <ContentBlockForm
           contentBlock={activeContentBlock}
@@ -49,11 +55,11 @@ export default function ContentBlockList({
           openModal={openModal}
           closeModal={closeModal}
           pages={pages}
-        pageId={pageId}
+          pageId={pageId}
         />
       </Modal>
       <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={"outline"}>
+        <Button onClick={() => openModal()} variant={'outline'}>
           +
         </Button>
       </div>
@@ -81,30 +87,27 @@ const ContentBlock = ({
   contentBlock: CompleteContentBlock;
   openModal: TOpenModal;
 }) => {
-  const optimistic = contentBlock.id === "optimistic";
-  const deleting = contentBlock.id === "delete";
+  const optimistic = contentBlock.id === 'optimistic';
+  const deleting = contentBlock.id === 'delete';
   const mutating = optimistic || deleting;
   const pathname = usePathname();
-  const basePath = pathname.includes("content-blocks")
+  const basePath = pathname.includes('content-blocks')
     ? pathname
-    : pathname + "/content-blocks/";
-
+    : pathname + '/content-blocks/';
 
   return (
     <li
       className={cn(
-        "flex justify-between my-2",
-        mutating ? "opacity-30 animate-pulse" : "",
-        deleting ? "text-destructive" : "",
+        'flex justify-between my-2',
+        mutating ? 'opacity-30 animate-pulse' : '',
+        deleting ? 'text-destructive' : '',
       )}
     >
       <div className="w-full">
         <div>{contentBlock.title}</div>
       </div>
-      <Button variant={"link"} asChild>
-        <Link href={ basePath + "/" + contentBlock.id }>
-          Edit
-        </Link>
+      <Button variant={'link'} asChild>
+        <Link href={basePath + '/' + contentBlock.id}>Edit</Link>
       </Button>
     </li>
   );
@@ -121,7 +124,8 @@ const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
       </p>
       <div className="mt-6">
         <Button onClick={() => openModal()}>
-          <PlusIcon className="h-4" /> New Content Blocks </Button>
+          <PlusIcon className="h-4" /> New Content Blocks{' '}
+        </Button>
       </div>
     </div>
   );
