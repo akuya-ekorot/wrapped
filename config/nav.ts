@@ -2,6 +2,7 @@ import { SidebarLink } from '@/components/SidebarItems';
 import {
   Banknote,
   Cog,
+  Files,
   Globe,
   Home,
   HomeIcon,
@@ -62,6 +63,11 @@ export const additionalLinks: AdditionalLinks[] = [
         href: '/admin/home-pages',
         title: 'Home Page',
         icon: Home,
+      },
+      {
+        href: '/admin/pages',
+        title: 'Pages',
+        icon: Files,
       },
       {
         href: '/admin/page-links',
