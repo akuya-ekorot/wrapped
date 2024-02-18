@@ -48,7 +48,6 @@ async function FeaturedProductItem({
 }: {
   referredProduct: CompleteReferredProduct;
 }) {
-  // TODO: if product.price doesn't exist, look for the lowest variant price
   const formattedPrice = new Intl.NumberFormat('en-KE', {
     style: 'currency',
     currency: 'KES',
@@ -83,9 +82,6 @@ async function FeaturedProductItem({
         </h3>
         <p className="uppercase text-xs font-semibold">{formattedPrice}</p>
       </Link>
-      <Button className="w-full" variant={'outline'}>
-        Add to cart
-      </Button>
     </div>
   );
 }

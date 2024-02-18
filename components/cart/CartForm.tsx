@@ -20,6 +20,14 @@ export default function CartForm() {
   const { cart, setCart } = useCart()();
   const router = useRouter();
 
+  if (cart.items.length === 0) {
+    return (
+      <div className="w-full h-full items-center justify-center flex py-8">
+        <p>Cart is Empty</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <ScrollArea className="h-[400px] border-y py-4">
