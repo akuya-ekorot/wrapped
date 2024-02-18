@@ -6,6 +6,7 @@ import { getOrderItems } from '@/lib/api/orderItems/queries';
 import { getVariants } from '@/lib/api/variants/queries';
 import { getOrders } from '@/lib/api/orders/queries';
 import { checkAuth } from '@/lib/auth/utils';
+import { getProducts } from '@/lib/api/products/queries';
 
 export const revalidate = 0;
 
@@ -28,9 +29,11 @@ const OrderItems = async () => {
   const { orderItems } = await getOrderItems();
   const { variants } = await getVariants();
   const { orders } = await getOrders();
+  const { products } = await getProducts();
   return (
     <Suspense fallback={<Loading />}>
       <OrderItemList
+        products={products}
         orderItems={orderItems}
         variants={variants}
         orders={orders}

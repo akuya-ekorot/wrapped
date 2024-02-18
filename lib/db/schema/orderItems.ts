@@ -61,7 +61,8 @@ export const updateOrderItemParams = baseSchema
   .extend({
     quantity: z.coerce.number(),
     amount: z.coerce.number(),
-    variantId: z.coerce.string().min(1),
+    variantId: z.coerce.string().min(1).nullable(),
+    productId: z.coerce.string().min(1).nullable(),
     orderId: z.coerce.string().min(1),
   })
   .omit({

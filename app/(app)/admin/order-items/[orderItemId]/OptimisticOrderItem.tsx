@@ -11,11 +11,14 @@ import { type Variant, type VariantId } from '@/lib/db/schema/variants';
 import { type Order, type OrderId } from '@/lib/db/schema/orders';
 import InfoListItem from '@/components/shared/InfoListItem';
 import { User } from '@/lib/db/schema/auth';
+import { Product, ProductId } from '@/lib/db/schema/products';
 
 export default function OptimisticOrderItem({
   orderItem,
   variants,
   variantId,
+  productId,
+  products,
   orders,
   orderId,
   customer: customer,
@@ -23,6 +26,8 @@ export default function OptimisticOrderItem({
   orderItem: CompleteOrderItem;
   variants: Variant[];
   variantId?: VariantId;
+  products: Product[];
+  productId?: ProductId;
   orders: Order[];
   orderId?: OrderId;
   customer?: User;
@@ -41,9 +46,11 @@ export default function OptimisticOrderItem({
     <div className="m-4">
       <Modal open={open} setOpen={setOpen}>
         <OrderItemForm
+          products={products}
           orderItem={orderItem}
           variants={variants}
           variantId={variantId}
+          productId={productId}
           orders={orders}
           orderId={orderId}
           closeModal={closeModal}

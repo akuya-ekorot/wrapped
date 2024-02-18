@@ -10,6 +10,7 @@ import { checkAuth } from '@/lib/auth/utils';
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
 import { getUsers } from '@/lib/api/users/queries';
+import { getProducts } from '@/lib/api/products/queries';
 
 export const revalidate = 0;
 
@@ -32,6 +33,7 @@ const OrderItem = async ({ id }: { id: string }) => {
   const { variants } = await getVariants();
   const { orders } = await getOrders();
   const { users } = await getUsers();
+  const { products } = await getProducts();
 
   if (!orderItem) notFound();
 
@@ -42,9 +44,10 @@ const OrderItem = async ({ id }: { id: string }) => {
       <div className="relative">
         <BackButton currentResource="order-items" />
         <OptimisticOrderItem
+          products={products}
           orderItem={orderItem}
           variants={variants}
-          variantId={orderItem.variantId}
+          variantId={orderItem.variantId ?? undefined}
           orders={orders}
           orderId={orderItem.orderId}
           customer={customer}

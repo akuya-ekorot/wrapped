@@ -15,6 +15,7 @@ import OrderItemForm from './OrderItemForm';
 import { PlusIcon } from 'lucide-react';
 import { DataTable } from '../shared/data-table';
 import { columns } from './columns';
+import { Product, ProductId } from '@/lib/db/schema/products';
 
 type TOpenModal = (orderItem?: OrderItem) => void;
 
@@ -22,12 +23,16 @@ export default function OrderItemList({
   orderItems,
   variants,
   variantId,
+  products,
+  productId,
   orders,
   orderId,
 }: {
   orderItems: CompleteOrderItem[];
   variants: Variant[];
   variantId?: VariantId;
+  products: Product[];
+  productId?: ProductId;
   orders: Order[];
   orderId?: OrderId;
 }) {
@@ -51,12 +56,14 @@ export default function OrderItemList({
         title={activeOrderItem ? 'Edit OrderItem' : 'Create Order Item'}
       >
         <OrderItemForm
+          products={products}
           orderItem={activeOrderItem}
           addOptimistic={addOptimisticOrderItem}
           openModal={openModal}
           closeModal={closeModal}
           variants={variants}
           variantId={variantId}
+          productId={productId}
           orders={orders}
           orderId={orderId}
         />

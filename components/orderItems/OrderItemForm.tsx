@@ -34,10 +34,13 @@ import {
 } from '@/lib/actions/orderItems';
 import { type Variant, type VariantId } from '@/lib/db/schema/variants';
 import { type Order, type OrderId } from '@/lib/db/schema/orders';
+import { Product, ProductId } from '@/lib/db/schema/products';
 
 const OrderItemForm = ({
+  products,
   variants,
   variantId,
+  productId,
   orders,
   orderId,
   orderItem,
@@ -48,7 +51,9 @@ const OrderItemForm = ({
 }: {
   orderItem?: OrderItem | null;
   variants: Variant[];
+  products: Product[];
   variantId?: VariantId;
+  productId?: ProductId;
   orders: Order[];
   orderId?: OrderId;
   openModal?: (orderItem?: OrderItem) => void;
@@ -191,7 +196,10 @@ const OrderItemForm = ({
           >
             Variant
           </Label>
-          <Select defaultValue={orderItem?.variantId} name="variantId">
+          <Select
+            defaultValue={orderItem?.variantId ?? undefined}
+            name="variantId"
+          >
             <SelectTrigger
               className={cn(errors?.variantId ? 'ring ring-destructive' : '')}
             >
@@ -209,6 +217,43 @@ const OrderItemForm = ({
           {errors?.variantId ? (
             <p className="text-xs text-destructive mt-2">
               {errors.variantId[0]}
+            </p>
+          ) : (
+            <div className="h-6" />
+          )}
+        </div>
+      )}
+
+      {productId ? null : (
+        <div>
+          <Label
+            className={cn(
+              'mb-2 inline-block',
+              errors?.variantId ? 'text-destructive' : '',
+            )}
+          >
+            Product
+          </Label>
+          <Select
+            defaultValue={orderItem?.productId ?? undefined}
+            name="productId"
+          >
+            <SelectTrigger
+              className={cn(errors?.productId ? 'ring ring-destructive' : '')}
+            >
+              <SelectValue placeholder="Select a variant" />
+            </SelectTrigger>
+            <SelectContent>
+              {products?.map((product) => (
+                <SelectItem key={product.id} value={product.id.toString()}>
+                  {product.id}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.productId ? (
+            <p className="text-xs text-destructive mt-2">
+              {errors.productId[0]}
             </p>
           ) : (
             <div className="h-6" />

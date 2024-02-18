@@ -36,6 +36,7 @@ const Order = async ({ id }: { id: string }) => {
   const { variants } = await getVariants();
   const { payments } = await getPayments();
   const { users } = await getUsers();
+  const { products } = await getProdcuts();
 
   if (!order) notFound();
 
@@ -57,6 +58,7 @@ const Order = async ({ id }: { id: string }) => {
           {customer?.name}&apos;s Order Items
         </h3>
         <OrderItemList
+          products={products}
           variants={variants}
           orders={[]}
           orderId={order.id}
@@ -66,3 +68,6 @@ const Order = async ({ id }: { id: string }) => {
     </Suspense>
   );
 };
+function getProdcuts(): { products: any } | PromiseLike<{ products: any }> {
+  throw new Error('Function not implemented.');
+}
