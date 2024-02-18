@@ -1,5 +1,9 @@
-import { notFound } from 'next/navigation';
-
 export default function Page() {
-  notFound();
+  return (
+    <main>
+      <header>
+        <h1></h1>
+      </header>
+    </main>
+  );
 }

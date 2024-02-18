@@ -20,13 +20,15 @@ import {
 import { CompleteReferredProduct } from '@/lib/db/schema/referredProducts';
 import { getProductByIdWithProductImagesAndOptionsAndProductTags } from '@/lib/api/products/queries';
 
+export const revalidate = 0;
+
 export async function generateMetadata(): Promise<Metadata> {
   const { homePages } = await getHomePages();
   const homePage = homePages[0];
 
   return {
-    title: homePage.title,
-    description: homePage.description,
+    title: homePage?.title ?? 'Wrapped',
+    description: homePage?.description,
   };
 }
 
@@ -92,12 +94,12 @@ async function FeaturedProducts() {
   const { featuredProductsSection } = await getFeaturedProductsSections();
   const { referredProducts } =
     await getFeaturedProductsSectionByIdWithReferredProducts(
-      featuredProductsSection[0].id,
+      featuredProductsSection[0]?.id ?? '',
     );
 
   return (
     <section className="px-12 py-9 flex flex-col items-center gap-4">
-      <h2 className="uppercase">{featuredProductsSection[0].title}</h2>
+      <h2 className="uppercase">{featuredProductsSection[0]?.title}</h2>
       <div className="w-full flex items-center justify-center flex-wrap gap-2">
         {referredProducts?.map((rp) => (
           <FeaturedProductItem key={rp.id} referredProduct={rp} />
@@ -116,20 +118,20 @@ async function FeaturedCollection() {
     <section className="relative h-[512px]">
       <Image
         className="w-full h-full object-cover"
-        src={featuredCollectionSection.image?.url ?? ''}
+        src={featuredCollectionSection?.image?.url ?? ''}
         alt=""
         width={1024}
         height={512}
       />
       <Link
-        href={`collections/${featuredCollectionSection.collectionId}`}
+        href={`collections/${featuredCollectionSection?.collectionId}`}
         className="absolute top-0 left-0 text-primary-foreground w-full h-full bg-black/40 flex flex-col justify-end p-8"
       >
         <h1 className="uppercase font-semibold text-5xl">
-          {featuredCollectionSection.title}
+          {featuredCollectionSection?.title}
         </h1>
         <p className="uppercase text-3xl">
-          {featuredCollectionSection.callToAction ?? ''}
+          {featuredCollectionSection?.callToAction ?? ''}
         </p>
       </Link>
     </section>
@@ -178,7 +180,7 @@ async function MainCollections() {
 
   return (
     <section className="px-12 py-9 flex flex-col items-center gap-4">
-      <h2 className="uppercase">{mainCollection.title}</h2>
+      <h2 className="uppercase">{mainCollection?.title}</h2>
       <div className="w-full flex items-center justify-center flex-wrap gap-2">
         {referredCollections
           ?.filter((rc) => rc.mainCollectionId === mainCollection.id)
@@ -229,7 +231,7 @@ async function HomeHero() {
     <section className="relative h-[512px]">
       <Image
         className="w-full h-full object-cover"
-        src={heroSection.image?.url ?? ''}
+        src={heroSection?.image?.url ?? ''}
         alt=""
         width={1024}
         height={512}
@@ -241,16 +243,20 @@ async function HomeHero() {
           className="absolute top-0 left-0 text-primary-foreground w-full h-full bg-black/40 flex flex-col justify-end p-8"
         >
           <h1 className="uppercase font-semibold text-5xl">
-            {heroSection.title}
+            {heroSection?.title}
           </h1>
-          <p className="uppercase text-3xl">{heroSection.callToAction ?? ''}</p>
+          <p className="uppercase text-3xl">
+            {heroSection?.callToAction ?? ''}
+          </p>
         </Link>
       ) : (
         <div className="absolute top-0 left-0 text-primary-foreground w-full h-full bg-black/40 flex flex-col justify-end p-8">
           <h1 className="uppercase font-semibold text-5xl">
-            {heroSection.title}
+            {heroSection?.title}
           </h1>
-          <p className="uppercase text-3xl">{heroSection.callToAction ?? ''}</p>
+          <p className="uppercase text-3xl">
+            {heroSection?.callToAction ?? ''}
+          </p>
         </div>
       )}
     </section>
