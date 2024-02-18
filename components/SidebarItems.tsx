@@ -43,7 +43,11 @@ const SidebarLinkGroup = ({
   border?: boolean;
 }) => {
   const fullPathname = usePathname();
-  const pathname = '/' + fullPathname.split('/')[1];
+  const pathname =
+    '/admin' +
+    (fullPathname.split('/')[2] ? `/${fullPathname.split('/')[2]}` : '');
+
+  console.log(pathname);
 
   return (
     <div className={border ? 'border-border border-t my-8 pt-4' : ''}>

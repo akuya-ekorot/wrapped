@@ -20,9 +20,9 @@ type AdditionalLinks = {
 };
 
 export const defaultLinks: SidebarLink[] = [
-  { href: '/dashboard', title: 'Home', icon: HomeIcon },
-  { href: '/account', title: 'Account', icon: Cog },
-  { href: '/settings', title: 'Settings', icon: Cog },
+  { href: '/admin', title: 'Home', icon: HomeIcon },
+  { href: '/admin/account', title: 'Account', icon: Cog },
+  { href: '/admin/settings', title: 'Settings', icon: Cog },
 ];
 
 export const additionalLinks: AdditionalLinks[] = [
@@ -68,11 +68,6 @@ export const additionalLinks: AdditionalLinks[] = [
         href: '/admin/pages',
         title: 'Pages',
         icon: Files,
-      },
-      {
-        href: '/admin/page-links',
-        title: 'Links',
-        icon: Link,
       },
     ],
   },
