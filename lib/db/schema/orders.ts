@@ -4,7 +4,6 @@ import { text, varchar, real, timestamp, pgEnum } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { deliveryZones } from './deliveryZones';
-import { users } from '@/lib/db/schema/auth';
 import { type getOrders } from '@/lib/api/orders/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
@@ -24,21 +23,21 @@ export const orderStatus = pgEnum('order_status', [
 ]);
 
 export enum OrderStatus {
-  'Payment Pending' = <any>'payment_pending',
-  'Payment Paid' = <any>'payment_paid',
-  'Payment Failed' = <any>'payment_failed',
-  Processing = <any>'processing',
-  'Ready For Pickup' = <any>'ready_for_pickup',
-  'Picked Up' = <any>'picked_up',
-  Shipped = <any>'shipped',
-  Delivered = <any>'delivered',
-  Cancelled = <any>'cancelled',
+  'Payment Pending' = 'payment_pending',
+  'Payment Paid' = 'payment_paid',
+  'Payment Failed' = 'payment_failed',
+  Processing = 'processing',
+  'Ready For Pickup' = 'ready_for_pickup',
+  'Picked Up' = 'picked_up',
+  Shipped = 'shipped',
+  Delivered = 'delivered',
+  Cancelled = 'cancelled',
 }
 
 export const orderType = pgEnum('order_type', ['pickup', 'delivery']);
 export enum OrderType {
-  Pickup = <any>'pickup',
-  Delivery = <any>'delivery',
+  Pickup = 'pickup',
+  Delivery = 'delivery',
 }
 
 export const orders = customPgTable('orders', {

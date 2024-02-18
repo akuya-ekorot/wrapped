@@ -37,7 +37,7 @@ export default function OrderItemList({
   orderId?: OrderId;
 }) {
   const { optimisticOrderItems, addOptimisticOrderItem } =
-    useOptimisticOrderItems(orderItems, variants, orders);
+    useOptimisticOrderItems(orderItems, variants, products, orders);
   const [open, setOpen] = useState(false);
   const [activeOrderItem, setActiveOrderItem] = useState<OrderItem | null>(
     null,

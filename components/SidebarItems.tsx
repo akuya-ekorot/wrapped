@@ -85,7 +85,7 @@ const SidebarLink = ({
         setNewOrders(res);
       });
     }
-  }, []);
+  }, [link.href]);
 
   return (
     <Link

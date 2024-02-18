@@ -32,12 +32,9 @@ const OrderItem = async ({ id }: { id: string }) => {
   const { orderItem } = await getOrderItemById(id);
   const { variants } = await getVariants();
   const { orders } = await getOrders();
-  const { users } = await getUsers();
   const { products } = await getProducts();
 
   if (!orderItem) notFound();
-
-  const customer = users?.find((user) => user.id === orderItem.userId);
 
   return (
     <Suspense fallback={<Loading />}>
@@ -50,7 +47,6 @@ const OrderItem = async ({ id }: { id: string }) => {
           variantId={orderItem.variantId ?? undefined}
           orders={orders}
           orderId={orderItem.orderId}
-          customer={customer}
         />
       </div>
     </Suspense>

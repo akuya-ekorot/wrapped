@@ -258,6 +258,7 @@ function Review() {
       ...payload.data,
       deliveryZoneId: payload.data.deliveryZoneId ?? null,
       notes: payload.data.notes ?? null,
+      customerId: payload.data.customerId ?? null,
     });
 
     return OrderPromise.then(({ data, error }) => {

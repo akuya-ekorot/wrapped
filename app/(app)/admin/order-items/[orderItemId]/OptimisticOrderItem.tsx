@@ -9,7 +9,6 @@ import Modal from '@/components/shared/Modal';
 import OrderItemForm from '@/components/orderItems/OrderItemForm';
 import { type Variant, type VariantId } from '@/lib/db/schema/variants';
 import { type Order, type OrderId } from '@/lib/db/schema/orders';
-import InfoListItem from '@/components/shared/InfoListItem';
 import { User } from '@/lib/db/schema/auth';
 import { Product, ProductId } from '@/lib/db/schema/products';
 import OrderItemInfoList from '@/components/orderItems/OrderItemInfoList';

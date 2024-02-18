@@ -38,12 +38,24 @@ export const getOrderItems = async () => {
 export const getOrderItemById = async (id: OrderItemId) => {
   const { id: orderItemId } = orderItemIdSchema.parse({ id });
   const [row] = await db
-    .select({ orderItem: orderItems, variant: variants, order: orders })
+    .select({
+      orderItem: orderItems,
+      variant: variants,
+      order: orders,
+      product: products,
+    })
     .from(orderItems)
     .where(and(eq(orderItems.id, orderItemId)))
     .leftJoin(variants, eq(orderItems.variantId, variants.id))
+    .leftJoin(products, eq(orderItems.productId, products.id))
     .leftJoin(orders, eq(orderItems.orderId, orders.id));
+
   if (row === undefined) return {};
-  const o = { ...row.orderItem, variant: row.variant, order: row.order };
+  const o = {
+    ...row.orderItem,
+    variant: row.variant,
+    order: row.order,
+    product: row.product,
+  };
   return { orderItem: o };
 };
