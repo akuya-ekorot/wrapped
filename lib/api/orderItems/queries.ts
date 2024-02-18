@@ -8,37 +8,39 @@ import {
 } from '@/lib/db/schema/orderItems';
 import { variants } from '@/lib/db/schema/variants';
 import { orders } from '@/lib/db/schema/orders';
+import { products } from '@/lib/db/schema/products';
 
 export const getOrderItems = async () => {
-  const { session } = await getUserAuth();
   const rows = await db
-    .select({ orderItem: orderItems, variant: variants, order: orders })
+    .select({
+      orderItem: orderItems,
+      variant: variants,
+      order: orders,
+      product: products,
+    })
     .from(orderItems)
     .leftJoin(variants, eq(orderItems.variantId, variants.id))
     .leftJoin(orders, eq(orderItems.orderId, orders.id))
-    .where(eq(orderItems.userId, session?.user.id!));
+    .leftJoin(products, eq(variants.productId, products.id));
 
   const o = rows.map((r) => ({
     ...r.orderItem,
     variant: r.variant,
     order: r.order,
+    product: r.product,
   }));
+
+  console.log(o);
 
   return { orderItems: o };
 };
 
 export const getOrderItemById = async (id: OrderItemId) => {
-  const { session } = await getUserAuth();
   const { id: orderItemId } = orderItemIdSchema.parse({ id });
   const [row] = await db
     .select({ orderItem: orderItems, variant: variants, order: orders })
     .from(orderItems)
-    .where(
-      and(
-        eq(orderItems.id, orderItemId),
-        eq(orderItems.userId, session?.user.id!),
-      ),
-    )
+    .where(and(eq(orderItems.id, orderItemId)))
     .leftJoin(variants, eq(orderItems.variantId, variants.id))
     .leftJoin(orders, eq(orderItems.orderId, orders.id));
   if (row === undefined) return {};

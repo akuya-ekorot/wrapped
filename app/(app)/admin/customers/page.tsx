@@ -12,7 +12,7 @@ export default async function CustomerPage() {
     <main>
       <div className="relative">
         <div className="flex justify-between">
-          <h1 className="font-semibold text-2xl my-2">Customer Addresses</h1>
+          <h1 className="font-semibold text-2xl my-2">Customers</h1>
         </div>
         <Customers />
       </div>

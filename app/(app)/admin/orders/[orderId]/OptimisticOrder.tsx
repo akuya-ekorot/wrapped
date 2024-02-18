@@ -56,7 +56,7 @@ export default function OptimisticOrder({
         />
       </Modal>
       <div className="flex justify-between items-end mb-4">
-        <h1 className="font-semibold text-2xl">{customer?.name}</h1>
+        <h1 className="font-semibold text-2xl">{`${customer?.name}'s Order`}</h1>
         <Button className="" onClick={() => setOpen(true)}>
           Edit
         </Button>

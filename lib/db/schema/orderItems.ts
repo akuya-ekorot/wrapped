@@ -5,7 +5,6 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { variants } from './variants';
 import { orders } from './orders';
-import { users } from '@/lib/db/schema/auth';
 import { type getOrderItems } from '@/lib/api/orderItems/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
@@ -26,10 +25,6 @@ export const orderItems = customPgTable('order_items', {
   orderId: varchar('order_id', { length: 256 })
     .references(() => orders.id, { onDelete: 'cascade' })
     .notNull(),
-  userId: varchar('user_id', { length: 256 })
-    .references(() => users.id, { onDelete: 'cascade' })
-    .notNull(),
-
   createdAt: timestamp('created_at')
     .notNull()
     .default(sql`now()`),
@@ -65,9 +60,7 @@ export const updateOrderItemParams = baseSchema
     productId: z.coerce.string().min(1).nullable(),
     orderId: z.coerce.string().min(1),
   })
-  .omit({
-    userId: true,
-  });
+  .omit({});
 export const orderItemIdSchema = baseSchema.pick({ id: true });
 
 // Types for orderItems - used to type API request params and within Components

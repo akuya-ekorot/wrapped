@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import CustomerForm from '@/components/customers/CustomerForm';
+import CustomerInfoList from '@/components/customers/CustomerInfoList';
 
 export default function OptimisticCustomer({
   customer,
@@ -39,14 +40,7 @@ export default function OptimisticCustomer({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticCustomer.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticCustomer, null, 2)}
-      </pre>
+      <CustomerInfoList customer={optimisticCustomer} />
     </div>
   );
 }

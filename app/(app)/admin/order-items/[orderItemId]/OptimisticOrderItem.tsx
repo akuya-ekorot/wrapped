@@ -12,6 +12,7 @@ import { type Order, type OrderId } from '@/lib/db/schema/orders';
 import InfoListItem from '@/components/shared/InfoListItem';
 import { User } from '@/lib/db/schema/auth';
 import { Product, ProductId } from '@/lib/db/schema/products';
+import OrderItemInfoList from '@/components/orderItems/OrderItemInfoList';
 
 export default function OptimisticOrderItem({
   orderItem,
@@ -21,7 +22,7 @@ export default function OptimisticOrderItem({
   products,
   orders,
   orderId,
-  customer: customer,
+  customer,
 }: {
   orderItem: CompleteOrderItem;
   variants: Variant[];
@@ -42,6 +43,14 @@ export default function OptimisticOrderItem({
   const updateOrderItem: TAddOptimistic = (input) =>
     setOptimisticOrderItem({ ...input.data });
 
+  const product = products.find(
+    (product) => product.id === orderItem.productId,
+  );
+
+  const variant = variants.find(
+    (variant) => variant.id === orderItem.variantId,
+  );
+
   return (
     <div className="m-4">
       <Modal open={open} setOpen={setOpen}>
@@ -59,40 +68,18 @@ export default function OptimisticOrderItem({
         />
       </Modal>
       <div className="flex justify-between items-end mb-4">
-        <h1 className="font-semibold text-2xl">{orderItem.variant?.name}</h1>
+        <h1 className="font-semibold text-2xl">
+          {product ? product.name : variant?.name}
+        </h1>
         <Button className="" onClick={() => setOpen(true)}>
           Edit
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        {Object.entries(optimisticOrderItem)
-          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
-          .filter(([key]) => key !== 'variantId' && key !== 'orderId')
-          .map(([key, value]) =>
-            key === 'variant' ? (
-              <InfoListItem
-                key={key}
-                title={'Product Variant'}
-                //@ts-ignore
-                value={value.name}
-              />
-            ) : key === 'userId' ? (
-              <InfoListItem
-                key={key}
-                title={'Customer'}
-                //@ts-ignore
-                value={customer?.name}
-                secondaryValue={customer?.email}
-              />
-            ) : key === 'order' ? null : (
-              <InfoListItem
-                key={key}
-                title={key}
-                value={value as string | number | Date}
-              />
-            ),
-          )}
-      </div>
+      <OrderItemInfoList
+        product={product}
+        variant={variant}
+        orderItem={optimisticOrderItem}
+      />
     </div>
   );
 }

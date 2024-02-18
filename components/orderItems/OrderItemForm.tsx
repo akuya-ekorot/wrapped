@@ -94,10 +94,18 @@ const OrderItemForm = ({
 
     const payload = Object.fromEntries(data.entries());
     const orderItemParsed = await insertOrderItemParams.safeParseAsync({
-      variantId,
       orderId,
       ...payload,
+      variantId:
+        variantId ?? payload.variantId.toString().length === 0
+          ? null
+          : payload.variantId,
+      productId:
+        productId ?? payload.productId.toString().length === 0
+          ? null
+          : payload.productId,
     });
+
     if (!orderItemParsed.success) {
       setErrors(orderItemParsed?.error.flatten().fieldErrors);
       return;
@@ -109,7 +117,6 @@ const OrderItemForm = ({
       updatedAt: orderItem?.updatedAt ?? new Date(),
       createdAt: orderItem?.createdAt ?? new Date(),
       id: orderItem?.id ?? '',
-      userId: orderItem?.userId ?? '',
       ...values,
     };
     try {
@@ -208,8 +215,7 @@ const OrderItemForm = ({
             <SelectContent>
               {variants?.map((variant) => (
                 <SelectItem key={variant.id} value={variant.id.toString()}>
-                  {variant.id}
-                  {/* TODO: Replace with a field from the variant model */}
+                  {variant.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -229,7 +235,7 @@ const OrderItemForm = ({
           <Label
             className={cn(
               'mb-2 inline-block',
-              errors?.variantId ? 'text-destructive' : '',
+              errors?.productId ? 'text-destructive' : '',
             )}
           >
             Product
@@ -246,7 +252,7 @@ const OrderItemForm = ({
             <SelectContent>
               {products?.map((product) => (
                 <SelectItem key={product.id} value={product.id.toString()}>
-                  {product.id}
+                  {product.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -281,7 +287,6 @@ const OrderItemForm = ({
               {orders?.map((order) => (
                 <SelectItem key={order.id} value={order.id.toString()}>
                   {order.id}
-                  {/* TODO: Replace with a field from the order model */}
                 </SelectItem>
               ))}
             </SelectContent>

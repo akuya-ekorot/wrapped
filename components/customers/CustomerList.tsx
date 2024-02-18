@@ -34,9 +34,7 @@ export default function CustomerList({
       <Modal
         open={open}
         setOpen={setOpen}
-        title={
-          activeCustomer ? 'Edit CustomerAddress' : 'Create Customer Address'
-        }
+        title={activeCustomer ? 'Edit Customer' : 'Create Customer'}
       >
         <CustomerForm
           customer={activeCustomer}

@@ -77,7 +77,7 @@ const SidebarLink = ({
   link: SidebarLink;
   active: boolean;
 }) => {
-  const [newOrders, setNewOrders] = useState<number>();
+  const [newOrders, setNewOrders] = useState<number>(0);
 
   useEffect(() => {
     if (link.href.includes('orders')) {
@@ -103,7 +103,7 @@ const SidebarLink = ({
         />
         <link.icon className="h-3.5 mr-1" />
         <span>{link.title}</span>
-        {link.href.includes('orders') && newOrders && (
+        {link.href.includes('orders') && newOrders > 0 && (
           <Badge className="ml-auto">{newOrders}</Badge>
         )}
       </div>

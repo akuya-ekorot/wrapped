@@ -80,7 +80,7 @@ export default function OrderItemList({
           data={optimisticOrderItems}
           columns={columns}
           resourceName={'Order Items'}
-          searchColumn="variant.name"
+          searchColumn="productName"
         />
       )}
     </div>

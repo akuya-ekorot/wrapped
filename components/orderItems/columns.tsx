@@ -15,8 +15,9 @@ import {
 
 export const columns: ColumnDef<CompleteOrderItem>[] = [
   {
-    id: 'variant.name',
-    accessorKey: 'variant.name',
+    id: 'productName',
+    accessorFn: (row) =>
+      row.variantId ? row.variant?.name : row.product?.name,
     header: ({ column }) => {
       return (
         <Button
@@ -27,6 +28,12 @@ export const columns: ColumnDef<CompleteOrderItem>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell({ row }) {
+      const productName =
+        row.original.product?.name ?? row.original.variant?.name;
+
+      return <p className="">{productName ?? 'Error getting product name'}</p>;
     },
   },
   {

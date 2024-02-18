@@ -11,12 +11,12 @@ import { type TAddOptimistic } from '@/app/(app)/admin/customers/useOptimisticCu
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { useBackPath } from '@/components/shared/BackButton';
 
 import { type Customer, insertCustomerParams } from '@/lib/db/schema/customers';
 import {
   createCustomerAction,
+  deleteCustomerAction,
   updateCustomerAction,
 } from '@/lib/actions/customers';
 
@@ -114,8 +114,14 @@ const CustomerForm = ({
     }
   };
 
+  const [isDeleting, setIsDeleting] = useState(false);
+
   return (
-    <form action={handleSubmit} onChange={handleChange} className={'space-y-4'}>
+    <form
+      action={handleSubmit}
+      onChange={handleChange}
+      className={'space-y-4 mt-4'}
+    >
       {/* Schema fields start */}
       <div>
         <Input
@@ -123,6 +129,7 @@ const CustomerForm = ({
           name="name"
           placeholder="Full name"
           className={cn(errors?.name ? 'ring ring-destructive' : '')}
+          defaultValue={customer?.name ?? ''}
         />
         {errors?.name && (
           <p className="text-xs text-destructive mt-2">{errors.name[0]}</p>
@@ -134,6 +141,7 @@ const CustomerForm = ({
           name="email"
           placeholder="Email address"
           className={cn(errors?.email ? 'ring ring-destructive' : '')}
+          defaultValue={customer?.email ?? ''}
         />
         {errors?.email && (
           <p className="text-xs text-destructive mt-2">{errors.email[0]}</p>
@@ -222,26 +230,60 @@ const CustomerForm = ({
       {/* Schema fields end */}
 
       {/* Save Button */}
-      <div className="flex w-full justify-end">
-        <SaveButton errors={hasErrors} />
-      </div>
+      <SaveButton editing={editing} errors={hasErrors} />
+
+      {/* Delete Button */}
+      {editing ? (
+        <Button
+          type="button"
+          disabled={isDeleting || pending || hasErrors}
+          variant={'destructive'}
+          onClick={() => {
+            setIsDeleting(true);
+            closeModal && closeModal();
+            startMutation(async () => {
+              addOptimistic &&
+                addOptimistic({ action: 'delete', data: customer });
+              const error = await deleteCustomerAction(customer.id);
+              setIsDeleting(false);
+              const errorFormatted = {
+                error: error ?? 'Error',
+                values: customer,
+              };
+
+              onSuccess('delete', error ? errorFormatted : undefined);
+            });
+          }}
+        >
+          Delet{isDeleting ? 'ing...' : 'e'}
+        </Button>
+      ) : null}
     </form>
   );
 };
 
 export default CustomerForm;
 
-const SaveButton = ({ errors }: { errors: boolean }) => {
+const SaveButton = ({
+  editing,
+  errors,
+}: {
+  errors: boolean;
+  editing: Boolean;
+}) => {
   const { pending } = useFormStatus();
-
+  const isCreating = pending && editing === false;
+  const isUpdating = pending && editing === true;
   return (
     <Button
       type="submit"
       className="mr-2"
-      disabled={errors}
-      aria-disabled={errors}
+      disabled={isCreating || isUpdating || errors}
+      aria-disabled={isCreating || isUpdating || errors}
     >
-      {pending ? 'Checking...' : 'Proceed to shipping'}
+      {editing
+        ? `Sav${isUpdating ? 'ing...' : 'e'}`
+        : `Creat${isCreating ? 'ing...' : 'e'}`}
     </Button>
   );
 };

@@ -7,6 +7,7 @@ import { orderItems, type CompleteOrderItem } from '@/lib/db/schema/orderItems';
 import { users } from '@/lib/db/schema/auth';
 import { variants } from '@/lib/db/schema/variants';
 import { customers } from '@/lib/db/schema/customers';
+import { products } from '@/lib/db/schema/products';
 
 export const getOrdersTotal = async () => {
   const rows = await db
@@ -54,10 +55,16 @@ export const getOrderByIdWithOrderItems = async (id: OrderId) => {
   const { id: orderId } = orderIdSchema.parse({ id });
 
   const rows = await db
-    .select({ order: orders, orderItem: orderItems, variant: variants })
+    .select({
+      order: orders,
+      orderItem: orderItems,
+      variant: variants,
+      product: products,
+    })
     .from(orders)
     .where(and(eq(orders.id, orderId)))
     .leftJoin(orderItems, eq(orders.id, orderItems.orderId))
+    .leftJoin(products, eq(orderItems.productId, products.id))
     .leftJoin(variants, eq(orderItems.variantId, variants.id));
 
   if (rows.length === 0) return {};
@@ -73,6 +80,7 @@ export const getOrderByIdWithOrderItems = async (id: OrderId) => {
     .map((o) => ({
       ...o.orderItem,
       variant: o.variant,
+      product: o.product,
     })) as CompleteOrderItem[];
 
   return { order: o, orderItems: oo };
