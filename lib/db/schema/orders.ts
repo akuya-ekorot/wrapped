@@ -75,7 +75,7 @@ const baseSchema = createSelectSchema(orders).omit(timestamps);
 export const insertOrderSchema = createInsertSchema(orders).omit(timestamps);
 export const insertOrderParams = baseSchema
   .extend({
-    deliveryZoneId: z.coerce.string().min(1).nullable(),
+    deliveryZoneId: z.nullable(z.coerce.string()),
     amount: z.coerce.number(),
   })
   .omit({

@@ -38,7 +38,7 @@ export const updateOrder = async (id: OrderId, order: UpdateOrderParams) => {
     const [o] = await db
       .update(orders)
       .set({ ...newOrder, updatedAt: new Date() })
-      .where(and(eq(orders.id, orderId!), eq(orders.userId, session?.user.id!)))
+      .where(and(eq(orders.id, orderId!)))
       .returning();
     return { order: o };
   } catch (err) {
@@ -49,12 +49,11 @@ export const updateOrder = async (id: OrderId, order: UpdateOrderParams) => {
 };
 
 export const deleteOrder = async (id: OrderId) => {
-  const { session } = await getUserAuth();
   const { id: orderId } = orderIdSchema.parse({ id });
   try {
     const [o] = await db
       .delete(orders)
-      .where(and(eq(orders.id, orderId!), eq(orders.userId, session?.user.id!)))
+      .where(and(eq(orders.id, orderId!)))
       .returning();
     return { order: o };
   } catch (err) {

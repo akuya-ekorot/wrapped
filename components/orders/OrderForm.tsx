@@ -98,9 +98,13 @@ const OrderForm = ({
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
+
     const orderParsed = await insertOrderParams.safeParseAsync({
-      deliveryZoneId: deliveryZoneId ?? null,
+      customerId: customerId ?? null,
       ...payload,
+      deliveryZoneId:
+        deliveryZoneId ??
+        (payload.deliveryZoneId === '' ? null : payload.deliveryZoneId),
     });
 
     if (!orderParsed.success) {
@@ -229,7 +233,6 @@ const OrderForm = ({
                   value={deliveryZone.id.toString()}
                 >
                   {deliveryZone.name}
-                  {/* TODO: Replace with a field from the deliveryZone model */}
                 </SelectItem>
               ))}
             </SelectContent>
