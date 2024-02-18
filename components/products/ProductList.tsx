@@ -7,10 +7,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { type Product, CompleteProduct } from '@/lib/db/schema/products';
 import Modal from '@/components/shared/Modal';
-import {
-  type Collection,
-  type CollectionId,
-} from '@/lib/db/schema/collections';
+import { type Collection } from '@/lib/db/schema/collections';
 import { useOptimisticProducts } from '@/app/(app)/admin/products/useOptimisticProducts';
 import { Button } from '@/components/ui/button';
 import ProductForm from './ProductForm';

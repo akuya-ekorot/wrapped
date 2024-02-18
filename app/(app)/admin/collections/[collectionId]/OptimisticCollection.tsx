@@ -3,12 +3,11 @@
 import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/collections/useOptimisticCollections';
 import { type Collection } from '@/lib/db/schema/collections';
-import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import CollectionForm from '@/components/collections/CollectionForm';
-import InfoListItem from '@/components/shared/InfoListItem';
+import CollectionInfoList from '@/components/collections/CollectionInfoList';
 
 export default function OptimisticCollection({
   collection,
@@ -41,13 +40,7 @@ export default function OptimisticCollection({
           Edit
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        {Object.entries(optimisticCollection)
-          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
-          .map(([key, value]) => (
-            <InfoListItem key={key} title={key} value={value} />
-          ))}
-      </div>
+      <CollectionInfoList collection={optimisticCollection} />
     </div>
   );
 }

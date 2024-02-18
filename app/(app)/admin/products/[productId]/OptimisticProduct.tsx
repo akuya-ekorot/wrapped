@@ -9,6 +9,7 @@ import Modal from '@/components/shared/Modal';
 import ProductForm from '@/components/products/ProductForm';
 import { type Collection } from '@/lib/db/schema/collections';
 import InfoListItem from '@/components/shared/InfoListItem';
+import ProductInfoList from '@/components/products/ProductInfoList';
 
 export default function OptimisticProduct({
   product,
@@ -44,21 +45,7 @@ export default function OptimisticProduct({
           Edit
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        {Object.entries(optimisticProduct)
-          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
-          .map(([key, value]) =>
-            key === 'collectionId' ? (
-              <InfoListItem
-                key={key}
-                title={'collection'}
-                value={collections.find((c) => c.id === value)?.name!}
-              />
-            ) : (
-              <InfoListItem key={key} title={key} value={value} />
-            ),
-          )}
-      </div>
+      <ProductInfoList product={optimisticProduct} />
     </div>
   );
 }

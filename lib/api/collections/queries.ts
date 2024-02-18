@@ -99,12 +99,24 @@ export const getCollectionByIdWithCollectionImagesAndProducts = async (
     .leftJoin(products, eq(productCollections.productId, products.id));
 
   if (rows.length === 0) return {};
+
   const c = rows[0].collection;
+
   const cc = rows
     .filter((r) => r.collectionImage !== null)
+    .filter(
+      (r, i, a) =>
+        a.findIndex(
+          (rr) => rr.collectionImage!.id === r.collectionImage!.id,
+        ) === i,
+    )
     .map((c) => c.collectionImage) as CompleteCollectionImage[];
+
   const cp = rows
     .filter((r) => r.product !== null)
+    .filter(
+      (r, i, a) => a.findIndex((rr) => rr.product!.id === r.product!.id) === i,
+    )
     .map((p) => p.product) as CompleteProduct[];
 
   return { collection: c, collectionImages: cc, products: cp };

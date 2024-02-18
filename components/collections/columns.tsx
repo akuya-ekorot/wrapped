@@ -12,7 +12,6 @@ import {
 } from '../ui/dropdown-menu';
 import { ArrowUpDown, Eye, MoreHorizontal, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
-import Link from 'next/link';
 import { ViewResourceLink } from '../shared/view-resource-link';
 
 export const columns: ColumnDef<CompleteCollection>[] = [
@@ -72,12 +71,6 @@ export const columns: ColumnDef<CompleteCollection>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
               <ViewResourceLink resourceName="collections" id={collection.id} />
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Button variant={'destructive'}>
-                <Trash2 className="w-4 h-4 mr-2" />
-                <span>Delete collection</span>
-              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
