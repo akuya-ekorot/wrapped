@@ -30,20 +30,22 @@ const revalidateOrders = () => revalidatePath('/orders');
 export const createOrderAction = async (input: NewOrderParams) => {
   try {
     const payload = insertOrderParams.parse(input);
-    await createOrder(payload);
+    const { order } = await createOrder(payload);
     revalidateOrders();
+    return { data: { order }, error: null };
   } catch (e) {
-    return handleErrors(e);
+    return { data: null, error: handleErrors(e) };
   }
 };
 
 export const updateOrderAction = async (input: UpdateOrderParams) => {
   try {
     const payload = updateOrderParams.parse(input);
-    await updateOrder(payload.id, payload);
+    const { order } = await updateOrder(payload.id, payload);
     revalidateOrders();
+    return { data: { order }, error: null };
   } catch (e) {
-    return handleErrors(e);
+    return { data: null, error: handleErrors(e) };
   }
 };
 

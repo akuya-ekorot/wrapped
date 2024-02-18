@@ -25,7 +25,12 @@ export default function CartForm() {
       <ScrollArea className="h-[400px] border-y py-4">
         <ul className="divide-y">
           {cart.items.map((cartItem) => (
-            <CartItemComponent key={cartItem.variant.id} cartItem={cartItem} />
+            <CartItemComponent
+              key={
+                cartItem.variant ? cartItem.variant.id : cartItem.product!.id
+              }
+              cartItem={cartItem}
+            />
           ))}
         </ul>
       </ScrollArea>
@@ -56,13 +61,20 @@ const CartItemComponent = ({ cartItem: cartItem }: { cartItem: CartItem }) => {
     currency: 'KES',
   });
 
+  const isVariant = !!cartItem.variant;
+  const isProduct = !!cartItem.product;
+
   return (
     <li className="w-full py-2">
       <div className="flex gap-4 w-full">
         <div>
           <Image
-            src={cartItem.variant.image.url}
-            alt={cartItem.variant.name}
+            src={
+              isVariant
+                ? cartItem.variant!.image.url
+                : cartItem.product!.image.url
+            }
+            alt={isVariant ? cartItem.variant!.name : cartItem.product!.name}
             height={120}
             width={120}
             className="w-full object-cover"
@@ -70,20 +82,27 @@ const CartItemComponent = ({ cartItem: cartItem }: { cartItem: CartItem }) => {
         </div>
         <div className="w-full space-y-4">
           <div className="flex justify-between items-center text-sm w-full">
-            <h3>{cartItem.variant.name}</h3>
+            <h3>
+              {isVariant ? cartItem.variant!.name : cartItem.product!.name}
+            </h3>
             <p>
               {formatter.format(
-                (cartItem.variant.price ?? 0) * cartItem.quantity,
+                (isVariant
+                  ? cartItem.variant!.price ?? 0
+                  : cartItem.product!.price ?? 0) * cartItem.quantity,
               )}
             </p>
           </div>
-          <div className="text-xs flex items-center flex-wrap gap-2">
-            {cartItem.variant.options.map((option) => (
-              <Badge key={option.id} variant={'outline'}>
-                {option.value.name}
-              </Badge>
-            ))}
-          </div>
+          {isVariant && (
+            <div className="text-xs flex items-center flex-wrap gap-2">
+              {cartItem.variant?.options.map((option) => (
+                <Badge key={option.id} variant={'outline'}>
+                  {option.value.name}
+                </Badge>
+              ))}
+            </div>
+          )}
+
           <div className="space-y-1">
             <div className="flex items-center gap-1">
               <Button

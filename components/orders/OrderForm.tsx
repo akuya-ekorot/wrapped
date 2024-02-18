@@ -123,7 +123,7 @@ const OrderForm = ({
             action: editing ? 'update' : 'create',
           });
 
-        const error = editing
+        const { data, error } = editing
           ? await updateOrderAction({ ...values, id: order.id })
           : await createOrderAction(values);
 

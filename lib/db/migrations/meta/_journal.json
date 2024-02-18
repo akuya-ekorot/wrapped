@@ -8,6 +8,13 @@
       "when": 1708187554791,
       "tag": "0000_robust_nighthawk",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1708248197419,
+      "tag": "0001_exotic_leader",
+      "breakpoints": true
     }
   ]
 }

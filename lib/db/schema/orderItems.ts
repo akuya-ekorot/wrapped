@@ -9,6 +9,7 @@ import { users } from '@/lib/db/schema/auth';
 import { type getOrderItems } from '@/lib/api/orderItems/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
+import { products } from './products';
 
 export const orderItems = customPgTable('order_items', {
   id: varchar('id', { length: 191 })
@@ -16,9 +17,12 @@ export const orderItems = customPgTable('order_items', {
     .$defaultFn(() => nanoid()),
   quantity: integer('quantity').notNull(),
   amount: real('amount').notNull(),
-  variantId: varchar('variant_id', { length: 256 })
-    .references(() => variants.id)
-    .notNull(),
+  variantId: varchar('variant_id', { length: 256 }).references(
+    () => variants.id,
+  ),
+  productId: varchar('product_id', { length: 256 }).references(
+    () => products.id,
+  ),
   orderId: varchar('order_id', { length: 256 })
     .references(() => orders.id, { onDelete: 'cascade' })
     .notNull(),
@@ -43,7 +47,8 @@ export const insertOrderItemParams = baseSchema
   .extend({
     quantity: z.coerce.number(),
     amount: z.coerce.number(),
-    variantId: z.coerce.string().min(1),
+    variantId: z.coerce.string().min(1).nullable(),
+    productId: z.coerce.string().min(1).nullable(),
     orderId: z.coerce.string().min(1),
   })
   .omit({

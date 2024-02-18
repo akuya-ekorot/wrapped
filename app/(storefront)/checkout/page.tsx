@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { OrderType, insertOrderSchema } from '@/lib/db/schema/orders';
+import { Order, OrderType, insertOrderSchema } from '@/lib/db/schema/orders';
 import { DeliveryZone } from '@/lib/db/schema/deliveryZones';
 import { getDeliveryZonesAction } from '@/lib/actions/deliveryZones';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -38,6 +38,7 @@ import { useOrderType } from '@/components/OrderTypeProvider';
 import { createOrderAction } from '@/lib/actions/orders';
 import { Check } from 'lucide-react';
 import { clearCart } from '@/lib/api/cart/mutations';
+import { createOrderItemAction } from '@/lib/actions/orderItems';
 
 export default function Page() {
   const { checkoutStep, setCheckoutStep } = useCheckoutStep()();
@@ -221,6 +222,24 @@ function Review() {
     });
   };
 
+  const createOrderItems = ({ order }: { order: Order }) => {
+    const promises = cart.items.map((item) => {
+      return createOrderItemAction({
+        orderId: order.id,
+        productId: item.product?.id ?? null,
+        variantId: item.variant?.id ?? null,
+        quantity: item.quantity,
+        amount: item.quantity * (item.variant?.price ?? item.product?.price)!,
+      });
+    });
+
+    return Promise.all(promises).then((errors) => {
+      if (errors.some((error) => error)) {
+        throw new Error('Failed to create order items');
+      }
+    });
+  };
+
   const createOrder = ({ payment }: { payment: Payment }) => {
     const payload = insertOrderSchema.safeParse({
       deliveryZoneId: deliveryZone?.id,
@@ -241,26 +260,28 @@ function Review() {
       notes: payload.data.notes ?? null,
     });
 
-    return OrderPromise.then((error) => {
-      if (error) {
+    return OrderPromise.then(({ data, error }) => {
+      if (error || !data) {
         throw new Error('Failed to create order');
       }
+
+      return data;
     });
   };
 
   const onSuccess = (response: any) => {
     const { reference, status } = response;
 
-    createPayment({
+    const payload = {
       reference,
       status,
       amount: cart.totalPrice + (deliveryZone?.deliveryCost ?? 0),
-    })
+    };
+
+    createPayment(payload)
       .then(createOrder)
-      .then(() => {
-        console.log('Order created successfully');
-        setCheckoutStep(3);
-      })
+      .then(createOrderItems)
+      .then(() => setCheckoutStep(3))
       .catch(console.error);
   };
 

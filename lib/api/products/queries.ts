@@ -147,6 +147,10 @@ export const getProductByIdWithProductImagesAndOptionsAndProductTags = async (
   };
 };
 
+export type CompleteProductPage = NonNullable<
+  Awaited<ReturnType<typeof getProductPageDetailsByProductId>>
+>;
+
 export const getProductPageDetailsByProductId = async (id: ProductId) => {
   const { id: productId } = productIdSchema.parse({ id });
 

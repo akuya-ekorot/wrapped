@@ -4,10 +4,9 @@ import { useCart } from '@/components/CartProvider';
 import { useDeliveryZone } from '@/components/DeliveryProvider';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
-import { useEffect } from 'react';
 
 export default function CheckoutProducts() {
-  const { cart, setCart } = useCart()();
+  const { cart } = useCart()();
   const deliveryZone = useDeliveryZone()((state) => state.deliveryZone);
 
   const formatter = new Intl.NumberFormat('en-KE', {
@@ -19,11 +18,18 @@ export default function CheckoutProducts() {
     <div className="divide-y">
       <div>
         {cart.items.map((item) => (
-          <div key={item.variant.id} className="flex gap-4 text-sm">
+          <div
+            key={item.variant ? item.variant.id : item.product!.id}
+            className="flex gap-4 text-sm"
+          >
             <div className="h-24 w-24 rounded relative">
               <Image
-                src={item.variant.image.url}
-                alt={item.variant.name}
+                src={
+                  item.variant
+                    ? item.variant.image.url
+                    : item.product!.image.url
+                }
+                alt={item.variant ? item.variant.name : item.product!.name}
                 height={120}
                 width={120}
                 className="object-cover w-full"
@@ -34,18 +40,24 @@ export default function CheckoutProducts() {
             </div>
             <div className="space-y-2 w-full">
               <div className="flex justify-between items-center">
-                <p>{item.variant.name}</p>
+                <p>{item.variant ? item.variant.name : item.product!.name}</p>
                 <p>
-                  {formatter.format((item.variant.price ?? 0) * item.quantity)}
+                  {formatter.format(
+                    (item.variant
+                      ? item.variant.price ?? 0
+                      : item.product!.price ?? 0) * item.quantity,
+                  )}
                 </p>
               </div>
-              <div className="flex gap-2 items-center flex-wrap">
-                {item.variant.options.map((option) => (
-                  <Badge key={option.id} className="text-xs">
-                    {option.value.name}
-                  </Badge>
-                ))}
-              </div>
+              {item.variant && (
+                <div className="flex gap-2 items-center flex-wrap">
+                  {item.variant.options.map((option) => (
+                    <Badge key={option.id} className="text-xs">
+                      {option.value.name}
+                    </Badge>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         ))}

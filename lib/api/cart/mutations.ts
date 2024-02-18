@@ -3,9 +3,13 @@ import { getCart } from './queries';
 import { OptionValue } from '@/lib/db/schema/optionValues';
 import { Option } from '@/lib/db/schema/options';
 import { TImage } from '@/lib/db/schema/images';
+import { Product } from '@/lib/db/schema/products';
 
 export type CartItem = {
-  variant: {
+  product?: {
+    image: TImage;
+  } & Product;
+  variant?: {
     image: TImage;
     options: ({
       value: OptionValue;
@@ -33,22 +37,35 @@ export const addToCart = async ({
   let cart = getCart(cartId);
 
   if (cart) {
-    const existingItem = cart.items.find(
-      (item) => item.variant.id === cartItem.variant.id,
+    const existingItem = cart.items.find((item) =>
+      item.variant
+        ? item.variant.id === cartItem.variant!.id
+        : item.product!.id === cartItem.product!.id,
     );
 
     if (existingItem) {
       existingItem.quantity += cartItem.quantity;
-      cart.totalPrice += (cartItem.variant.price ?? 0) * cartItem.quantity;
+      cart.totalPrice +=
+        (cartItem.variant
+          ? cartItem.variant.price ?? 0
+          : cartItem.product!.price) * cartItem.quantity;
     } else {
       cart.items.push(cartItem);
       cart.totalPrice = cart.items.reduce(
-        (acc, item) => acc + (item.variant.price ?? 0) * item.quantity,
+        (acc, item) =>
+          acc +
+          (item.variant ? item.variant.price ?? 0 : item.product!.price ?? 0) *
+            item.quantity,
         0,
       );
     }
   } else {
-    cart = { items: [cartItem], totalPrice: cartItem.variant.price ?? 0 };
+    cart = {
+      items: [cartItem],
+      totalPrice: cartItem.variant
+        ? cartItem.variant.price ?? 0
+        : cartItem.product!.price ?? 0,
+    };
   }
 
   await setCart(cartId, cart);
@@ -67,9 +84,15 @@ export const removeFromCart = async ({
   if (cart) {
     cart = {
       totalPrice:
-        cart.totalPrice - (cartItem.variant.price ?? 0) * cartItem.quantity,
-      items: cart.items.filter(
-        (item) => item.variant.id !== cartItem.variant.id,
+        cart.totalPrice -
+        (cartItem.variant
+          ? cartItem.variant.price ?? 0
+          : cartItem.product!.price ?? 0) *
+          cartItem.quantity,
+      items: cart.items.filter((item) =>
+        item.variant
+          ? item.variant.id !== cartItem.variant!.id
+          : item.product!.id !== cartItem.product!.id,
       ),
     };
   }
@@ -89,9 +112,17 @@ export const incrementCartItem = async ({
 
   if (cart) {
     cart = {
-      totalPrice: cart.totalPrice + (cartItem.variant.price ?? 0),
+      totalPrice:
+        cart.totalPrice +
+        (cartItem.variant
+          ? cartItem.variant.price ?? 0
+          : cartItem.product!.price ?? 0),
       items: cart.items.map((item) =>
-        item.variant.id === cartItem.variant.id
+        (
+          item.variant
+            ? item.variant.id === cartItem.variant!.id
+            : item.product!.id === cartItem.product!.id
+        )
           ? { ...item, quantity: item.quantity + 1 }
           : item,
       ),
@@ -113,9 +144,17 @@ export const decrementCartItem = async ({
 
   if (cart) {
     cart = {
-      totalPrice: cart.totalPrice - (cartItem.variant.price ?? 0),
+      totalPrice:
+        cart.totalPrice -
+        (cartItem.variant
+          ? cartItem.variant.price ?? 0
+          : cartItem.product!.price ?? 0),
       items: cart.items.map((item) =>
-        item.variant.id === cartItem.variant.id
+        (
+          item.variant
+            ? item.variant.id === cartItem.variant!.id
+            : item.product!.id === cartItem.product!.id
+        )
           ? { ...item, quantity: item.quantity - 1 }
           : item,
       ),

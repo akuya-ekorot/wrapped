@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import AddToCartButton from './AddToCartButton';
 import { getCartVariants } from '@/lib/api/variants/queries';
 import { CartItem } from '@/lib/api/cart/mutations';
+import { hasProductOptions } from './helpers';
 
 export default async function Page({
   params: { productId },
@@ -17,7 +18,6 @@ export default async function Page({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const product = await getProductPageDetailsByProductId(productId);
-  const { variants } = await getCartVariants();
 
   if (!product) {
     return notFound();
@@ -38,9 +38,35 @@ export default async function Page({
     );
   });
 
+  const { activeImageId } = searchParams;
+
+  const activeImage =
+    product.images.find((image) =>
+      Array.isArray(activeImageId)
+        ? image.id === activeImageId[0]
+        : image.id === activeImageId,
+    ) ??
+    variant?.images[0] ??
+    product.images[0];
+
+  const formatter = new Intl.NumberFormat('en-KE', {
+    style: 'currency',
+    currency: 'KES',
+  });
+
+  const hasOptions = hasProductOptions(product.options);
+
   let cartItem: CartItem | undefined;
 
-  if (!variant) {
+  if (!hasOptions) {
+    cartItem = {
+      quantity: 1,
+      product: {
+        ...product,
+        image: product.images[0],
+      },
+    };
+  } else if (!variant) {
     cartItem = undefined;
   } else {
     const { images, options, ...rest } = variant;
@@ -60,21 +86,30 @@ export default async function Page({
     };
   }
 
-  const { activeImageId } = searchParams;
-
-  const activeImage =
-    product.images.find((image) =>
-      Array.isArray(activeImageId)
-        ? image.id === activeImageId[0]
-        : image.id === activeImageId,
-    ) ??
-    variant?.images[0] ??
-    product.images[0];
-
-  const formatter = new Intl.NumberFormat('en-KE', {
-    style: 'currency',
-    currency: 'KES',
-  });
+  if (!hasOptions) {
+    return (
+      <main className="space-y-4 p-8">
+        <div className="grid grid-cols-2 gap-12">
+          <ImageGrid activeImage={activeImage} images={product.images} />
+          <section className="divide-y px-8">
+            <header className="space-y-2">
+              <h1 className="text-3xl">{product.name}</h1>
+              <h3 className="text-2xl text-primary font-semibold">
+                {`${formatter.format(product.price)}`}
+              </h3>
+            </header>
+            <div className="py-4">
+              <AddToCartButton cartItem={cartItem} />
+            </div>
+            <div className="py-4 text-primary/90 text-sm space-y-2">
+              <p>{product.description}</p>
+              {variant?.description && <p>{variant.description}</p>}
+            </div>
+          </section>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="space-y-4 p-8">

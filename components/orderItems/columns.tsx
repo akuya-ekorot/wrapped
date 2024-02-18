@@ -1,8 +1,10 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
 import { CompleteOrderItem } from '@/lib/db/schema/orderItems';
-import { Badge } from '../ui/badge';
+import { ColumnDef } from '@tanstack/react-table';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import { ViewResourceLink } from '../shared/view-resource-link';
+import { Button } from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,9 +12,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { ArrowUpDown, Eye, MoreHorizontal, Trash2 } from 'lucide-react';
-import { Button } from '../ui/button';
-import { ViewResourceLink } from '../shared/view-resource-link';
 
 export const columns: ColumnDef<CompleteOrderItem>[] = [
   {
