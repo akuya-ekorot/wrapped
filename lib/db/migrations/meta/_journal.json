@@ -15,6 +15,13 @@
       "when": 1708248197419,
       "tag": "0001_exotic_leader",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1708253653150,
+      "tag": "0002_nappy_starfox",
+      "breakpoints": true
     }
   ]
 }
