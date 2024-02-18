@@ -5,4 +5,6 @@ import { env } from '@/lib/env.mjs';
 export const pool = new Pool({
   connectionString: env.DATABASE_URL,
 });
-export const db = drizzle(pool, { logger: true });
+export const db = drizzle(pool, {
+  logger: env.APP_ENV === 'development' ? true : false,
+});

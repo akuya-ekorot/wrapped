@@ -1,16 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
-import { cn } from '@/lib/utils';
 import { type Customer, CompleteCustomer } from '@/lib/db/schema/customers';
 import Modal from '@/components/shared/Modal';
 import { useOptimisticCustomers } from '@/app/(app)/admin/customers/useOptimisticCustomers';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import CustomerForm from './CustomerForm';
+import { DataTable } from '../shared/data-table';
+import { columns } from './columns';
 
 type TOpenModal = (customer?: Customer) => void;
 
@@ -51,52 +50,16 @@ export default function CustomerList({
       {optimisticCustomers.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
-        <ul>
-          {optimisticCustomers.map((customerAddress) => (
-            <CustomerComponent
-              customer={customerAddress}
-              key={customerAddress.id}
-              openModal={openModal}
-            />
-          ))}
-        </ul>
+        <DataTable
+          searchColumn="name"
+          resourceName="customers"
+          columns={columns}
+          data={optimisticCustomers}
+        />
       )}
     </div>
   );
 }
-
-const CustomerComponent = ({
-  customer,
-  openModal,
-}: {
-  customer: CompleteCustomer;
-  openModal: TOpenModal;
-}) => {
-  const optimistic = customer.id === 'optimistic';
-  const deleting = customer.id === 'delete';
-  const mutating = optimistic || deleting;
-  const pathname = usePathname();
-  const basePath = pathname.includes('customers')
-    ? pathname
-    : pathname + '/customers/';
-
-  return (
-    <li
-      className={cn(
-        'flex justify-between my-2',
-        mutating ? 'opacity-30 animate-pulse' : '',
-        deleting ? 'text-destructive' : '',
-      )}
-    >
-      <div className="w-full">
-        <div>{customer.name}</div>
-      </div>
-      <Button variant={'link'} asChild>
-        <Link href={basePath + '/' + customer.id}>Edit</Link>
-      </Button>
-    </li>
-  );
-};
 
 const EmptyState = ({ openModal }: { openModal: TOpenModal }) => {
   return (
