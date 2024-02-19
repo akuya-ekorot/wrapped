@@ -27,7 +27,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const { homePages } = await getHomePages();

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import ContentBlockForm from '@/components/contentBlocks/ContentBlockForm';
 import { type Page, type PageId } from '@/lib/db/schema/pages';
+import ContentBlockInfoList from '@/components/contentBlocks/ContentBlockInfoList';
 
 export default function OptimisticContentBlock({
   contentBlock,
@@ -50,14 +51,7 @@ export default function OptimisticContentBlock({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticContentBlock.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticContentBlock, null, 2)}
-      </pre>
+      <ContentBlockInfoList contentBlock={optimisticContentBlock} />
     </div>
   );
 }

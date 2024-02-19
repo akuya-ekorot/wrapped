@@ -6,9 +6,10 @@ import CustomLink from './CustomLink';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import AddToCartButton from './AddToCartButton';
-import { getCartVariants } from '@/lib/api/variants/queries';
 import { CartItem } from '@/lib/api/cart/mutations';
 import { hasProductOptions } from './helpers';
+
+export const revalidate = 60;
 
 export default async function Page({
   params: { productId },
