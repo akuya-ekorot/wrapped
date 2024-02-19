@@ -19,6 +19,13 @@ import {
 } from '@/lib/api/featuredProductsSection/queries';
 import { CompleteReferredProduct } from '@/lib/db/schema/referredProducts';
 import { getProductByIdWithProductImagesAndOptionsAndProductTags } from '@/lib/api/products/queries';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 
 export const revalidate = 0;
 
@@ -94,13 +101,25 @@ async function FeaturedProducts() {
     );
 
   return (
-    <section className="px-12 py-9 flex flex-col items-center gap-4">
+    <section className="px-24 py-9 flex flex-col items-center gap-4">
       <h2 className="uppercase">{featuredProductsSection[0]?.title}</h2>
-      <div className="w-full flex items-center justify-center flex-wrap gap-2">
-        {referredProducts?.map((rp) => (
-          <FeaturedProductItem key={rp.id} referredProduct={rp} />
-        ))}
-      </div>
+      <Carousel
+        className="w-full"
+        opts={{
+          align: 'center',
+          loop: true,
+        }}
+      >
+        <CarouselContent className="justify-center">
+          {referredProducts?.map((rp) => (
+            <CarouselItem className="basis-1/5" key={rp.id}>
+              <FeaturedProductItem referredProduct={rp} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNext />
+        <CarouselPrevious />
+      </Carousel>
     </section>
   );
 }
@@ -175,15 +194,27 @@ async function MainCollections() {
   const { referredCollections } = await getReferredCollections();
 
   return (
-    <section className="px-12 py-9 flex flex-col items-center gap-4">
+    <section className="px-24 py-9 flex flex-col items-center gap-4">
       <h2 className="uppercase">{mainCollection?.title}</h2>
-      <div className="w-full flex items-center justify-center flex-wrap gap-2">
-        {referredCollections
-          ?.filter((rc) => rc.mainCollectionId === mainCollection.id)
-          .map((rc) => (
-            <MainCategoryItem key={rc.id} referredCollection={rc} />
-          ))}
-      </div>
+      <Carousel
+        className="w-full"
+        opts={{
+          align: 'center',
+          loop: true,
+        }}
+      >
+        <CarouselContent className="justify-center">
+          {referredCollections
+            ?.filter((rc) => rc.mainCollectionId === mainCollection.id)
+            .map((rc) => (
+              <CarouselItem className="basis-1/5" key={rc.id}>
+                <MainCategoryItem key={rc.id} referredCollection={rc} />
+              </CarouselItem>
+            ))}
+        </CarouselContent>
+        <CarouselNext />
+        <CarouselPrevious />
+      </Carousel>
     </section>
   );
 }
