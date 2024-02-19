@@ -32,7 +32,6 @@ const productHasDuplicateVariantOptions = async (
       and(
         eq(variantOptions.productId, newVariantOption.productId),
         ne(variantOptions.variantId, newVariantOption.variantId),
-        // eq(variants.isComplete, true),
       ),
     )
     .leftJoin(variants, eq(variants.id, variantOptions.variantId));
