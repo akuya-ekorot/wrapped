@@ -1,16 +1,11 @@
 import { SidebarLink } from '@/components/SidebarItems';
 import {
-  Banknote,
-  Cog,
   Files,
-  Globe,
   Home,
   HomeIcon,
   Library,
-  Link,
   ShoppingBasket,
   Tag,
-  Tags,
   Truck,
   Users,
 } from 'lucide-react';
@@ -22,8 +17,6 @@ type AdditionalLinks = {
 
 export const defaultLinks: SidebarLink[] = [
   { href: '/admin', title: 'Home', icon: HomeIcon },
-  { href: '/admin/account', title: 'Account', icon: Cog },
-  { href: '/admin/settings', title: 'Settings', icon: Cog },
 ];
 
 export const additionalLinks: AdditionalLinks[] = [
