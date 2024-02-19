@@ -1,14 +1,14 @@
 'use client';
 
-import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/delivery-zones/useOptimisticDeliveryZones';
 import { type DeliveryZone } from '@/lib/db/schema/deliveryZones';
-import { cn } from '@/lib/utils';
+import { useOptimistic, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import Modal from '@/components/shared/Modal';
 import DeliveryZoneForm from '@/components/deliveryZones/DeliveryZoneForm';
 import InfoListItem from '@/components/shared/InfoListItem';
+import Modal from '@/components/shared/Modal';
+import { Button } from '@/components/ui/button';
+import DeliveryZoneInfoList from '@/components/deliveryZones/DeliveryZoneInfoList';
 
 export default function OptimisticDeliveryZone({
   deliveryZone,
@@ -41,13 +41,7 @@ export default function OptimisticDeliveryZone({
           Edit
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        {Object.entries(optimisticDeliveryZone)
-          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
-          .map(([key, value]) => (
-            <InfoListItem key={key} title={key} value={value} />
-          ))}
-      </div>
+      <DeliveryZoneInfoList deliveryZone={optimisticDeliveryZone} />
     </div>
   );
 }

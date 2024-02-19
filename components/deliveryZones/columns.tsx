@@ -79,12 +79,6 @@ export const columns: ColumnDef<CompleteDeliveryZone>[] = [
                 resourceName="delivery-zones"
               />
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Button variant={'destructive'}>
-                <Trash2 className="w-4 h-4 mr-2" />
-                <span>Delete delivery zone</span>
-              </Button>
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
