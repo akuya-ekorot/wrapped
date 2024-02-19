@@ -9,7 +9,6 @@ import { getCollections } from '@/lib/api/collections/queries';
 import OptimisticProduct from '@/app/(app)/admin/products/[productId]/OptimisticProduct';
 import ProductImageList from '@/components/productImages/ProductImageList';
 import OptionList from '@/components/options/OptionList';
-import ProductTagList from '@/components/productTags/ProductTagList';
 
 import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
@@ -35,11 +34,10 @@ export default async function ProductPage({
 }
 
 const Product = async ({ id }: { id: string }) => {
-  const { product, productImages, options, productTags } =
+  const { product, productImages, options } =
     await getProductByIdWithProductImagesAndOptionsAndProductTags(id);
   const { collections } = await getCollections();
   const { images } = await getImages();
-  const { tags } = await getTags();
   const { variants } = await getVariants();
   const { products } = await getProducts();
   const { productCollections } = await getProductCollectionsByProductId(id);
@@ -99,18 +97,6 @@ const Product = async ({ id }: { id: string }) => {
           productId={product.id}
           variants={productVariants}
           products={[]}
-        />
-      </div>
-
-      <div className="relative mt-8 mx-4">
-        <h3 className="text-xl font-medium mb-4">
-          {product.name}&apos;s Product Tags
-        </h3>
-        <ProductTagList
-          tags={tags}
-          products={[]}
-          productId={product.id}
-          productTags={productTags}
         />
       </div>
     </Suspense>

@@ -55,11 +55,6 @@ export const additionalLinks: AdditionalLinks[] = [
         title: 'Delivery Zones',
         icon: Truck,
       },
-      {
-        href: '/admin/tags',
-        title: 'Tags',
-        icon: Tags,
-      },
     ],
   },
   {
