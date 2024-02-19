@@ -1,13 +1,14 @@
 import { sql } from 'drizzle-orm';
-import { text, varchar, timestamp, pgTable } from 'drizzle-orm/pg-core';
+import { text, varchar, timestamp } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { pages } from './pages';
 import { type getContentBlocks } from '@/lib/api/contentBlocks/queries';
 
 import { nanoid, timestamps } from '@/lib/utils';
+import { customPgTable } from '../utils';
 
-export const contentBlocks = pgTable('content_blocks', {
+export const contentBlocks = customPgTable('content_blocks', {
   id: varchar('id', { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

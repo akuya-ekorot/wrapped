@@ -1,19 +1,12 @@
 import { sql } from 'drizzle-orm';
-import {
-  text,
-  varchar,
-  timestamp,
-  pgTable,
-  uniqueIndex,
-} from 'drizzle-orm/pg-core';
+import { text, varchar, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
-
 import { type getPages } from '@/lib/api/pages/queries';
-
 import { nanoid, timestamps } from '@/lib/utils';
+import { customPgTable } from '../utils';
 
-export const pages = pgTable(
+export const pages = customPgTable(
   'pages',
   {
     id: varchar('id', { length: 191 })
