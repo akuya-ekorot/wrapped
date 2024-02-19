@@ -1,23 +1,22 @@
-import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
+import OptimisticProduct from '@/app/(app)/admin/products/[productId]/OptimisticProduct';
+import OptionList from '@/components/options/OptionList';
+import ProductImageList from '@/components/productImages/ProductImageList';
+import { getCollections } from '@/lib/api/collections/queries';
 import {
   getProductByIdWithProductImagesAndOptionsAndProductTags,
   getProducts,
 } from '@/lib/api/products/queries';
-import { getCollections } from '@/lib/api/collections/queries';
-import OptimisticProduct from '@/app/(app)/admin/products/[productId]/OptimisticProduct';
-import ProductImageList from '@/components/productImages/ProductImageList';
-import OptionList from '@/components/options/OptionList';
 
-import { BackButton } from '@/components/shared/BackButton';
 import Loading from '@/app/loading';
-import { getImages } from '@/lib/api/images/queries';
-import { getTags } from '@/lib/api/tags/queries';
-import VariantList from '@/components/variants/VariantList';
-import { getVariants } from '@/lib/api/variants/queries';
 import ProductCollectionList from '@/components/productCollections/ProductCollectionList';
+import { BackButton } from '@/components/shared/BackButton';
+import VariantList from '@/components/variants/VariantList';
+import { getImages } from '@/lib/api/images/queries';
 import { getProductCollectionsByProductId } from '@/lib/api/productCollections/queries';
+import { getVariants } from '@/lib/api/variants/queries';
 
 export const revalidate = 0;
 

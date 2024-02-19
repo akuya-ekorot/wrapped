@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { ArrowUpDown, Eye, MoreHorizontal, Trash2 } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import { Button } from '../ui/button';
 import { ViewResourceLink } from '../shared/view-resource-link';
 
@@ -96,12 +96,6 @@ export const columns: ColumnDef<CompleteVariant>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
               <ViewResourceLink resourceName="variants" id={variant.id} />
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Button variant={'destructive'}>
-                <Trash2 className="w-4 h-4 mr-2" />
-                <span>Delete product</span>
-              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

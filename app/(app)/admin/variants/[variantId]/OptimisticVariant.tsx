@@ -3,13 +3,13 @@
 import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/variants/useOptimisticVariants';
 import { type Variant } from '@/lib/db/schema/variants';
-import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import VariantForm from '@/components/variants/VariantForm';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
 import InfoListItem from '@/components/shared/InfoListItem';
+import VariantInfoList from '@/components/variants/VariantInfoList';
 
 export default function OptimisticVariant({
   variant,
@@ -48,22 +48,7 @@ export default function OptimisticVariant({
           Edit
         </Button>
       </div>
-
-      <div className="grid grid-cols-2 gap-2">
-        {Object.entries(optimisticVariant)
-          .filter(([key]) => !['id', 'createdAt', 'updatedAt'].includes(key))
-          .map(([key, value]) =>
-            key === 'productId' ? (
-              <InfoListItem
-                key={key}
-                title={'product'}
-                value={products.find((p) => p.id === value)?.name!}
-              />
-            ) : (
-              <InfoListItem key={key} title={key} value={value} />
-            ),
-          )}
-      </div>
+      <VariantInfoList variant={optimisticVariant} />
     </div>
   );
 }

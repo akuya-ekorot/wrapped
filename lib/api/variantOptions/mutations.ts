@@ -48,13 +48,15 @@ const productHasDuplicateVariantOptions = async (
     allOtherVariantOptionsForProduct: any[];
     currentOptions: any[];
   }) => {
+    if (allOtherVariantOptionsForProduct.length === 0) return false;
+
     const currentOptionsSet = new Set(
       currentOptions.map((vo) =>
         generateOptionKey(vo.optionId, vo.optionValueId),
       ),
     );
 
-    return allOtherVariantOptionsForProduct.every((vo) => {
+    return allOtherVariantOptionsForProduct.some((vo) => {
       const newKey = generateOptionKey(
         vo.variantOption.optionId,
         vo.variantOption.optionValueId,
@@ -64,10 +66,12 @@ const productHasDuplicateVariantOptions = async (
     });
   };
 
-  return hasDuplicate({
+  const has = hasDuplicate({
     allOtherVariantOptionsForProduct,
     currentOptions,
   });
+
+  return has;
 };
 
 export const createVariantOption = async (

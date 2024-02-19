@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import OptionForm from '@/components/options/OptionForm';
 import { type Product, type ProductId } from '@/lib/db/schema/products';
+import OptionInfoList from '@/components/options/OptionInfoList';
 
 export default function OptimisticOption({
   option,
@@ -47,14 +48,7 @@ export default function OptimisticOption({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticOption.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticOption, null, 2)}
-      </pre>
+      <OptionInfoList option={optimisticOption} />
     </div>
   );
 }
