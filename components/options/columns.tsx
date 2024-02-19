@@ -50,7 +50,7 @@ export const columns: ColumnDef<CompleteOption>[] = [
 
       return (
         <div className="flex gap-2 items-center">
-          {values?.map((value) => <Badge>{value.name}</Badge>)}
+          {values?.map((value) => <Badge key={value.id}>{value.name}</Badge>)}
         </div>
       );
     },

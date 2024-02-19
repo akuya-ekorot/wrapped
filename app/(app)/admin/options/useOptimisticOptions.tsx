@@ -24,6 +24,7 @@ export const useOptimisticOptions = (
       const optimisticOption = {
         ...data,
         product: optimisticProduct,
+        optionValues: [],
         id: 'optimistic',
       };
 
