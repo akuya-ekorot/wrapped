@@ -93,6 +93,7 @@ export const getProductByIdWithProductImagesAndOptionsAndProductTags = async (
       product: products,
       productImage: productImages,
       option: options,
+      optionValue: optionValues,
       productTag: productTags,
       image: images,
     })
@@ -101,7 +102,8 @@ export const getProductByIdWithProductImagesAndOptionsAndProductTags = async (
     .leftJoin(productImages, eq(products.id, productImages.productId))
     .leftJoin(images, eq(productImages.imageId, images.id))
     .leftJoin(options, eq(products.id, options.productId))
-    .leftJoin(productTags, eq(products.id, productTags.productId));
+    .leftJoin(productTags, eq(products.id, productTags.productId))
+    .leftJoin(optionValues, eq(options.id, optionValues.optionId));
 
   if (rows.length === 0) return {};
 
@@ -128,7 +130,17 @@ export const getProductByIdWithProductImagesAndOptionsAndProductTags = async (
       (r, i, self) =>
         self.findIndex((s) => s.option!.id === r.option!.id) === i,
     )
-    .map((o) => o.option) as CompleteOption[];
+    .map((o) => ({
+      ...o.option,
+      optionValues: rows
+        .filter((r) => r.optionValue !== null)
+        .filter(
+          (r, i, self) =>
+            self.findIndex((s) => s.optionValue!.id === r.optionValue!.id) ===
+            i,
+        )
+        .map((v) => v.optionValue) as OptionValue[],
+    })) as CompleteOption[];
 
   const p_tags = rows
     .filter((r) => r.productTag !== null)

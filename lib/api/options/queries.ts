@@ -9,14 +9,27 @@ import { products } from '@/lib/db/schema/products';
 import {
   optionValues,
   type CompleteOptionValue,
+  OptionValue,
 } from '@/lib/db/schema/optionValues';
 
 export const getOptions = async () => {
   const rows = await db
-    .select({ option: options, product: products })
+    .select({ option: options, product: products, optionValue: optionValues })
     .from(options)
-    .leftJoin(products, eq(options.productId, products.id));
-  const o = rows.map((r) => ({ ...r.option, product: r.product }));
+    .leftJoin(products, eq(options.productId, products.id))
+    .leftJoin(optionValues, eq(options.id, optionValues.optionId));
+
+  const o = rows.map((r) => ({
+    ...r.option,
+    product: r.product,
+    optionValues: rows
+      .filter((r2) => r2.optionValue !== null)
+      .filter((o) => o.optionValue!.optionId === r.option.id)
+      .map((o) => o.optionValue) as OptionValue[],
+  }));
+
+  console.log({ o });
+
   return { options: o };
 };
 

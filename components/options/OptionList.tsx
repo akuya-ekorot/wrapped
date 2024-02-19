@@ -12,6 +12,8 @@ import { useOptimisticOptions } from '@/app/(app)/admin/options/useOptimisticOpt
 import { Button } from '@/components/ui/button';
 import OptionForm from './OptionForm';
 import { PlusIcon } from 'lucide-react';
+import { DataTable } from '../shared/data-table';
+import { columns } from './columns';
 
 type TOpenModal = (option?: Option) => void;
 
@@ -60,11 +62,12 @@ export default function OptionList({
       {optimisticOptions.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
-        <ul>
-          {optimisticOptions.map((option) => (
-            <Option option={option} key={option.id} openModal={openModal} />
-          ))}
-        </ul>
+        <DataTable
+          searchColumn="name"
+          resourceName="options"
+          columns={columns}
+          data={optimisticOptions}
+        />
       )}
     </div>
   );
