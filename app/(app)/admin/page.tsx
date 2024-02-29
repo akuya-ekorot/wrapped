@@ -1,3 +1,4 @@
+import Filters from '@/components/admin-home/filters';
 import {
   Card,
   CardContent,
@@ -9,7 +10,11 @@ import { getPercentageChange, getTotals } from '@/lib/api/orders/queries';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 import { DateTime } from 'luxon';
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string };
+}) {
   const { totalOrderRevenue, totalOrderCount, totalCustomerCount } =
     await getTotals({
       start: DateTime.now().startOf('day').toJSDate(),
@@ -26,7 +31,8 @@ export default async function Home() {
   });
 
   return (
-    <main className="space-y-4">
+    <main className="space-y-8">
+      <Filters />
       <div className="grid grid-cols-3 gap-4">
         <TotalRevenueWidget
           percentageChange={revenuePercentageChange}
