@@ -14,10 +14,56 @@ import { variants } from '@/lib/db/schema/variants';
 import { customers } from '@/lib/db/schema/customers';
 import { products } from '@/lib/db/schema/products';
 import { PgSelect } from 'drizzle-orm/pg-core';
+import { DateTime } from 'luxon';
 
 function withStatus<T extends PgSelect>(query: T, status: OrderStatus) {
   return query.where(eq(orders.status, status));
 }
+
+export const getPercentageChange = async (params?: {
+  status?: TOrderStatus;
+  start?: Date;
+  end?: Date;
+}) => {
+  const parsedParams = getTotalOrdersSchema.parse(params);
+
+  const currentStart = DateTime.fromJSDate(
+    parsedParams?.start ?? DateTime.now().startOf('day').toJSDate(),
+  );
+  const currentEnd = DateTime.fromJSDate(
+    parsedParams?.end ?? currentStart.endOf('day').toJSDate(),
+  );
+
+  const currentDuration = currentEnd.diff(currentStart, 'days').toObject();
+  const previousDuration = currentStart
+    .diff(currentStart.minus(currentDuration), 'days')
+    .toObject();
+
+  const previousStart = currentStart.minus(previousDuration).toJSDate();
+  const previousEnd = currentStart.toJSDate();
+
+  const { totalRevenue: previousTotalRevenue } = await getTotalOrderRevenue({
+    start: previousStart,
+    end: previousEnd,
+    status: params?.status,
+  });
+
+  const { totalRevenue: currentTotalRevenue } = await getTotalOrderRevenue({
+    start: parsedParams?.start,
+    end: parsedParams?.end,
+    status: params?.status,
+  });
+
+  if (previousTotalRevenue === null) return { percentageChange: null };
+  if (currentTotalRevenue === null) return { percentageChange: null };
+
+  const percentageChange =
+    ((parseFloat(currentTotalRevenue) - parseFloat(previousTotalRevenue)) /
+      parseFloat(previousTotalRevenue)) *
+    100;
+
+  return { percentageChange };
+};
 
 export const getTotalOrderRevenue = async (params?: {
   status?: TOrderStatus;
@@ -34,11 +80,16 @@ export const getTotalOrderRevenue = async (params?: {
     query = withStatus(query, parsedParams.status);
   }
 
-  if (parsedParams?.start) {
+  if (parsedParams?.start && parsedParams?.end) {
+    query = query.where(
+      and(
+        lte(orders.createdAt, parsedParams.end),
+        gte(orders.createdAt, parsedParams.start),
+      ),
+    );
+  } else if (parsedParams?.start) {
     query = query.where(gte(orders.createdAt, parsedParams.start));
-  }
-
-  if (parsedParams?.end) {
+  } else if (parsedParams?.end) {
     query = query.where(lte(orders.createdAt, parsedParams.end));
   }
 
