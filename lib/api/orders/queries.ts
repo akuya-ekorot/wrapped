@@ -42,38 +42,63 @@ export const getPercentageChange = async (params?: {
   const previousStart = currentStart.minus(previousDuration).toJSDate();
   const previousEnd = currentStart.toJSDate();
 
-  const { totalRevenue: previousTotalRevenue } = await getTotalOrderRevenue({
+  const {
+    totalOrderRevenue: previousTotalRevenue,
+    totalOrderCount: previousOrderCount,
+    totalCustomerCount: previousCustomerCount,
+  } = await getTotals({
     start: previousStart,
     end: previousEnd,
     status: params?.status,
   });
 
-  const { totalRevenue: currentTotalRevenue } = await getTotalOrderRevenue({
+  const {
+    totalOrderRevenue: currentTotalRevenue,
+    totalOrderCount: currentOrderCount,
+    totalCustomerCount: currentCustomerCount,
+  } = await getTotals({
     start: parsedParams?.start,
     end: parsedParams?.end,
     status: params?.status,
   });
 
-  if (previousTotalRevenue === null) return { percentageChange: null };
-  if (currentTotalRevenue === null) return { percentageChange: null };
-
-  const percentageChange =
-    ((parseFloat(currentTotalRevenue) - parseFloat(previousTotalRevenue)) /
-      parseFloat(previousTotalRevenue)) *
+  const revenuePercentageChange =
+    ((parseFloat(currentTotalRevenue ?? '0') -
+      parseFloat(previousTotalRevenue ?? '0')) /
+      parseFloat(previousTotalRevenue ?? '0')) *
     100;
 
-  return { percentageChange };
+  const orderPercentageChange =
+    (((currentOrderCount ?? '0') - (previousOrderCount ?? '0')) /
+      (previousOrderCount ?? '0')) *
+    100;
+
+  const customerPercentageChange =
+    (((currentCustomerCount ?? '0') - (previousCustomerCount ?? '0')) /
+      (previousCustomerCount ?? '0')) *
+    100;
+
+  return {
+    revenuePercentageChange,
+    orderPercentageChange,
+    customerPercentageChange,
+  };
 };
 
-export const getTotalOrderRevenue = async (params?: {
+export const getTotals = async (params?: {
   status?: TOrderStatus;
   start?: Date;
   end?: Date;
 }) => {
   const parsedParams = getTotalOrdersSchema.parse(params);
   let query = db
-    .select({ totalRevenue: sum(orders.amount) })
+    .select({
+      totalOrderRevenue: sum(orders.amount),
+      totalOrderCount: count(orders.amount),
+      totalCustomerCount: count(customers.id),
+    })
     .from(orders)
+    .leftJoin(customers, eq(orders.customerId, customers.id))
     .$dynamic();
 
   if (parsedParams?.status) {
