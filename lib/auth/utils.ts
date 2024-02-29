@@ -26,6 +26,7 @@ export type AuthSession = {
 };
 
 export const authOptions: NextAuthOptions = {
+  secret: env.NEXTAUTH_SECRET,
   adapter: DrizzleAdapter(db, customPgTable) as Adapter,
   callbacks: {
     session: ({ session, user }) => {
