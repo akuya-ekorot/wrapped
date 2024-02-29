@@ -34,6 +34,8 @@ export enum OrderStatus {
   Cancelled = 'cancelled',
 }
 
+export type TOrderStatus = keyof typeof OrderStatus;
+
 export const orderType = pgEnum('order_type', ['pickup', 'delivery']);
 export enum OrderType {
   Pickup = 'pickup',
@@ -90,6 +92,14 @@ export const updateOrderParams = baseSchema
   })
   .omit({});
 export const orderIdSchema = baseSchema.pick({ id: true });
+
+export const getTotalOrdersSchema = z
+  .object({
+    start: z.date().optional(),
+    end: z.date().optional(),
+    status: z.nativeEnum(OrderStatus).optional(),
+  })
+  .optional();
 
 // Types for orders - used to type API request params and within Components
 export type Order = typeof orders.$inferSelect;

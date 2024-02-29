@@ -1,13 +1,51 @@
 import { db } from '@/lib/db/index';
-import { eq, and } from 'drizzle-orm';
-import { getUserAuth } from '@/lib/auth/utils';
-import { type OrderId, orderIdSchema, orders } from '@/lib/db/schema/orders';
+import { eq, and, gte, lte, count, sum } from 'drizzle-orm';
+import {
+  type OrderId,
+  orderIdSchema,
+  orders,
+  type TOrderStatus,
+  getTotalOrdersSchema,
+  OrderStatus,
+} from '@/lib/db/schema/orders';
 import { deliveryZones } from '@/lib/db/schema/deliveryZones';
 import { orderItems, type CompleteOrderItem } from '@/lib/db/schema/orderItems';
-import { users } from '@/lib/db/schema/auth';
 import { variants } from '@/lib/db/schema/variants';
 import { customers } from '@/lib/db/schema/customers';
 import { products } from '@/lib/db/schema/products';
+import { PgSelect } from 'drizzle-orm/pg-core';
+
+function withStatus<T extends PgSelect>(query: T, status: OrderStatus) {
+  return query.where(eq(orders.status, status));
+}
+
+export const getTotalOrderRevenue = async (params?: {
+  status?: TOrderStatus;
+  start?: Date;
+  end?: Date;
+}) => {
+  const parsedParams = getTotalOrdersSchema.parse(params);
+  let query = db
+    .select({ totalRevenue: sum(orders.amount) })
+    .from(orders)
+    .$dynamic();
+
+  if (parsedParams?.status) {
+    query = withStatus(query, parsedParams.status);
+  }
+
+  if (parsedParams?.start) {
+    query = query.where(gte(orders.createdAt, parsedParams.start));
+  }
+
+  if (parsedParams?.end) {
+    query = query.where(lte(orders.createdAt, parsedParams.end));
+  }
+
+  const [row] = await query;
+
+  return row;
+};
 
 export const getOrdersTotal = async () => {
   const rows = await db
