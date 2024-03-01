@@ -93,11 +93,17 @@ export const updateOrderParams = baseSchema
   .omit({});
 export const orderIdSchema = baseSchema.pick({ id: true });
 
+export enum AllStatus {
+  'All' = 'all',
+}
+
 export const getTotalOrdersSchema = z
   .object({
     start: z.date().optional(),
     end: z.date().optional(),
-    status: z.nativeEnum(OrderStatus).optional(),
+    status: z
+      .union([z.nativeEnum(OrderStatus), z.nativeEnum(AllStatus)])
+      .optional(),
   })
   .optional();
 

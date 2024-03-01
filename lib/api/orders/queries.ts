@@ -4,24 +4,19 @@ import {
   type OrderId,
   orderIdSchema,
   orders,
-  type TOrderStatus,
   getTotalOrdersSchema,
   OrderStatus,
+  AllStatus,
 } from '@/lib/db/schema/orders';
 import { deliveryZones } from '@/lib/db/schema/deliveryZones';
 import { orderItems, type CompleteOrderItem } from '@/lib/db/schema/orderItems';
 import { variants } from '@/lib/db/schema/variants';
 import { customers } from '@/lib/db/schema/customers';
 import { products } from '@/lib/db/schema/products';
-import { PgSelect } from 'drizzle-orm/pg-core';
 import { DateTime } from 'luxon';
 
-function withStatus<T extends PgSelect>(query: T, status: OrderStatus) {
-  return query.where(eq(orders.status, status));
-}
-
 export const getPercentageChange = async (params?: {
-  status?: TOrderStatus;
+  status?: OrderStatus | AllStatus;
   start?: Date;
   end?: Date;
 }) => {
@@ -49,7 +44,7 @@ export const getPercentageChange = async (params?: {
   } = await getTotals({
     start: previousStart,
     end: previousEnd,
-    status: params?.status,
+    status: parsedParams?.status,
   });
 
   const {
@@ -59,7 +54,7 @@ export const getPercentageChange = async (params?: {
   } = await getTotals({
     start: parsedParams?.start,
     end: parsedParams?.end,
-    status: params?.status,
+    status: parsedParams?.status,
   });
 
   const revenuePercentageChange =
@@ -86,11 +81,12 @@ export const getPercentageChange = async (params?: {
 };
 
 export const getTotals = async (params?: {
-  status?: TOrderStatus;
+  status?: OrderStatus | AllStatus;
   start?: Date;
   end?: Date;
 }) => {
   const parsedParams = getTotalOrdersSchema.parse(params);
+
   let query = db
     .select({
       totalOrderRevenue: sum(orders.amount),
@@ -101,24 +97,26 @@ export const getTotals = async (params?: {
     .leftJoin(customers, eq(orders.customerId, customers.id))
     .$dynamic();
 
-  if (parsedParams?.status) {
-    query = withStatus(query, parsedParams.status);
+  const qb = [];
+
+  if (parsedParams?.status && parsedParams.status !== AllStatus.All) {
+    qb.push(eq(orders.status, parsedParams.status));
   }
 
   if (parsedParams?.start && parsedParams?.end) {
-    query = query.where(
+    qb.push(
       and(
         lte(orders.createdAt, parsedParams.end),
         gte(orders.createdAt, parsedParams.start),
       ),
     );
   } else if (parsedParams?.start) {
-    query = query.where(gte(orders.createdAt, parsedParams.start));
+    qb.push(gte(orders.createdAt, parsedParams.start));
   } else if (parsedParams?.end) {
-    query = query.where(lte(orders.createdAt, parsedParams.end));
+    qb.push(lte(orders.createdAt, parsedParams.end));
   }
 
-  const [row] = await query;
+  const [row] = await query.where(and(...qb));
 
   return row;
 };

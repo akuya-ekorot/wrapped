@@ -7,18 +7,50 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getPercentageChange, getTotals } from '@/lib/api/orders/queries';
+import { AllStatus, OrderStatus, TOrderStatus } from '@/lib/db/schema/orders';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 import { DateTime } from 'luxon';
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { [key: string]: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const { start, end, status } = searchParams;
+
+  let startDuration: Date;
+  let endDuration: Date;
+  let statusFilter: OrderStatus | AllStatus;
+
+  if (status instanceof Array) {
+    statusFilter = status[0] as OrderStatus | AllStatus;
+  } else {
+    statusFilter = (status as OrderStatus | AllStatus) ?? AllStatus.All;
+  }
+
+  console.log(statusFilter);
+
+  if (start instanceof Array) {
+    startDuration = DateTime.fromISO(start[0]).toJSDate();
+  } else {
+    startDuration = start
+      ? DateTime.fromISO(start).toJSDate()
+      : DateTime.now().startOf('day').toJSDate();
+  }
+
+  if (end instanceof Array) {
+    endDuration = DateTime.fromISO(end[0]).toJSDate();
+  } else {
+    endDuration = end
+      ? DateTime.fromISO(end).toJSDate()
+      : DateTime.now().endOf('day').toJSDate();
+  }
+
   const { totalOrderRevenue, totalOrderCount, totalCustomerCount } =
     await getTotals({
       start: DateTime.now().startOf('day').toJSDate(),
       end: DateTime.now().endOf('day').toJSDate(),
+      status: statusFilter,
     });
 
   const {
@@ -26,8 +58,9 @@ export default async function Home({
     orderPercentageChange,
     customerPercentageChange,
   } = await getPercentageChange({
-    start: DateTime.now().startOf('day').toJSDate(),
-    end: DateTime.now().endOf('day').toJSDate(),
+    start: startDuration,
+    end: endDuration,
+    status: statusFilter,
   });
 
   return (
