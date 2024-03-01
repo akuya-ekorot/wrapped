@@ -28,8 +28,6 @@ export default async function Home({
     statusFilter = (status as OrderStatus | AllStatus) ?? AllStatus.All;
   }
 
-  console.log(statusFilter);
-
   if (start instanceof Array) {
     startDuration = DateTime.fromISO(start[0]).toJSDate();
   } else {
@@ -37,6 +35,8 @@ export default async function Home({
       ? DateTime.fromISO(start).toJSDate()
       : DateTime.now().startOf('day').toJSDate();
   }
+
+  console.log({ startDuration });
 
   if (end instanceof Array) {
     endDuration = DateTime.fromISO(end[0]).toJSDate();
@@ -46,10 +46,12 @@ export default async function Home({
       : DateTime.now().endOf('day').toJSDate();
   }
 
+  console.log({ endDuration });
+
   const { totalOrderRevenue, totalOrderCount, totalCustomerCount } =
     await getTotals({
-      start: DateTime.now().startOf('day').toJSDate(),
-      end: DateTime.now().endOf('day').toJSDate(),
+      start: startDuration,
+      end: endDuration,
       status: statusFilter,
     });
 

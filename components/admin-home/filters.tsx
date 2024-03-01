@@ -11,6 +11,7 @@ import {
 } from '../ui/select';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
+import { DateTime } from 'luxon';
 
 export default function Filters() {
   const searchParams = useSearchParams();
@@ -18,14 +19,44 @@ export default function Filters() {
   const router = useRouter();
 
   const createQueryString = useCallback(
-    (name: string, value: string) => {
+    (newParams: { [key: string]: string }) => {
       const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
+
+      for (const [key, value] of Object.entries(newParams)) {
+        params.set(key, value);
+      }
 
       return params.toString();
     },
     [searchParams],
   );
+
+  const handleToday = () => {
+    let queryString = createQueryString({
+      start: DateTime.now().startOf('day').toISO(),
+      end: DateTime.now().endOf('day').toISO(),
+    });
+
+    router.push(`${pathname}?${queryString}`);
+  };
+
+  const handleYesterday = () => {
+    let queryString = createQueryString({
+      start: DateTime.now().startOf('day').minus({ day: 1 }).toISO(),
+      end: DateTime.now().endOf('day').minus({ day: 1 }).toISO(),
+    });
+
+    router.push(`${pathname}?${queryString}`);
+  };
+
+  const handleThisWeek = () => {
+    let queryString = createQueryString({
+      start: DateTime.now().startOf('week').toISO(),
+      end: DateTime.now().endOf('week').toISO(),
+    });
+
+    router.push(`${pathname}?${queryString}`);
+  };
 
   return (
     <div>
@@ -33,13 +64,25 @@ export default function Filters() {
         <div className="px-4 space-y-2">
           <p className="text-muted-foreground text-xs">Duration</p>
           <div className="flex items-center gap-2">
-            <Button size={'sm'} variant={'outline'}>
+            <Button
+              onClick={() => handleToday()}
+              size={'sm'}
+              variant={'outline'}
+            >
               Today
             </Button>
-            <Button size={'sm'} variant={'outline'}>
+            <Button
+              onClick={() => handleYesterday()}
+              size={'sm'}
+              variant={'outline'}
+            >
               Yesterday
             </Button>
-            <Button size={'sm'} variant={'outline'}>
+            <Button
+              onClick={() => handleThisWeek()}
+              size={'sm'}
+              variant={'outline'}
+            >
               This week
             </Button>
             <Button size={'sm'} variant={'outline'}>
@@ -52,7 +95,7 @@ export default function Filters() {
           <Select
             name="status"
             onValueChange={(value) =>
-              router.push(`${pathname}?${createQueryString('status', value)}`)
+              router.push(`${pathname}?${createQueryString({ status: value })}`)
             }
           >
             <SelectTrigger className="min-w-40">

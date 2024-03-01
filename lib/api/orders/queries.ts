@@ -106,8 +106,8 @@ export const getTotals = async (params?: {
   if (parsedParams?.start && parsedParams?.end) {
     qb.push(
       and(
-        lte(orders.createdAt, parsedParams.end),
         gte(orders.createdAt, parsedParams.start),
+        lte(orders.createdAt, parsedParams.end),
       ),
     );
   } else if (parsedParams?.start) {
@@ -115,6 +115,8 @@ export const getTotals = async (params?: {
   } else if (parsedParams?.end) {
     qb.push(lte(orders.createdAt, parsedParams.end));
   }
+
+  console.log(query.where(and(...qb)).toSQL());
 
   const [row] = await query.where(and(...qb));
 
