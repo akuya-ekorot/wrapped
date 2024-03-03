@@ -55,11 +55,6 @@ export default function HeroLinkList({
           heroSectionId={heroSectionId}
         />
       </Modal>
-      <div className="absolute right-0 top-0 ">
-        <Button onClick={() => openModal()} variant={'outline'}>
-          +
-        </Button>
-      </div>
       {optimisticHeroLinks.length === 0 ? (
         <EmptyState openModal={openModal} />
       ) : (
@@ -101,7 +96,7 @@ const HeroLink = ({
       )}
     >
       <div className="w-full">
-        <div>{heroLink.type}</div>
+        <div>Link to {heroLink.type}</div>
       </div>
       <Button variant={'link'} asChild>
         <Link href={basePath + '/' + heroLink.id}>Edit</Link>

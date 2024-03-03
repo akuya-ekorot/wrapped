@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
@@ -19,6 +18,7 @@ import { useOptimisticReferredProducts } from '@/app/(app)/admin/referred-produc
 import { Button } from '@/components/ui/button';
 import ReferredProductForm from './ReferredProductForm';
 import { PlusIcon } from 'lucide-react';
+import { deleteReferredProductAction } from '@/lib/actions/referredProducts';
 
 type TOpenModal = (referredProduct?: ReferredProduct) => void;
 
@@ -122,8 +122,11 @@ const ReferredProduct = ({
       <div className="w-full">
         <div>{referredProduct.product?.name}</div>
       </div>
-      <Button variant={'link'} asChild>
-        <Link href={basePath + '/' + referredProduct.id}>Edit</Link>
+      <Button
+        onClick={() => deleteReferredProductAction(referredProduct.id)}
+        variant={'link'}
+      >
+        Detach Product
       </Button>
     </li>
   );

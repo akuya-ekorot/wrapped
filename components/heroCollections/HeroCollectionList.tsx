@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
@@ -19,6 +18,7 @@ import { useOptimisticHeroCollections } from '@/app/(app)/admin/hero-collections
 import { Button } from '@/components/ui/button';
 import HeroCollectionForm from './HeroCollectionForm';
 import { PlusIcon } from 'lucide-react';
+import { deleteHeroCollectionAction } from '@/lib/actions/heroCollections';
 
 type TOpenModal = (heroCollection?: HeroCollection) => void;
 
@@ -113,8 +113,13 @@ const HeroCollection = ({
       <div className="w-full">
         <div>{heroCollection.collection?.name}</div>
       </div>
-      <Button variant={'link'} asChild>
-        <Link href={basePath + '/' + heroCollection.id}>Edit</Link>
+      <Button
+        onClick={() => {
+          deleteHeroCollectionAction(heroCollection.id);
+        }}
+        variant={'link'}
+      >
+        Detach Collection
       </Button>
     </li>
   );

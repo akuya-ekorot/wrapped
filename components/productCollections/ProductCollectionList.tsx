@@ -19,6 +19,7 @@ import { useOptimisticProductCollections } from '@/app/(app)/admin/product-colle
 import { Button } from '@/components/ui/button';
 import ProductCollectionForm from './ProductCollectionForm';
 import { PlusIcon } from 'lucide-react';
+import { deleteProductCollectionAction } from '@/lib/actions/productCollections';
 
 type TOpenModal = (productCollection?: ProductCollection) => void;
 
@@ -134,20 +135,11 @@ const ProductCollection = ({
               : productCollection.collectionId}
         </div>
       </div>
-      <Button variant={'link'} asChild>
-        <Link
-          href={
-            basePath +
-            '/' +
-            (productId
-              ? productCollection.collectionId
-              : collectionId
-                ? productCollection.productId
-                : productCollection.id)
-          }
-        >
-          Edit
-        </Link>
+      <Button
+        onClick={() => deleteProductCollectionAction(productCollection.id)}
+        variant={'link'}
+      >
+        {productId ? 'Detach Collection' : 'Detach Product'}
       </Button>
     </li>
   );

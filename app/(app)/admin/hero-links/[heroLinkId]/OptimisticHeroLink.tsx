@@ -3,7 +3,6 @@
 import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/hero-links/useOptimisticHeroLinks';
 import { type HeroLink } from '@/lib/db/schema/heroLinks';
-import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
@@ -50,14 +49,6 @@ export default function OptimisticHeroLink({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticHeroLink.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticHeroLink, null, 2)}
-      </pre>
     </div>
   );
 }

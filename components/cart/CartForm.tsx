@@ -79,8 +79,8 @@ const CartItemComponent = ({ cartItem: cartItem }: { cartItem: CartItem }) => {
           <Image
             src={
               isVariant
-                ? cartItem.variant!.image.url
-                : cartItem.product!.image.url
+                ? cartItem.variant!.image?.url ?? ''
+                : cartItem.product!.image?.url ?? ''
             }
             alt={isVariant ? cartItem.variant!.name : cartItem.product!.name}
             height={120}

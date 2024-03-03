@@ -278,47 +278,40 @@ const FeaturedCollectionSectionForm = ({
         </div>
       )}
 
-      {collectionId ? null : (
-        <div>
-          <Label
-            className={cn(
-              'mb-2 inline-block',
-              errors?.collectionId ? 'text-destructive' : '',
-            )}
-          >
-            Collection
-          </Label>
-          <Select
-            defaultValue={featuredCollectionSection?.collectionId}
-            name="collectionId"
-          >
-            <SelectTrigger
-              className={cn(
-                errors?.collectionId ? 'ring ring-destructive' : '',
-              )}
-            >
-              <SelectValue placeholder="Select a collection" />
-            </SelectTrigger>
-            <SelectContent>
-              {collections?.map((collection) => (
-                <SelectItem
-                  key={collection.id}
-                  value={collection.id.toString()}
-                >
-                  {collection.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {errors?.collectionId ? (
-            <p className="text-xs text-destructive mt-2">
-              {errors.collectionId[0]}
-            </p>
-          ) : (
-            <div className="h-6" />
+      <div>
+        <Label
+          className={cn(
+            'mb-2 inline-block',
+            errors?.collectionId ? 'text-destructive' : '',
           )}
-        </div>
-      )}
+        >
+          Collection
+        </Label>
+        <Select
+          defaultValue={featuredCollectionSection?.collectionId}
+          name="collectionId"
+        >
+          <SelectTrigger
+            className={cn(errors?.collectionId ? 'ring ring-destructive' : '')}
+          >
+            <SelectValue placeholder="Select a collection" />
+          </SelectTrigger>
+          <SelectContent>
+            {collections?.map((collection) => (
+              <SelectItem key={collection.id} value={collection.id.toString()}>
+                {collection.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {errors?.collectionId ? (
+          <p className="text-xs text-destructive mt-2">
+            {errors.collectionId[0]}
+          </p>
+        ) : (
+          <div className="h-6" />
+        )}
+      </div>
 
       {homePageId ? null : (
         <div>

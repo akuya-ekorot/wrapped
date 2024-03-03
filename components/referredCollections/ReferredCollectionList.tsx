@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
@@ -22,6 +21,7 @@ import { useOptimisticReferredCollections } from '@/app/(app)/admin/referred-col
 import { Button } from '@/components/ui/button';
 import ReferredCollectionForm from './ReferredCollectionForm';
 import { PlusIcon } from 'lucide-react';
+import { deleteReferredCollectionAction } from '@/lib/actions/referredCollections';
 
 type TOpenModal = (referredCollection?: ReferredCollection) => void;
 
@@ -125,8 +125,11 @@ const ReferredCollection = ({
       <div className="w-full">
         <div>{referredCollection.collection?.name}</div>
       </div>
-      <Button variant={'link'} asChild>
-        <Link href={basePath + '/' + referredCollection.id}>Edit</Link>
+      <Button
+        onClick={() => deleteReferredCollectionAction(referredCollection.id)}
+        variant={'link'}
+      >
+        Detach Reffered Collection
       </Button>
     </li>
   );

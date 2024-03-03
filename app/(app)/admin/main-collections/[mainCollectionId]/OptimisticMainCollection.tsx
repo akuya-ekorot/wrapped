@@ -49,16 +49,6 @@ export default function OptimisticMainCollection({
           Edit
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        {Object.entries(optimisticMainCollection)
-          .filter(
-            ([key]) =>
-              !['id', 'createdAt', 'updatedAt', 'homePageId'].includes(key),
-          )
-          .map(([key, value]) => (
-            <InfoListItem key={key} title={key} value={value} />
-          ))}
-      </div>
     </div>
   );
 }

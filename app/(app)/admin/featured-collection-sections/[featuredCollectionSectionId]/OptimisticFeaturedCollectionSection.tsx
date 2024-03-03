@@ -2,7 +2,10 @@
 
 import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/featured-collection-sections/useOptimisticFeaturedCollectionSections';
-import { type FeaturedCollectionSection } from '@/lib/db/schema/featuredCollectionSections';
+import {
+  CompleteFeaturedCollectionSection,
+  type FeaturedCollectionSection,
+} from '@/lib/db/schema/featuredCollectionSections';
 import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
@@ -14,6 +17,7 @@ import {
   type CollectionId,
 } from '@/lib/db/schema/collections';
 import { type HomePage, type HomePageId } from '@/lib/db/schema/homePages';
+import FeaturedCollectionSectionInfoList from '@/components/featuredCollectionSections/FeaturedCollectionsSectionInfoList';
 
 export default function OptimisticFeaturedCollectionSection({
   featuredCollectionSection,
@@ -69,16 +73,11 @@ export default function OptimisticFeaturedCollectionSection({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticFeaturedCollectionSection.id === 'optimistic'
-            ? 'animate-pulse'
-            : '',
-        )}
-      >
-        {JSON.stringify(optimisticFeaturedCollectionSection, null, 2)}
-      </pre>
+      <FeaturedCollectionSectionInfoList
+        featuredCollectionSection={
+          optimisticFeaturedCollectionSection as CompleteFeaturedCollectionSection
+        }
+      />
     </div>
   );
 }

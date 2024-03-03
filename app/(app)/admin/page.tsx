@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { getPercentageChange, getTotals } from '@/lib/api/orders/queries';
 import { AllStatus, OrderStatus, TOrderStatus } from '@/lib/db/schema/orders';
-import { ArrowDown, ArrowUp } from 'lucide-react';
+import { ArrowDown, ArrowUp, Infinity as InfinityIcon } from 'lucide-react';
 import { DateTime } from 'luxon';
 
 export default async function Home({
@@ -90,6 +90,11 @@ function TotalRevenueWidget({
     currency: 'KES',
   });
 
+  const percentageChangeValue =
+    !percentageChange || percentageChange == 0
+      ? 0
+      : Math.abs(Math.round(percentageChange * 100) / 100);
+
   return (
     <Card>
       <CardHeader>
@@ -107,15 +112,26 @@ function TotalRevenueWidget({
             ) : percentageChange < 0 ? (
               <div className="text-destructive flex items-center gap-2">
                 <ArrowDown />
-                <span>
-                  {`${Math.abs(Math.round(percentageChange * 100) / 100)}%`}
+                <span className="flex items-center">
+                  {percentageChangeValue === Infinity ? (
+                    <InfinityIcon />
+                  ) : (
+                    percentageChangeValue
+                  )}
+                  %
                 </span>
+                <InfinityIcon />
               </div>
             ) : (
               <div className="text-primary flex items-center gap-2">
                 <ArrowUp />
-                <span>
-                  {`${Math.abs(Math.round(percentageChange * 100) / 100)}%`}
+                <span className="flex items-center">
+                  {percentageChangeValue === Infinity ? (
+                    <InfinityIcon />
+                  ) : (
+                    percentageChangeValue
+                  )}
+                  %
                 </span>
               </div>
             )}
@@ -133,6 +149,11 @@ function TotalOrderCountWidget({
   totalOrderCount: number;
   percentageChange: number | null;
 }) {
+  const percentageChangeValue =
+    !percentageChange || percentageChange == 0
+      ? 0
+      : Math.abs(Math.round(percentageChange * 100) / 100);
+
   return (
     <Card>
       <CardHeader>
@@ -148,15 +169,26 @@ function TotalOrderCountWidget({
             ) : percentageChange < 0 ? (
               <div className="text-destructive flex items-center gap-2">
                 <ArrowDown />
-                <span>
-                  {`${Math.abs(Math.round(percentageChange * 100) / 100)}%`}
+
+                <span className="flex items-center">
+                  {percentageChangeValue === Infinity ? (
+                    <InfinityIcon />
+                  ) : (
+                    percentageChangeValue
+                  )}
+                  %
                 </span>
               </div>
             ) : (
               <div className="text-primary flex items-center gap-2">
                 <ArrowUp />
-                <span>
-                  {`${Math.abs(Math.round(percentageChange * 100) / 100)}%`}
+                <span className="flex items-center">
+                  {percentageChangeValue === Infinity ? (
+                    <InfinityIcon />
+                  ) : (
+                    percentageChangeValue
+                  )}
+                  %
                 </span>
               </div>
             )}
@@ -174,6 +206,10 @@ function TotalCustomerCountWidget({
   totalCustomerCount: number;
   percentageChange: number | null;
 }) {
+  const percentageChangeValue =
+    !percentageChange || percentageChange == 0
+      ? 0
+      : Math.abs(Math.round(percentageChange * 100) / 100);
   return (
     <Card>
       <CardHeader>
@@ -189,15 +225,25 @@ function TotalCustomerCountWidget({
             ) : percentageChange < 0 ? (
               <div className="text-destructive flex items-center gap-2">
                 <ArrowDown />
-                <span>
-                  {`${Math.abs(Math.round(percentageChange * 100) / 100)}%`}
+                <span className="flex items-center">
+                  {percentageChangeValue === Infinity ? (
+                    <InfinityIcon />
+                  ) : (
+                    percentageChangeValue
+                  )}
+                  %
                 </span>
               </div>
             ) : (
               <div className="text-primary flex items-center gap-2">
                 <ArrowUp />
-                <span>
-                  {`${Math.abs(Math.round(percentageChange * 100) / 100)}%`}
+                <span className="flex items-center">
+                  {percentageChangeValue === Infinity ? (
+                    <InfinityIcon />
+                  ) : (
+                    percentageChangeValue
+                  )}
+                  %
                 </span>
               </div>
             )}

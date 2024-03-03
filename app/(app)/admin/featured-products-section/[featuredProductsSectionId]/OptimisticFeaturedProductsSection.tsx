@@ -52,16 +52,6 @@ export default function OptimisticFeaturedProductsSection({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticFeaturedProductsSection.id === 'optimistic'
-            ? 'animate-pulse'
-            : '',
-        )}
-      >
-        {JSON.stringify(optimisticFeaturedProductsSection, null, 2)}
-      </pre>
     </div>
   );
 }
