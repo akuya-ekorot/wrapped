@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import HomePageForm from '@/components/homePages/HomePageForm';
+import HomePageInfoList from '@/components/homePages/HomePageInfoList';
 
 export default function OptimisticHomePage({
   homePage,
@@ -39,14 +40,7 @@ export default function OptimisticHomePage({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticHomePage.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticHomePage, null, 2)}
-      </pre>
+      <HomePageInfoList homePage={optimisticHomePage} />
     </div>
   );
 }
