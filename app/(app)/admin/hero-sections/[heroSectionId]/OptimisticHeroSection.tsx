@@ -10,6 +10,7 @@ import Modal from '@/components/shared/Modal';
 import HeroSectionForm from '@/components/heroSections/HeroSectionForm';
 import { type TImage, type ImageId } from '@/lib/db/schema/images';
 import { type HomePage, type HomePageId } from '@/lib/db/schema/homePages';
+import HeroSectionInfoList from '@/components/heroSections/HeroSectionInfoList';
 
 export default function OptimisticHeroSection({
   heroSection,
@@ -54,14 +55,7 @@ export default function OptimisticHeroSection({
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticHeroSection.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticHeroSection, null, 2)}
-      </pre>
+      <HeroSectionInfoList heroSection={optimisticHeroSection} />
     </div>
   );
 }
