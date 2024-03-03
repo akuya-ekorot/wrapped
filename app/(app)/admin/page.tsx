@@ -18,8 +18,8 @@ export default async function Home({
 }) {
   const { start, end, status } = searchParams;
 
-  let startDuration: Date;
-  let endDuration: Date;
+  let startDuration: Date | undefined = undefined;
+  let endDuration: Date | undefined = undefined;
   let statusFilter: OrderStatus | AllStatus;
 
   if (status instanceof Array) {
@@ -30,23 +30,15 @@ export default async function Home({
 
   if (start instanceof Array) {
     startDuration = DateTime.fromISO(start[0]).toJSDate();
-  } else {
-    startDuration = start
-      ? DateTime.fromISO(start).toJSDate()
-      : DateTime.now().startOf('day').toJSDate();
+  } else if (start) {
+    startDuration = DateTime.fromISO(start).toJSDate();
   }
-
-  console.log({ startDuration });
 
   if (end instanceof Array) {
     endDuration = DateTime.fromISO(end[0]).toJSDate();
-  } else {
-    endDuration = end
-      ? DateTime.fromISO(end).toJSDate()
-      : DateTime.now().endOf('day').toJSDate();
+  } else if (end) {
+    endDuration = DateTime.fromISO(end).toJSDate();
   }
-
-  console.log({ endDuration });
 
   const { totalOrderRevenue, totalOrderCount, totalCustomerCount } =
     await getTotals({
