@@ -2,8 +2,10 @@
 
 import { useOptimistic, useState } from 'react';
 import { TAddOptimistic } from '@/app/(app)/admin/variant-options/useOptimisticVariantOptions';
-import { type VariantOption } from '@/lib/db/schema/variantOptions';
-import { cn } from '@/lib/utils';
+import {
+  CompleteVariantOption,
+  type VariantOption,
+} from '@/lib/db/schema/variantOptions';
 
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
@@ -26,7 +28,7 @@ export default function OptimisticVariantOption({
   variantId,
   productId,
 }: {
-  variantOption: VariantOption;
+  variantOption: CompleteVariantOption;
   options: Option[];
   optionId?: OptionId;
   optionValues: OptionValue[];
@@ -40,8 +42,9 @@ export default function OptimisticVariantOption({
     setOpen(true);
   };
   const closeModal = () => setOpen(false);
-  const [optimisticVariantOption, setOptimisticVariantOption] =
-    useOptimistic(variantOption);
+  const [optimisticVariantOption, setOptimisticVariantOption] = useOptimistic(
+    variantOption as VariantOption,
+  );
   const updateVariantOption: TAddOptimistic = (input) =>
     setOptimisticVariantOption({ ...input.data });
 
@@ -63,19 +66,13 @@ export default function OptimisticVariantOption({
         />
       </Modal>
       <div className="flex justify-between items-end mb-4">
-        <h1 className="font-semibold text-2xl">{variantOption.optionId}</h1>
+        <h1 className="font-semibold text-2xl">
+          {`${variantOption.option?.name} - ${variantOption.optionValue?.name}`}
+        </h1>
         <Button className="" onClick={() => setOpen(true)}>
           Edit
         </Button>
       </div>
-      <pre
-        className={cn(
-          'bg-secondary p-4 rounded-lg break-all text-wrap',
-          optimisticVariantOption.id === 'optimistic' ? 'animate-pulse' : '',
-        )}
-      >
-        {JSON.stringify(optimisticVariantOption, null, 2)}
-      </pre>
     </div>
   );
 }

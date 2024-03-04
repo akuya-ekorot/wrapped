@@ -29,7 +29,7 @@ export const useOptimisticVariantImages = (
       )!;
 
       const optimisticImage = images.find(
-        (image) => image.id === optimisticProductImage.imageId,
+        (image) => image.id === optimisticProductImage?.imageId,
       )!;
 
       const optimisticVariant = variants.find(

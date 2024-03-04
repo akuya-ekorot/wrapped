@@ -69,7 +69,7 @@ const Variant = async ({
           images={images}
           variantImages={variantImages}
           productImages={productImages}
-          variants={[]}
+          variants={[variant]}
           variantId={variant.id}
         />
       </div>

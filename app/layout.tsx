@@ -11,7 +11,7 @@ import { env } from '@/lib/env.mjs';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: env.NEXT_PUBLIC_APP_NAME ?? 'Create Next App',
+  title: env.NEXT_PUBLIC_APP_NAME,
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="sued"
           enableSystem
           disableTransitionOnChange
         >

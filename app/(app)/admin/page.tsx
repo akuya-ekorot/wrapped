@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getPercentageChange, getTotals } from '@/lib/api/orders/queries';
-import { AllStatus, OrderStatus, TOrderStatus } from '@/lib/db/schema/orders';
+import { AllStatus, OrderStatus } from '@/lib/db/schema/orders';
 import { ArrowDown, ArrowUp, Infinity as InfinityIcon } from 'lucide-react';
 import { DateTime } from 'luxon';
 

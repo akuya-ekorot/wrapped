@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import Modal from '@/components/shared/Modal';
 import VariantImageForm from '@/components/variantImages/VariantImageForm';
 import {
+  CompleteProductImage,
   type ProductImage,
   type ProductImageId,
 } from '@/lib/db/schema/productImages';
@@ -22,8 +23,7 @@ export default function OptimisticVariantImage({
   variantId,
 }: {
   variantImage: VariantImage;
-
-  productImages: ProductImage[];
+  productImages: CompleteProductImage[];
   productImageId?: ProductImageId;
   variants: Variant[];
   variantId?: VariantId;

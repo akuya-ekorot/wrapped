@@ -1,24 +1,7 @@
-import { Button } from '@/components/ui/button';
 import { getHomePages } from '@/lib/api/homePages/queries';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { getCollectionImagesByCollectionId } from '@/lib/api/collectionImages/queries';
-import { getHeroCollections } from '@/lib/api/heroCollections/queries';
-import { getHeroLinks } from '@/lib/api/heroLinks/queries';
-import { getHeroProducts } from '@/lib/api/heroProducts/queries';
-import { getHeroSections } from '@/lib/api/heroSections/queries';
-import { getMainCollections } from '@/lib/api/mainCollections/queries';
-import { getReferredCollections } from '@/lib/api/referredCollections/queries';
-import { CompleteReferredCollection } from '@/lib/db/schema/referredCollections';
-import type { Metadata } from 'next';
-import { getFeaturedCollectionSections } from '@/lib/api/featuredCollectionSections/queries';
-import {
-  getFeaturedProductsSectionByIdWithReferredProducts,
-  getFeaturedProductsSections,
-} from '@/lib/api/featuredProductsSection/queries';
-import { CompleteReferredProduct } from '@/lib/db/schema/referredProducts';
-import { getProductByIdWithProductImagesAndOptionsAndProductTags } from '@/lib/api/products/queries';
 import {
   Carousel,
   CarouselContent,
@@ -26,6 +9,23 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { getCollectionImagesByCollectionId } from '@/lib/api/collectionImages/queries';
+import { getFeaturedCollectionSections } from '@/lib/api/featuredCollectionSections/queries';
+import {
+  getFeaturedProductsSectionByIdWithReferredProducts,
+  getFeaturedProductsSections,
+} from '@/lib/api/featuredProductsSection/queries';
+import { getHeroCollections } from '@/lib/api/heroCollections/queries';
+import { getHeroLinks } from '@/lib/api/heroLinks/queries';
+import { getHeroProducts } from '@/lib/api/heroProducts/queries';
+import { getHeroSections } from '@/lib/api/heroSections/queries';
+import { getMainCollections } from '@/lib/api/mainCollections/queries';
+import { getProductByIdWithProductImagesAndOptionsAndProductTags } from '@/lib/api/products/queries';
+import { getReferredCollections } from '@/lib/api/referredCollections/queries';
+import { CompleteReferredCollection } from '@/lib/db/schema/referredCollections';
+import { CompleteReferredProduct } from '@/lib/db/schema/referredProducts';
+import type { Metadata } from 'next';
+import { env } from '@/lib/env.mjs';
 
 export const revalidate = 60;
 
@@ -34,8 +34,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const homePage = homePages[0];
 
   return {
-    title: homePage?.title ?? 'Wrapped',
-    description: homePage?.description,
+    title: homePage?.title ?? env.NEXT_PUBLIC_APP_NAME,
+    description: homePage?.description ?? '',
   };
 }
 
@@ -70,19 +70,19 @@ async function FeaturedProductItem({
   return (
     <div className="w-44 space-y-3">
       <Link
-        className="hover:underline space-y-1"
+        className="hover:underline space-y-1 ronded-md overflow-hidden"
         href={`/products/${referredProduct.productId}`}
       >
         {image?.url ? (
           <Image
-            className="w-44 h-56 bg-muted border object-cover"
+            className="w-44 h-56 object-cover border rounded-md"
             src={image.url}
             alt=""
             height={224}
             width={192}
           />
         ) : (
-          <div className="w-44 h-56 bg-muted border"></div>
+          <div className="w-44 h-56 bg-muted border rounded-md"></div>
         )}
         <h3 className="uppercase text-sm">
           {referredProduct.product?.name ?? ''}
@@ -130,9 +130,9 @@ async function FeaturedCollection() {
   const featuredCollectionSection = featuredCollectionSections[0];
 
   return (
-    <section className="relative h-[512px]">
+    <section className="grid grid-cols-2 h-[512px] border-b hover:underline">
       <Image
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover object-center overflow-hidden"
         src={featuredCollectionSection?.image?.url ?? ''}
         alt=""
         width={1024}
@@ -140,7 +140,7 @@ async function FeaturedCollection() {
       />
       <Link
         href={`collections/${featuredCollectionSection?.collectionId}`}
-        className="absolute top-0 left-0 text-primary-foreground w-full h-full bg-black/40 flex flex-col justify-end p-8"
+        className="text-primary w-full h-full flex flex-col justify-center p-8 space-y-3"
       >
         <h1 className="uppercase font-semibold text-5xl">
           {featuredCollectionSection?.title}
@@ -165,19 +165,19 @@ async function MainCategoryItem({
   return (
     <div className="w-44 space-y-2 text-center hover:underline">
       <Link
-        className="space-y-2 h-full"
+        className="space-y-2 h-full rounded-md overflow-hidden"
         href={`/collections/${referredCollection.collection?.id}`}
       >
         {collectionImages && collectionImages.length > 0 ? (
           <Image
-            className="w-44 h-56 object-cover border"
+            className="w-44 h-56 object-cover border rounded-md"
             src={collectionImages[0].image?.url ?? ''}
             alt=""
             height={224}
             width={192}
           />
         ) : (
-          <div className="w-44 h-56 bg-muted border"></div>
+          <div className="w-44 h-56 bg-muted border rounded-md"></div>
         )}
         <h3 className="uppercase text-sm">
           {referredCollection.collection?.name}
@@ -255,19 +255,11 @@ async function HomeHero() {
   }
 
   return (
-    <section className="relative h-[512px]">
-      <Image
-        className="w-full h-full object-cover"
-        src={heroSection?.image?.url ?? ''}
-        alt=""
-        width={1024}
-        height={512}
-      />
-
+    <section className="grid grid-cols-2 h-[512px] border-b hover:underline">
       {link ? (
         <Link
           href={link}
-          className="absolute top-0 left-0 text-primary-foreground w-full h-full bg-black/40 flex flex-col justify-end p-8"
+          className="text-primary w-full h-full flex flex-col justify-center p-8 space-y-3"
         >
           <h1 className="uppercase font-semibold text-5xl">
             {heroSection?.title}
@@ -277,7 +269,7 @@ async function HomeHero() {
           </p>
         </Link>
       ) : (
-        <div className="absolute top-0 left-0 text-primary-foreground w-full h-full bg-black/40 flex flex-col justify-end p-8">
+        <div className="text-primary w-full h-full flex flex-col justify-center p-8 space-y-3">
           <h1 className="uppercase font-semibold text-5xl">
             {heroSection?.title}
           </h1>
@@ -286,6 +278,13 @@ async function HomeHero() {
           </p>
         </div>
       )}
+      <Image
+        className="w-full h-full object-cover object-center overflow-hidden"
+        src={heroSection?.image?.url ?? ''}
+        alt=""
+        width={1024}
+        height={512}
+      />
     </section>
   );
 }
