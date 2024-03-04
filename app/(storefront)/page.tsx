@@ -101,7 +101,7 @@ async function FeaturedProducts() {
     );
 
   return (
-    <section className="px-24 py-9 flex flex-col items-center gap-4">
+    <section className="px-24 py-12 flex flex-col items-center gap-4">
       <h2 className="uppercase">{featuredProductsSection[0]?.title}</h2>
       <Carousel
         className="w-full"
@@ -194,7 +194,7 @@ async function MainCollections() {
   const { referredCollections } = await getReferredCollections();
 
   return (
-    <section className="px-24 py-9 flex flex-col items-center gap-4">
+    <section className="px-24 py-12 flex flex-col items-center gap-4">
       <h2 className="uppercase">{mainCollection?.title}</h2>
       <Carousel
         className="w-full"
