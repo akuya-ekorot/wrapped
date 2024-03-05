@@ -31,10 +31,13 @@ import {
   updateVariantImageAction,
 } from '@/lib/actions/variantImages';
 import {
+  CompleteProductImage,
   type ProductImage,
   type ProductImageId,
 } from '@/lib/db/schema/productImages';
 import { type Variant, type VariantId } from '@/lib/db/schema/variants';
+import { TImage } from '@/lib/db/schema/images';
+import ImageSelect from '../shared/image-select';
 
 const VariantImageForm = ({
   productImages,
@@ -48,7 +51,7 @@ const VariantImageForm = ({
   postSuccess,
 }: {
   variantImage?: VariantImage | null;
-  productImages: ProductImage[];
+  productImages: CompleteProductImage[];
   productImageId?: ProductImageId;
   variants: Variant[];
   variantId?: VariantId;
@@ -85,7 +88,10 @@ const VariantImageForm = ({
     }
   };
 
-  const handleSubmit = async (data: FormData) => {
+  const handleSubmit = async (
+    { productImageId }: { productImageId: ProductImageId | undefined },
+    data: FormData,
+  ) => {
     setErrors(null);
 
     const payload = Object.fromEntries(data.entries());
@@ -133,8 +139,47 @@ const VariantImageForm = ({
     }
   };
 
+  const [selectedImage, setSelectedImage] = useState<TImage>();
+  const [activeProductImageId, setProductImageId] = useState<
+    ProductImageId | undefined
+  >(productImageId);
+
+  const handleSelectedImage = (image: TImage) => {
+    setSelectedImage(image);
+
+    const selectedProductImage = productImages.find(
+      (pi) => pi.image?.id === image.id,
+    );
+
+    setProductImageId(selectedProductImage?.id);
+  };
+
+  const handleSubmitWrapper = handleSubmit.bind(null, {
+    productImageId: activeProductImageId,
+  });
+
+  const thisProductsImages = (productImages: CompleteProductImage[]) => {
+    const notNull = productImages.filter((pi) => pi.image !== null);
+
+    const variant = variants.find((v) => v.id === variantId);
+
+    if (!variant) {
+      return [];
+    }
+
+    const belongToProduct = notNull.filter(
+      (pi) => pi.productId === variant.productId,
+    );
+
+    return belongToProduct;
+  };
+
   return (
-    <form action={handleSubmit} onChange={handleChange} className={'space-y-8'}>
+    <form
+      action={handleSubmitWrapper}
+      onChange={handleChange}
+      className={'space-y-8'}
+    >
       {/* Schema fields start */}
 
       {productImageId ? null : (
@@ -147,29 +192,14 @@ const VariantImageForm = ({
           >
             ProductImage
           </Label>
-          <Select
-            defaultValue={variantImage?.productImageId}
-            name="productImageId"
-          >
-            <SelectTrigger
-              className={cn(
-                errors?.productImageId ? 'ring ring-destructive' : '',
-              )}
-            >
-              <SelectValue placeholder="Select a productImage" />
-            </SelectTrigger>
-            <SelectContent>
-              {productImages?.map((productImage) => (
-                <SelectItem
-                  key={productImage.id}
-                  value={productImage.id.toString()}
-                >
-                  {productImage.id}
-                  {/* TODO: Replace with a field from the productImage model */}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <ImageSelect
+            selected={selectedImage}
+            setSelected={handleSelectedImage}
+            images={thisProductsImages(productImages).map(
+              (pi) => pi.image as TImage,
+            )}
+          />
+
           {errors?.productImageId ? (
             <p className="text-xs text-destructive mt-2">
               {errors.productImageId[0]}

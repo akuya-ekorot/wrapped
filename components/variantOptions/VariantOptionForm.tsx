@@ -9,7 +9,6 @@ import { useValidatedForm } from '@/lib/hooks/useValidatedForm';
 import { type Action, cn } from '@/lib/utils';
 import { type TAddOptimistic } from '@/app/(app)/admin/variant-options/useOptimisticVariantOptions';
 
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useBackPath } from '@/components/shared/BackButton';
