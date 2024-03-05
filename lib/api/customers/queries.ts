@@ -12,11 +12,7 @@ import {
 import { get } from 'http';
 
 export const getCustomers = async () => {
-  const { session } = await getUserAuth();
-  const rows = await db
-    .select({ customer: customers })
-    .from(customers)
-    .where(eq(customers.userId, session?.user.id!));
+  const rows = await db.select({ customer: customers }).from(customers);
 
   const c = rows.map((r) => ({
     ...r.customer,
