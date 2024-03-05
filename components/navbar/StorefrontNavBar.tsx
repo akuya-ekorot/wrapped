@@ -9,7 +9,7 @@ export function StorefrontNavBar() {
           className="hover:underline absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2"
           href={'/'}
         >
-          <span className="uppercase font-semibold text-xl">
+          <span className="uppercase font-semibold text-xl text-primary">
             wrapped nation
           </span>
         </Link>

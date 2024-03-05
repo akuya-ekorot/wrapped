@@ -27,23 +27,23 @@ export default async function Page({
       <header className="py-8">
         <h1 className="text-2xl text-center">{collection?.name}</h1>
       </header>
-      <section className="grid grid-cols-4 p-8">
+      <section className="grid grid-cols-4 p-8 gap-8">
         {collection.products.map((product) => (
           <Link
             href={`/products/${product.id}`}
             key={product.id}
-            className="space-y-4 hover:underline"
+            className="space-y-4 hover:underline flex flex-col items-center"
           >
             {product.images.length > 0 ? (
               <Image
-                className="object-cover w-[275px] h-[412px]"
+                className="object-cover h-[412px]"
                 alt={product.name ?? collection?.name}
                 src={product.images[0].url}
                 height={600}
                 width={600}
               />
             ) : (
-              <div className="bg-secondary border w-[275px] h-[412px] flex items-center justify-center">
+              <div className="bg-secondary border h-[412px] flex items-center justify-center">
                 <ImageOff />
               </div>
             )}

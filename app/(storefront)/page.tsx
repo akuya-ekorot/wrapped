@@ -203,11 +203,14 @@ async function MainCollections() {
           loop: true,
         }}
       >
-        <CarouselContent className="justify-center">
+        <CarouselContent>
           {referredCollections
             ?.filter((rc) => rc.mainCollectionId === mainCollection.id)
             .map((rc) => (
-              <CarouselItem className="basis-1/5" key={rc.id}>
+              <CarouselItem
+                className="basis-1/5 flex justify-center"
+                key={rc.id}
+              >
                 <MainCategoryItem key={rc.id} referredCollection={rc} />
               </CarouselItem>
             ))}
@@ -255,11 +258,19 @@ async function HomeHero() {
   }
 
   return (
-    <section className="grid grid-cols-2 h-[512px] border-b hover:underline">
+    <section className="relative h-[512px]">
+      <Image
+        className="w-full h-full object-cover"
+        src={heroSection?.image?.url ?? ''}
+        alt=""
+        width={1024}
+        height={512}
+      />
+
       {link ? (
         <Link
           href={link}
-          className="text-primary w-full h-full flex flex-col justify-center p-8 space-y-3"
+          className="absolute top-0 left-0 text-primary-foreground w-full h-full bg-black/40 flex flex-col justify-end p-8"
         >
           <h1 className="uppercase font-semibold text-5xl">
             {heroSection?.title}
@@ -269,7 +280,7 @@ async function HomeHero() {
           </p>
         </Link>
       ) : (
-        <div className="text-primary w-full h-full flex flex-col justify-center p-8 space-y-3">
+        <div className="absolute top-0 left-0 text-primary-foreground w-full h-full bg-black/40 flex flex-col justify-end p-8">
           <h1 className="uppercase font-semibold text-5xl">
             {heroSection?.title}
           </h1>
@@ -278,13 +289,6 @@ async function HomeHero() {
           </p>
         </div>
       )}
-      <Image
-        className="w-full h-full object-cover object-center overflow-hidden"
-        src={heroSection?.image?.url ?? ''}
-        alt=""
-        width={1024}
-        height={512}
-      />
     </section>
   );
 }

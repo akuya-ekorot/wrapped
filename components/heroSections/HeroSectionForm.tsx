@@ -139,7 +139,9 @@ const HeroSectionForm = ({
   };
 
   const { addOptimisticImage } = useOptimisticImages(images);
-  const [activeImage, setActiveImage] = useState<TImage | null>(null);
+  const [activeImage, setActiveImage] = useState<TImage | null>(
+    images.find((i) => i.id === imageId) ?? null,
+  );
   const [open, setOpen] = useState(false);
   const openImageModal = (image?: TImage) => {
     setOpen(true);

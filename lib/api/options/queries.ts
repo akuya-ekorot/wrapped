@@ -19,16 +19,23 @@ export const getOptions = async () => {
     .leftJoin(products, eq(options.productId, products.id))
     .leftJoin(optionValues, eq(options.id, optionValues.optionId));
 
-  const o = rows.map((r) => ({
-    ...r.option,
-    product: r.product,
-    optionValues: rows
-      .filter((r2) => r2.optionValue !== null)
-      .filter((o) => o.optionValue!.optionId === r.option.id)
-      .map((o) => o.optionValue) as OptionValue[],
-  }));
-
-  console.log({ o });
+  const o = rows
+    .filter((r) => r.option !== null)
+    .filter(
+      (r, i, a) => a.findIndex((r2) => r2.option.id === r.option.id) === i,
+    )
+    .map((r) => ({
+      ...r.option,
+      product: r.product,
+      optionValues: rows
+        .filter((r2) => r2.optionValue !== null)
+        .filter(
+          (r, i, a) =>
+            a.findIndex((r2) => r2.optionValue!.id === r.optionValue!.id) === i,
+        )
+        .filter((o) => o.optionValue!.optionId === r.option.id)
+        .map((o) => o.optionValue) as OptionValue[],
+    }));
 
   return { options: o };
 };
